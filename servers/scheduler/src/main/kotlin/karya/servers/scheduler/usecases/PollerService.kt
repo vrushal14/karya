@@ -1,18 +1,23 @@
-package karya.servers.scheduler.app
+package karya.servers.scheduler.usecases
 
 import karya.servers.scheduler.configs.SchedulerConfig
+import karya.servers.scheduler.usecases.external.GetOpenTask
+import karya.servers.scheduler.usecases.external.ProcessTask
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.time.delay
 import org.apache.logging.log4j.kotlin.Logging
 import java.time.Duration
+import javax.inject.Inject
 
 
-class PollerService<Task> (
-  private val config: SchedulerConfig, // Frequency for polling
-  private val ioCall: suspend () -> Task?,   // I/O function to be called
-  private val onResult: suspend (Task) -> Unit      // Callback to process each result
+class PollerService
+@Inject
+constructor(
+  private val config: SchedulerConfig,
+  private val getOpenTask: GetOpenTask,
+  private val processTask: ProcessTask
 ) {
 
   companion object : Logging
@@ -22,7 +27,7 @@ class PollerService<Task> (
   // Flow that emits a value at a fixed interval and calls the I/O function
   private val pollFlow = flow {
     while (true) {
-      emit(ioCall())
+      emit(getOpenTask.invoke())
       delay(Duration.ofMillis(config.pollFrequency))
     }
   }
@@ -34,7 +39,7 @@ class PollerService<Task> (
       }
         .collect { result ->
           if (result != null) {
-            onResult(result)
+            processTask.invoke(result)
           } else logger.info { "[${config.getName()}] --- Poller fetched 0 tasks..." }
         }
     }

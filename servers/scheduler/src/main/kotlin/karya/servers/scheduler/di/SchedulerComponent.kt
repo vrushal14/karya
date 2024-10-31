@@ -3,9 +3,8 @@ package karya.servers.scheduler.di
 import dagger.BindsInstance
 import dagger.Component
 import karya.data.fused.di.FusedDataComponent
+import karya.servers.scheduler.app.SchedulerApplication
 import karya.servers.scheduler.configs.SchedulerConfig
-import karya.servers.scheduler.usecases.external.GetOpenTask
-import karya.servers.scheduler.usecases.external.ProcessTask
 
 @SchedulerScope
 @Component(
@@ -15,8 +14,7 @@ import karya.servers.scheduler.usecases.external.ProcessTask
 )
 interface SchedulerComponent {
 
-  val getOpenTask : GetOpenTask
-  val processTask : ProcessTask
+  val schedulerApplication : SchedulerApplication
 
   @Component.Builder
   interface Builder {
