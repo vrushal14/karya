@@ -12,7 +12,6 @@ class SchedulerApplication
 constructor(
   private val pollerService: PollerService,
   private val repoConnector: RepoConnector,
-  private val locks
   private val config: SchedulerConfig
 ) {
 
