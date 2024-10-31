@@ -9,6 +9,7 @@ object Modules {
     const val PSQL = "$DATA-psql"
     const val FUSED = "$DATA-fused"
     const val REDIS = "$DATA-redis"
+    const val RABBIT_MQ = "$DATA-rabbitmq"
   }
 
   object Servers {

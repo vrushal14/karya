@@ -28,5 +28,8 @@ project(":data-psql").projectDir = File("data/psql")
 include(":data-redis")
 project(":data-redis").projectDir = File("data/redis")
 
+include(":data-rabbitmq")
+project(":data-rabbitmq").projectDir = File("data/rabbitmq")
+
 include(":docs-samples")
 project(":docs-samples").projectDir = File("docs/samples")
