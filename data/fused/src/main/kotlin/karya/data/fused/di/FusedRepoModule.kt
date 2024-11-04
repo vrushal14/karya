@@ -2,18 +2,13 @@ package karya.data.fused.di
 
 import dagger.Module
 import dagger.Provides
-import karya.core.connectors.LockConnector
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
-import karya.core.connectors.RepoConnector
-import karya.core.locks.LocksClient
-import karya.data.fused.locks.LocksConfig
-import karya.data.fused.locks.LocksWrapper
+import karya.core.repos.RepoConnector
 import karya.data.fused.repos.RepoConfig
 import karya.data.fused.repos.ReposWrapper
 import karya.data.psql.di.DaggerPsqlComponent
-import karya.data.redis.di.DaggerRedisComponent
 import javax.inject.Singleton
 
 @Module

@@ -1,4 +1,4 @@
-package karya.core.connectors
+package karya.core.repos
 
 interface RepoConnector {
   suspend fun getPartitions(): Int

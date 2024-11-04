@@ -5,7 +5,7 @@ import dagger.Module
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 import karya.data.psql.repos.PsqlJobsRepo
 import karya.data.psql.repos.PsqlRepoConnector
 import karya.data.psql.repos.PsqlTasksRepo

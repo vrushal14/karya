@@ -1,6 +1,7 @@
 package karya.servers.scheduler.app
 
-import karya.core.connectors.RepoConnector
+import karya.core.locks.LocksClient
+import karya.core.repos.RepoConnector
 import karya.servers.scheduler.configs.SchedulerConfig
 import karya.servers.scheduler.usecases.PollerService
 import kotlinx.coroutines.runBlocking
@@ -12,6 +13,7 @@ class SchedulerApplication
 constructor(
   private val pollerService: PollerService,
   private val repoConnector: RepoConnector,
+  private val locksClient : LocksClient,
   private val config: SchedulerConfig
 ) {
 
@@ -26,6 +28,7 @@ constructor(
     logger.info { "[${config.getName()}] --- Shutting down poller" }
     pollerService.stop()
     repoConnector.shutdown()
+    locksClient.shutdown()
   }
 
 }

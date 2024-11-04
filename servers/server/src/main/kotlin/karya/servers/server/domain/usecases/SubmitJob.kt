@@ -1,6 +1,6 @@
 package karya.servers.server.domain.usecases
 
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 import karya.core.entities.Job
 import karya.core.entities.Task
 import karya.core.entities.User

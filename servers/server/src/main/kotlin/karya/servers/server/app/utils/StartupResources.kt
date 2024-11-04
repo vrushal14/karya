@@ -1,7 +1,6 @@
 package karya.servers.server.app.utils
 
-import karya.core.connectors.RepoConnector
-import kotlinx.coroutines.runBlocking
+import karya.core.repos.RepoConnector
 import org.apache.logging.log4j.kotlin.logger
 import javax.inject.Inject
 

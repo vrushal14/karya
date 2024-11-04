@@ -3,7 +3,7 @@ package karya.data.fused.repos
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 
 data class ReposWrapper(
   val usersRepo: UsersRepo,

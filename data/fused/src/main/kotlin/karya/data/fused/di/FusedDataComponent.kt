@@ -2,11 +2,10 @@ package karya.data.fused.di
 
 import dagger.BindsInstance
 import dagger.Component
-import karya.core.connectors.LockConnector
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 import karya.core.locks.LocksClient
 import karya.data.fused.locks.LocksConfig
 import karya.data.fused.repos.RepoConfig
@@ -28,7 +27,6 @@ interface FusedDataComponent {
   val locksClient : LocksClient
 
   val repoConnector : RepoConnector
-  val lockConnector : LockConnector
 
   @Component.Builder
   interface Builder {

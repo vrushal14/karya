@@ -1,6 +1,6 @@
 package karya.servers.scheduler.usecases.internal
 
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 import karya.core.entities.Job
 import karya.core.entities.Task
 import karya.core.entities.enums.TaskStatus

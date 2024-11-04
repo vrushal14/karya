@@ -1,7 +1,7 @@
 package karya.data.psql.repos
 
 import com.zaxxer.hikari.HikariDataSource
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 import org.apache.logging.log4j.kotlin.Logging
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database

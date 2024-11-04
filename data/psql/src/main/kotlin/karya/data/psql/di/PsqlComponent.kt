@@ -5,7 +5,7 @@ import dagger.Component
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
-import karya.core.connectors.RepoConnector
+import karya.core.repos.RepoConnector
 import java.util.Properties
 import javax.inject.Named
 import javax.inject.Singleton

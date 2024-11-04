@@ -4,6 +4,7 @@ import karya.core.locks.LocksClient
 import karya.data.redis.configs.RedisLocksConfig
 import kotlinx.coroutines.coroutineScope
 import org.apache.logging.log4j.kotlin.Logging
+import org.apache.logging.log4j.kotlin.logger
 import org.redisson.api.RedissonClient
 import java.util.*
 import javax.inject.Inject
@@ -28,5 +29,15 @@ constructor(
       lock.unlock() // Release the lock
     }
     logger.debug("Released lock --- $id")
+  }
+
+  override suspend fun shutdown() : Boolean {
+    try {
+      redissonClient.shutdown()
+      return true
+    } catch (e : Exception) {
+      logger.error(e)
+      return false
+    }
   }
 }
