@@ -1,6 +1,6 @@
 package karya.servers.server.app
 
-import karya.core.utils.getConfigPath
+import karya.core.utils.KaryaEnvironmentConfig
 import karya.data.fused.repos.RepoConfig
 import karya.data.fused.locks.LocksConfig
 import karya.servers.server.di.ServerApplicationFactory
@@ -9,9 +9,9 @@ import java.util.concurrent.CountDownLatch
 
 suspend fun main() {
 
-  val valuesFile = getConfigPath("servers/server")
-  val repoConfig = RepoConfig.fromYaml(valuesFile)
-  val locksConfig = LocksConfig.fromYaml(valuesFile)
+  val providers = KaryaEnvironmentConfig.PROVIDERS
+  val repoConfig = RepoConfig.fromYaml(providers)
+  val locksConfig = LocksConfig.fromYaml(providers)
 
   val serverApplication = ServerApplicationFactory.create(repoConfig, locksConfig)
   val latch = CountDownLatch(1)

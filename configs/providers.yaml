@@ -16,7 +16,6 @@ repo:
       user: "karya"
       password: "karya"
 
-
 locks:
   provider: "redis"
   properties:

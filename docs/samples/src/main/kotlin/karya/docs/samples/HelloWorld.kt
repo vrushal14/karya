@@ -28,5 +28,5 @@ suspend fun main() {
     executorEndpoint = URL("http://facebook.com")
   )).also { println(it) }
 
-//  client.cancelJob(job.id).also { println(it) }
+//  client.cancelJob(UUID.fromString("9cf88d16-fac7-4abd-9bb6-3ccf497f28bb")).also { println(it) }
 }
