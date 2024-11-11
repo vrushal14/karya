@@ -7,7 +7,7 @@ import java.util.*
 
 data class SchedulerConfig(
   val workers : Int,
-  val staggeredDelay : Long,
+  val startDelay : Long,
 
   val pollFrequency : Long,
   val partitions : List<Int>,
@@ -30,7 +30,7 @@ data class SchedulerConfig(
 
       return SchedulerConfig(
         workers = getProperty(properties, "application.service.workers").toInt(),
-        staggeredDelay = getProperty(properties, "application.service.staggeredStartDelay"),
+        startDelay = getProperty(properties, "application.service.startDelay"),
         pollFrequency = getProperty(properties, "application.properties.pollFrequency"),
         partitions = partitions,
         executionBufferInMilli = getProperty(properties, "application.properties.executionBuffer"),

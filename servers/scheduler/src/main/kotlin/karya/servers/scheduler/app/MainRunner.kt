@@ -33,7 +33,6 @@ fun runApplicationInstance(instanceId: Int, latch: CountDownLatch, schedulerConf
   }
 }
 
-
 fun main() {
   val providers = KaryaEnvironmentConfig.PROVIDERS
   val scheduler = KaryaEnvironmentConfig.SCHEDULER
@@ -44,8 +43,8 @@ fun main() {
 
   try {
     repeat(schedulerConfig.workers) { instanceId ->
-      logger.info("Instance $instanceId will start after ${schedulerConfig.staggeredDelay} ms")
-      Thread.sleep(schedulerConfig.staggeredDelay)
+      logger.info("Instance $instanceId will start after ${schedulerConfig.startDelay} ms")
+      Thread.sleep(schedulerConfig.startDelay)
 
       executorService.submit {
         try {
