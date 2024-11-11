@@ -9,7 +9,6 @@ import karya.core.exceptions.JobException.*
 import karya.core.locks.LocksClient
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
-import karya.servers.scheduler.configs.SchedulerConfig
 import karya.servers.scheduler.usecases.internal.CreateNextTask
 import karya.servers.scheduler.usecases.internal.PushTaskToQueue
 import org.apache.logging.log4j.kotlin.Logging
@@ -21,7 +20,6 @@ constructor(
   private val tasksRepo: TasksRepo,
   private val jobsRepo: JobsRepo,
   private val locksClient: LocksClient,
-  private val config: SchedulerConfig,
 
   private val createNextTask: CreateNextTask,
   private val pushTaskToQueue: PushTaskToQueue
@@ -38,25 +36,25 @@ constructor(
       if (shouldPush) pushTaskToQueue.invoke(job, task)
       locksClient.freeLock(task.id)
 
-    } else logger.warn("[${config.getName()}] --- Unable to acquire lock on taskId --- ${task.id}")
+    } else logger.warn("Unable to acquire lock on taskId --- ${task.id}")
   }
 
   private suspend fun updateStatus(job: Job, task: Task) : Boolean = when(job.status) {
     JobStatus.CREATED -> {
       jobsRepo.updateStatus(task.jobId, JobStatus.RUNNING)
       tasksRepo.updateStatus(task.id, TaskStatus.RUNNING)
-      logger.info { "[${config.getName()}] --- Updating Status : [Job | CREATED -> RUNNING] | [Task | CREATED -> RUNNING]" }
+      logger.info { "Updating Status : [Job | CREATED -> RUNNING] | [Task | CREATED -> RUNNING]" }
       true
     }
     JobStatus.RUNNING -> {
       tasksRepo.updateStatus(task.id, TaskStatus.RUNNING)
-      logger.info { "[${config.getName()}] --- Updating Status : [Job (No change) | RUNNING -> RUNNING] | [Task | CREATED -> RUNNING]" }
+      logger.info { "Updating Status : [Job (No change) | RUNNING -> RUNNING] | [Task | CREATED -> RUNNING]" }
       true
     }
 
     JobStatus.CANCELLED, JobStatus.FAILURE, JobStatus.COMPLETED -> {
       tasksRepo.updateStatus(task.id, TaskStatus.CANCELLED)
-      logger.info { "[${config.getName()}] --- Updating Status : [Job (No change) | ${job.status} -> ${job.status}] | [Task | CREATED -> CANCELLED]" }
+      logger.info { "Updating Status : [Job (No change) | ${job.status} -> ${job.status}] | [Task | CREATED -> CANCELLED]" }
       false
     }
   }
@@ -65,6 +63,6 @@ constructor(
     val isJobNonTerminal = (job.status == JobStatus.CREATED).or(job.status == JobStatus.RUNNING)
     val isJobRecurring = (job.type == JobType.RECURRING)
     return (isJobRecurring && isJobNonTerminal)
-      .also { logger.info { "[${config.getName()}] --- isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it" } }
+      .also { logger.info { "isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it" } }
   }
 }

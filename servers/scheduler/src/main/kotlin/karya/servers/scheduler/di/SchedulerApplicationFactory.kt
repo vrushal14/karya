@@ -7,9 +7,9 @@ import karya.servers.scheduler.configs.SchedulerConfig
 
 object SchedulerApplicationFactory {
 
-  fun create(repoConfig: RepoConfig, locksConfig: LocksConfig, schedulerConfig: SchedulerConfig) =
+  fun create(schedulerConfig: SchedulerConfig) =
     DaggerSchedulerComponent.builder()
-      .fusedDataComponent(provideFusedRepoComponent(repoConfig, locksConfig))
+      .fusedDataComponent(provideFusedRepoComponent(schedulerConfig.repoConfig, schedulerConfig.locksConfig))
       .config(schedulerConfig)
       .build()
       .schedulerApplication

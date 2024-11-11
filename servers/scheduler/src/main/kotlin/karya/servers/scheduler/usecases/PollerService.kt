@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.time.delay
 import org.apache.logging.log4j.kotlin.Logging
 import java.time.Duration
+import java.util.concurrent.Executors
 import javax.inject.Inject
-
 
 class PollerService
 @Inject
@@ -22,7 +22,8 @@ constructor(
 
   companion object : Logging
 
-  private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+  private lateinit var scope : CoroutineScope
+  private lateinit var customDispatcher: ExecutorCoroutineDispatcher
 
   // Flow that emits a value at a fixed interval and calls the I/O function
   private val pollFlow = flow {
@@ -32,20 +33,29 @@ constructor(
     }
   }
 
-  fun start() {
+  fun start(name : String) {
+    setScope(name)
     scope.launch {
       pollFlow.catch { e ->
-        println("[${config.getName()}] --- Error during polling: ${e.message}")
+        println("Error during polling: ${e.message}")
       }
         .collect { result ->
           if (result != null) {
             processTask.invoke(result)
-          } else logger.info { "[${config.getName()}] --- Poller fetched 0 tasks..." }
+          } else logger.info { "Poller fetched 0 tasks..." }
         }
     }
   }
 
   fun stop() {
     scope.cancel()
+    customDispatcher.close()
+  }
+
+  private fun setScope(name: String) {
+    this.customDispatcher = Executors.newSingleThreadExecutor { runnable ->
+      Thread(runnable, name)
+    }.asCoroutineDispatcher()
+    this.scope = CoroutineScope(customDispatcher + SupervisorJob())
   }
 }
