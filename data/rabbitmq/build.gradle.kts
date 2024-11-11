@@ -7,6 +7,7 @@ dependencies {
   implementation(project(Modules.CORE))
 
   implementation(Libs.SLF4J)
+  implementation(Libs.RABBIT_MQ)
 
   implementation(Libs.Dagger.DAGGER)
 

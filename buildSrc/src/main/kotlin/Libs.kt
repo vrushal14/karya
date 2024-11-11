@@ -7,6 +7,7 @@ object Libs {
   const val HIKARI = "com.zaxxer:HikariCP:6.0.0"
   const val REDISSON = "org.redisson:redisson:3.17.6"
   const val FLYWAY = "org.flywaydb:flyway-core:9.2.0"
+  const val RABBIT_MQ = "com.rabbitmq:amqp-client:5.22.0"
 
   object Log4j {
     private const val GROUP = "org.apache.logging.log4j"
