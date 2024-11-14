@@ -10,7 +10,7 @@ constructor(){
 
   companion object {
     private const val CREATED = 0
-    private const val RUNNING = 1
+    private const val PROCESSING = 1
     private const val SUCCESS = 2
     private const val FAILURE = -1
     private const val CANCELLED = 3
@@ -18,7 +18,7 @@ constructor(){
 
   fun toRecord(status: TaskStatus) : Int = when(status) {
     TaskStatus.CREATED -> CREATED
-    TaskStatus.RUNNING -> RUNNING
+    TaskStatus.PROCESSING -> PROCESSING
     TaskStatus.SUCCESS -> SUCCESS
     TaskStatus.FAILURE -> FAILURE
     TaskStatus.CANCELLED -> CANCELLED
@@ -26,7 +26,7 @@ constructor(){
 
   fun fromRecord(record: Int) : TaskStatus = when(record) {
     CREATED -> TaskStatus.CREATED
-    RUNNING -> TaskStatus.RUNNING
+    PROCESSING -> TaskStatus.PROCESSING
     SUCCESS -> TaskStatus.SUCCESS
     FAILURE -> TaskStatus.FAILURE
     CANCELLED -> TaskStatus.CANCELLED

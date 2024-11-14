@@ -7,7 +7,6 @@ import karya.core.entities.enums.JobType
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.entities.requests.UpdateJobRequest
-import java.net.URL
 
 suspend fun main() {
   val client = KaryaClientFactory.create(KaryaClientConfig.Dev)

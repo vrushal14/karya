@@ -2,7 +2,7 @@ package karya.servers.scheduler.app
 
 import karya.core.locks.LocksClient
 import karya.core.repos.RepoConnector
-import karya.servers.scheduler.usecases.PollerService
+import karya.servers.scheduler.usecases.external.PollerService
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject

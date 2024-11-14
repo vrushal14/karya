@@ -1,11 +1,15 @@
-package karya.servers.scheduler.usecases
+package karya.servers.scheduler.usecases.external
 
 import karya.servers.scheduler.configs.SchedulerConfig
-import karya.servers.scheduler.usecases.external.GetOpenTask
-import karya.servers.scheduler.usecases.external.ProcessTask
-import kotlinx.coroutines.*
+import karya.servers.scheduler.usecases.internal.ProcessTask
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.delay
 import org.apache.logging.log4j.kotlin.Logging
 import java.time.Duration
@@ -16,7 +20,6 @@ class PollerService
 @Inject
 constructor(
   private val config: SchedulerConfig,
-  private val getOpenTask: GetOpenTask,
   private val processTask: ProcessTask
 ) {
 
@@ -28,7 +31,7 @@ constructor(
   // Flow that emits a value at a fixed interval and calls the I/O function
   private val pollFlow = flow {
     while (true) {
-      emit(getOpenTask.invoke())
+      emit(processTask.invoke())
       delay(Duration.ofMillis(config.pollFrequency))
     }
   }
@@ -36,14 +39,9 @@ constructor(
   fun start(name : String) {
     setScope(name)
     scope.launch {
-      pollFlow.catch { e ->
-        println("Error during polling: ${e.message}")
-      }
-        .collect { result ->
-          if (result != null) {
-            processTask.invoke(result)
-          } else logger.info { "Poller fetched 0 tasks..." }
-        }
+      pollFlow
+        .catch { e -> logger.error("Error during polling: ${e.message}") }
+        .collect { res -> if (!res) logger.info { "Poller fetched 0 tasks..." } }
     }
   }
 
