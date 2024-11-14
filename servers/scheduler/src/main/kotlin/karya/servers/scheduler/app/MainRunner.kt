@@ -1,6 +1,6 @@
 package karya.servers.scheduler.app
 
-import karya.core.KaryaEnvironmentConfig
+import karya.core.configs.KaryaEnvironmentConfig
 import karya.servers.scheduler.configs.SchedulerConfig
 import karya.servers.scheduler.di.SchedulerApplicationFactory
 import org.apache.logging.log4j.LogManager

@@ -1,6 +1,6 @@
 package karya.servers.server.app
 
-import karya.core.KaryaEnvironmentConfig
+import karya.core.configs.KaryaEnvironmentConfig
 import karya.data.fused.repos.RepoConfig
 import karya.data.fused.locks.LocksConfig
 import karya.servers.server.di.ServerApplicationFactory
