@@ -3,18 +3,25 @@ package karya.core.entities
 import karya.core.entities.enums.JobStatus
 import karya.core.entities.enums.JobType
 import karya.core.entities.requests.UpdateJobRequest
-import java.net.URL
+import karya.core.utils.UUIDSerializer
+import kotlinx.serialization.Serializable
 import java.time.Instant
 import java.util.UUID
 
+@Serializable
 data class Job(
+
+  @Serializable(with = UUIDSerializer::class)
   val id: UUID,
+
+  @Serializable(with = UUIDSerializer::class)
   val userId: UUID,
+
   val periodTime: String,
   val type: JobType,
   val status: JobStatus,
   val maxFailureRetry: Int,
-  val executorEndpoint: URL,
+  val action: Action,
   val createdAt: Long,
   val updatedAt: Long
 ) {
@@ -25,7 +32,7 @@ data class Job(
     type = type,
     status = status,
     maxFailureRetry = request.maxFailureRetry ?: maxFailureRetry,
-    executorEndpoint = request.executorEndpoint ?: executorEndpoint,
+    action = action,
     createdAt = createdAt,
     updatedAt = Instant.now().toEpochMilli()
   )

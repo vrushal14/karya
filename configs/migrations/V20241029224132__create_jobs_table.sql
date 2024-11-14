@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     type INT NOT NULL,
     status INT NOT NULL,
     max_failure_retry INT NOT NULL,
-    executor_endpoint VARCHAR(255) NOT NULL,
+    action JSON NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
 );

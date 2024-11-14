@@ -1,11 +1,15 @@
 package karya.core.entities.requests
 
-import java.net.URL
+import karya.core.utils.UUIDSerializer
+import kotlinx.serialization.Serializable
 import java.util.UUID
 
+@Serializable
 data class UpdateJobRequest(
+
+  @Serializable(with = UUIDSerializer::class)
   val jobId : UUID,
+
   val periodTime : String? = null,
-  val executorEndpoint : URL? = null,
   val maxFailureRetry : Int? = null
 )

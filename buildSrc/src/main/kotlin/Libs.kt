@@ -1,7 +1,6 @@
 object Libs {
 
   const val KOTLIN_REFLECT = "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
-  const val KOTLINX_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0"
   const val SLF4J = "org.slf4j:slf4j-simple:2.0.0"
   const val POSTGRES = "org.postgresql:postgresql:42.7.1"
   const val HIKARI = "com.zaxxer:HikariCP:6.0.0"
@@ -33,6 +32,7 @@ object Libs {
     const val CORE = "$GROUP:exposed-core:$VERSION"
     const val JAVA_TIME = "$GROUP:exposed-java-time:$VERSION"
     const val JDBC = "$GROUP:exposed-jdbc:$VERSION"
+    const val JSON = "$GROUP:exposed-json:$VERSION"
   }
 
   object Ktor {
@@ -40,6 +40,7 @@ object Libs {
     private const val VERSION = "3.0.0"
 
     const val JACKSON = "$GROUP:ktor-serialization-jackson:$VERSION"
+    const val KOTLINX = "$GROUP:ktor-serialization-kotlinx-json:$VERSION"
 
     object Server {
       const val CORE = "$GROUP:ktor-server-core:$VERSION"
@@ -60,6 +61,14 @@ object Libs {
 
     const val CORE = "$GROUP.core:jackson-databind:$VERSION"
     const val YML_FORMAT = "$GROUP.dataformat:jackson-dataformat-yaml:$VERSION"
+  }
+
+  object Kotlinx {
+    private const val GROUP = "org.jetbrains.kotlinx"
+    private const val VERSION = "1.7.0"
+
+    const val COROUTINES = "$GROUP:kotlinx-coroutines-core:$VERSION"
+    const val JSON_SERIALIZATION = "$GROUP:kotlinx-serialization-json:$VERSION"
   }
 
 }

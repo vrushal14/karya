@@ -11,7 +11,7 @@ dependencies {
     implementation(Libs.Log4j.CORE)
     implementation(Libs.Log4j.KOTLIN_API)
 
-    implementation(Libs.Ktor.JACKSON)
+    implementation(Libs.Ktor.KOTLINX)
     implementation(Libs.Ktor.Client.CORE)
     implementation(Libs.Ktor.Client.CONTENT_NEGOTIATION)
     implementation(Libs.Ktor.Client.CIO)

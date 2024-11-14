@@ -1,6 +1,5 @@
 package karya.client.ktor
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -13,11 +12,12 @@ import karya.core.entities.requests.SubmitJobRequest
 import karya.core.entities.requests.UpdateJobRequest
 import karya.core.entities.responses.GetJobResponse
 import karya.core.exceptions.KaryaException
+import kotlinx.serialization.json.Json
 import java.util.*
 
 class KaryaClientImpl(
   private val httpClient: HttpClient,
-  private val objectMapper: ObjectMapper
+  private val json: Json
 ) : Client {
 
   companion object {
@@ -28,27 +28,27 @@ class KaryaClientImpl(
     httpClient.post {
       url { path(VERSION, "user") }
       setBody(request)
-    }.deserialize<User, KaryaException>(objectMapper)
+    }.deserialize<User, KaryaException>(json)
 
   override suspend fun submitJob(request: SubmitJobRequest): Job =
     httpClient.post {
       url { path(VERSION, "job") }
       setBody(request)
-    }.deserialize<Job, KaryaException>(objectMapper)
+    }.deserialize<Job, KaryaException>(json)
 
   override suspend fun fetchJob(jobId: UUID): GetJobResponse =
     httpClient.get {
       url { path(VERSION, "job", jobId.toString()) }
-    }.deserialize<GetJobResponse, KaryaException>(objectMapper)
+    }.deserialize<GetJobResponse, KaryaException>(json)
 
   override suspend fun updateJob(request: UpdateJobRequest): Job =
     httpClient.patch {
       url { path(VERSION, "job") }
       setBody(request)
-    }.deserialize<Job, KaryaException>(objectMapper)
+    }.deserialize<Job, KaryaException>(json)
 
   override suspend fun cancelJob(jobId: UUID): Job =
     httpClient.post {
       url { path(VERSION, "job", jobId.toString()) }
-    }.deserialize<Job, KaryaException>(objectMapper)
+    }.deserialize<Job, KaryaException>(json)
 }

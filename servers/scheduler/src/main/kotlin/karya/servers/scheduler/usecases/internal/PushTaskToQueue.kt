@@ -17,7 +17,7 @@ constructor(
   suspend fun invoke(job: Job, task: Task) = ExecutorMessage(
     jobId = job.id,
     taskId = task.id,
-    executorEndpoint = job.executorEndpoint,
+    action = job.action,
     maxFailureRetry = job.maxFailureRetry
   ).also { logger.info { "Pushing message to queue --- $it" } }
 }

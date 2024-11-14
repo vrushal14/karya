@@ -1,11 +1,11 @@
 package karya.core.entities.messages
 
-import java.net.URL
+import karya.core.entities.Action
 import java.util.UUID
 
 data class ExecutorMessage(
   val jobId : UUID,
   val taskId : UUID,
-  val executorEndpoint : URL,
+  val action : Action,
   val maxFailureRetry : Int
 )

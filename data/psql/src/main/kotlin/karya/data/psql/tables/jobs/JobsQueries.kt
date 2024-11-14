@@ -5,9 +5,7 @@ import karya.core.entities.enums.JobStatus
 import karya.data.psql.tables.jobs.mappers.JobStatusMapper
 import karya.data.psql.tables.jobs.mappers.JobTypeMapper
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.net.URL
 import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
@@ -27,7 +25,7 @@ constructor(
       it[type] = jobTypeMapper.toRecord(job.type)
       it[status] = jobStatusMapper.toRecord(job.status)
       it[maxFailureRetry] = job.maxFailureRetry
-      it[executorEndpoint] = job.executorEndpoint.toString()
+      it[action] = job.action
       it[createdAt] = Instant.ofEpochMilli(job.createdAt)
       it[updatedAt] = Instant.ofEpochMilli(job.updatedAt)
     }
@@ -43,7 +41,7 @@ constructor(
     JobsTable.update({ JobsTable.id eq job.id }) {
       it[status] = jobStatusMapper.toRecord(job.status)
       it[periodTime] = job.periodTime
-      it[executorEndpoint] = job.executorEndpoint.toString()
+      it[action] = job.action
       it[maxFailureRetry] = job.maxFailureRetry
       it[updatedAt] = Instant.ofEpochMilli(job.updatedAt)
     }
@@ -63,7 +61,7 @@ constructor(
     type = jobTypeMapper.fromRecord(resultRow[JobsTable.type]),
     status = jobStatusMapper.fromRecord(resultRow[JobsTable.status]),
     maxFailureRetry = resultRow[JobsTable.maxFailureRetry],
-    executorEndpoint = URL(resultRow[JobsTable.executorEndpoint]),
+    action = resultRow[JobsTable.action],
     createdAt = resultRow[JobsTable.createdAt].toEpochMilli(),
     updatedAt = resultRow[JobsTable.updatedAt].toEpochMilli()
   )

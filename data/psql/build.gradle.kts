@@ -9,6 +9,7 @@ dependencies {
   implementation(Libs.Exposed.CORE)
   implementation(Libs.Exposed.JAVA_TIME)
   implementation(Libs.Exposed.JDBC)
+  implementation(Libs.Exposed.JSON)
   implementation(Libs.POSTGRES)
 
   implementation(Libs.Dagger.DAGGER)

@@ -2,6 +2,7 @@ package karya.docs.samples
 
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
+import karya.core.entities.Action
 import karya.core.entities.enums.JobType
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
@@ -17,7 +18,7 @@ suspend fun main() {
       userId = user.id,
       periodTime = "PT7S",
       jobType = JobType.RECURRING,
-      executorEndpoint = URL("http://google.com")
+      action = Action.HttpInvocation("http://google.com")
     )
   )
   client.fetchJob(job.id).also { println(it) }
@@ -25,7 +26,6 @@ suspend fun main() {
   client.updateJob(UpdateJobRequest(
     jobId = job.id,
     maxFailureRetry = 42,
-    executorEndpoint = URL("http://facebook.com")
   )).also { println(it) }
 
 //  client.cancelJob(UUID.fromString("9cf88d16-fac7-4abd-9bb6-3ccf497f28bb")).also { println(it) }

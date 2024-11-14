@@ -43,7 +43,7 @@ constructor(
     type = request.jobType,
     status = JobStatus.CREATED,
     maxFailureRetry = request.maxFailureRetry,
-    executorEndpoint = request.executorEndpoint,
+    action = request.action,
     createdAt = Instant.now().toEpochMilli(),
     updatedAt = Instant.now().toEpochMilli()
   )

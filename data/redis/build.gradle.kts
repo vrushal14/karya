@@ -8,13 +8,13 @@ dependencies {
 
   implementation(Libs.REDISSON)
   implementation(Libs.SLF4J)
-  implementation(Libs.KOTLINX_COROUTINES)
-
-  implementation(Libs.Dagger.DAGGER)
 
   implementation(Libs.Log4j.API)
   implementation(Libs.Log4j.CORE)
   implementation(Libs.Log4j.KOTLIN_API)
+
+  implementation(Libs.Kotlinx.COROUTINES)
+  implementation(Libs.Dagger.DAGGER)
 
   kapt(Libs.Dagger.COMPILER)
 }

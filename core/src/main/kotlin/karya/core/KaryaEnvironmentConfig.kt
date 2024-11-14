@@ -1,4 +1,4 @@
-package karya.core.utils
+package karya.core
 
 import karya.core.exceptions.KaryaException
 

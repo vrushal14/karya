@@ -1,10 +1,5 @@
 package karya.client.di
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.Module
 import dagger.Provides
 import io.ktor.client.*
@@ -13,10 +8,12 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.jackson.*
+import io.ktor.serialization.kotlinx.json.*
 import karya.client.configs.KaryaClientConfig
 import karya.client.ktor.KaryaClientImpl
 import karya.core.actors.Client
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNamingStrategy
 import javax.inject.Singleton
 
 @Module
@@ -30,8 +27,8 @@ class KaryaClientModule {
 
   @Provides
   @Singleton
-  fun provideKaryaClient(httpClient: HttpClient, objectMapper: ObjectMapper) : Client =
-    KaryaClientImpl(httpClient, objectMapper)
+  fun provideKaryaClient(httpClient: HttpClient) : Client =
+    KaryaClientImpl(httpClient, configureJson())
 
   @Provides
   @Singleton
@@ -52,21 +49,18 @@ class KaryaClientModule {
     }
     expectSuccess = false
 
-    install(ContentNegotiation) { jackson { configureDefaults() } }
+    install(ContentNegotiation) { json(configureJson()) }
   }
 
-  @Provides
-  @Singleton
-  fun provideObjectMapper() : ObjectMapper =
-    jacksonObjectMapper().apply { configureDefaults() }
-
-  private fun ObjectMapper.configureDefaults() {
-    configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
-    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
-    propertyNamingStrategy = SNAKE_CASE
-
-    registerKotlinModule()
+  private fun configureJson(): Json {
+    return Json {
+      isLenient = true
+      ignoreUnknownKeys = true
+      encodeDefaults = true
+      useAlternativeNames = true
+      allowStructuredMapKeys = true
+      namingStrategy = JsonNamingStrategy.SnakeCase
+    }
   }
 
 }
