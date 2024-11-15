@@ -29,10 +29,7 @@ constructor(
     setScope(name)
     scope.launch {
       try {
-        for (task in channel) {
-          logger.info { "Processing task: $task" }
-          processTask.invoke(task)
-        }
+        for (task in channel) processTask.invoke(task)
       } catch (e: ClosedReceiveChannelException) {
         logger.info { "Task channel closed. Shutting down worker." }
         stop()
