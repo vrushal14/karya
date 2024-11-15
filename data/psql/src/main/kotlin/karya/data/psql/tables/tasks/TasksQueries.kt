@@ -36,16 +36,15 @@ constructor(
       .firstOrNull()
   }?.let { fromRecord(it) }
 
-  fun get(request: GetTasksRequest) = transaction(db) {
+  fun getInRange(request: GetTasksRequest) = transaction(db) {
     TasksTable.selectAll()
       .where { (TasksTable.partitionKey inList request.partitionKeys) and
-          (TasksTable.nextExecutionAt greaterEq request.executionTime) and
-          (TasksTable.nextExecutionAt lessEq request.executionTime.plus(request.buffer)) and
-          (TasksTable.status eq taskStatusMapper.toRecord(request.status))
+          (TasksTable.status eq taskStatusMapper.toRecord(request.status)) and
+          (TasksTable.nextExecutionAt lessEq  request.executionTime) and
+          (TasksTable.nextExecutionAt greaterEq  request.executionTime.minus(request.buffer))
       }
-      .orderBy(TasksTable.nextExecutionAt, SortOrder.DESC)
-      .firstOrNull()
-  }?.let { fromRecord(it) }
+      .map { fromRecord(it) }
+  }
 
   fun update(task: Task) = transaction(db) {
     TasksTable.update({ TasksTable.id eq task.id }) {

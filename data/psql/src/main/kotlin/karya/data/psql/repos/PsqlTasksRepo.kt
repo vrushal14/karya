@@ -21,8 +21,11 @@ constructor(
   override suspend fun getLatest(jobId: UUID): Task? =
     tasksQueries.getLatest(jobId)
 
-  override suspend fun get(request: GetTasksRequest): Task? =
-    tasksQueries.get(request)
+  override suspend fun get(request: GetTasksRequest): Task? {
+    val tasks = tasksQueries.getInRange(request)
+      .sortedBy { it.nextExecutionAt?.minus((request.executionTime.toEpochMilli())) }
+    return tasks.firstOrNull()
+  }
 
   override suspend fun update(task: Task) {
     tasksQueries.update(task)
