@@ -1,10 +1,11 @@
-package karya.servers.scheduler.di
+package karya.servers.scheduler.di.components
 
 import dagger.BindsInstance
 import dagger.Component
 import karya.data.fused.di.FusedDataComponent
-import karya.servers.scheduler.app.SchedulerApplication
 import karya.servers.scheduler.configs.SchedulerConfig
+import karya.servers.scheduler.di.SchedulerScope
+import karya.servers.scheduler.usecases.SchedulerFetcher
 
 @SchedulerScope
 @Component(
@@ -12,9 +13,9 @@ import karya.servers.scheduler.configs.SchedulerConfig
     FusedDataComponent::class
   ]
 )
-interface SchedulerComponent {
+interface SchedulerFetcherComponent {
 
-  val schedulerApplication : SchedulerApplication
+  val schedulerFetcher : SchedulerFetcher
 
   @Component.Builder
   interface Builder {
@@ -24,6 +25,6 @@ interface SchedulerComponent {
 
     fun fusedDataComponent(fusedDataComponent: FusedDataComponent): Builder
 
-    fun build() : SchedulerComponent
+    fun build() : SchedulerFetcherComponent
   }
 }

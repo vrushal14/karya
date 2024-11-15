@@ -7,7 +7,6 @@ import java.util.*
 
 data class SchedulerConfig(
   val workers : Int,
-  val startDelay : Long,
 
   val pollFrequency : Long,
   val partitions : List<Int>,
@@ -23,17 +22,16 @@ data class SchedulerConfig(
         load(File(schedulerFilePath).inputStream())
       }
 
-      val partitions = properties.getProperty("application.properties.repoPartitions")
+      val partitions = properties.getProperty("application.fetcher.repoPartitions")
         ?.split(",")
         ?.map { it.trim().toInt() }
-        ?: throw IllegalArgumentException("application.properties.repoPartitions is required")
+        ?: throw IllegalArgumentException("application.fetcher.repoPartitions is required")
 
       return SchedulerConfig(
-        workers = getProperty(properties, "application.service.workers").toInt(),
-        startDelay = getProperty(properties, "application.service.startDelay"),
-        pollFrequency = getProperty(properties, "application.properties.pollFrequency"),
+        workers = getProperty(properties, "application.workers").toInt(),
+        pollFrequency = getProperty(properties, "application.fetcher.pollFrequency"),
         partitions = partitions,
-        executionBufferInMilli = getProperty(properties, "application.properties.executionBuffer"),
+        executionBufferInMilli = getProperty(properties, "application.fetcher.executionBuffer"),
         repoConfig = RepoConfig.fromYaml(providerFilePath),
         locksConfig = LocksConfig.fromYaml(providerFilePath)
       )

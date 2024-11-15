@@ -2,7 +2,6 @@ package karya.data.redis
 
 import karya.core.locks.LocksClient
 import karya.data.redis.configs.RedisLocksConfig
-import kotlinx.coroutines.coroutineScope
 import org.apache.logging.log4j.kotlin.Logging
 import org.apache.logging.log4j.kotlin.logger
 import org.redisson.api.RedissonClient
@@ -18,18 +17,14 @@ constructor(
 
   companion object : Logging
 
-  override suspend fun getLock(id: UUID): Boolean = coroutineScope {
-    val lock = redissonClient.getLock(id.toString())
-    return@coroutineScope lock.tryLock(config.waitTime, config.leaseTime, java.util.concurrent.TimeUnit.MILLISECONDS)
-  }.also { if (it) logger.debug("Acquired lock --- $id") else logger.warn("Failed to acquire lock --- $id") }
-
-  override suspend fun freeLock(id: UUID) {
-    val lock = redissonClient.getLock(id.toString())
-    if (lock.isHeldByCurrentThread) {
-      lock.unlock() // Release the lock
+  override suspend fun <T> withLock(id: UUID, block: suspend () -> T): Boolean = if (getLock(id)) {
+    try {
+      block()
+    } finally {
+      freeLock(id)
     }
-    logger.debug("Released lock --- $id")
-  }
+    true
+  } else false
 
   override suspend fun shutdown() : Boolean {
     try {
@@ -39,5 +34,17 @@ constructor(
       logger.error(e)
       return false
     }
+  }
+
+  override suspend fun getLock(id: UUID): Boolean {
+    val lock = redissonClient.getLock(id.toString())
+    return lock.tryLock(config.waitTime, config.leaseTime, java.util.concurrent.TimeUnit.MILLISECONDS)
+      .also { if (it) logger.debug("Acquired lock --- $id") else logger.warn("Failed to acquire lock --- $id") }
+  }
+
+  override suspend fun freeLock(id: UUID) {
+    val lock = redissonClient.getLock(id.toString())
+    if (lock.isHeldByCurrentThread) lock.unlock()
+    logger.debug("Released lock --- $id")
   }
 }
