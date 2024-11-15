@@ -35,6 +35,7 @@ constructor(
   }
 
   fun stop() {
+    taskReadChannel.cancel()
     taskChannel.close()
   }
 
