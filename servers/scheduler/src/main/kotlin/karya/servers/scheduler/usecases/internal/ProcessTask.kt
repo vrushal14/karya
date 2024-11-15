@@ -7,6 +7,7 @@ import karya.core.entities.enums.JobType
 import karya.core.entities.enums.TaskStatus
 import karya.core.exceptions.JobException.*
 import karya.core.locks.LocksClient
+import karya.core.locks.entities.LockResult
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import org.apache.logging.log4j.kotlin.Logging
@@ -25,7 +26,11 @@ constructor(
   companion object : Logging
 
   suspend fun invoke(task: Task) : Boolean {
-    return locksClient.withLock(task.id) { processTask(task) }
+    val result = locksClient.withLock(task.id) { processTask(task) }
+    return when(result) {
+      is LockResult.Success -> true
+      is LockResult.Failure -> false
+    }
   }
 
   private suspend fun processTask(task: Task) {

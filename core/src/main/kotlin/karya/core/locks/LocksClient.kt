@@ -1,10 +1,9 @@
 package karya.core.locks
 
+import karya.core.locks.entities.LockResult
 import java.util.UUID
 
 interface LocksClient {
-  suspend fun getLock(id : UUID) : Boolean
-  suspend fun freeLock(id: UUID)
-  suspend fun <T> withLock(id: UUID, block: suspend () -> T): Boolean
+  suspend fun <T> withLock(id: UUID, block: suspend () -> T): LockResult<T>
   suspend fun shutdown() : Boolean
 }

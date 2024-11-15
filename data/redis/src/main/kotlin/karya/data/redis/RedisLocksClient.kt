@@ -1,6 +1,7 @@
 package karya.data.redis
 
 import karya.core.locks.LocksClient
+import karya.core.locks.entities.LockResult
 import karya.data.redis.configs.RedisLocksConfig
 import org.apache.logging.log4j.kotlin.Logging
 import org.apache.logging.log4j.kotlin.logger
@@ -17,14 +18,15 @@ constructor(
 
   companion object : Logging
 
-  override suspend fun <T> withLock(id: UUID, block: suspend () -> T): Boolean = if (getLock(id)) {
+  override suspend fun <T> withLock(id: UUID, block: suspend () -> T): LockResult<T> = if (getLock(id)) {
+    val res: T
     try {
-      block()
+      res = block()
     } finally {
       freeLock(id)
     }
-    true
-  } else false
+    LockResult.Success(res)
+  } else LockResult.Failure
 
   override suspend fun shutdown() : Boolean {
     try {
@@ -36,13 +38,13 @@ constructor(
     }
   }
 
-  override suspend fun getLock(id: UUID): Boolean {
+  private fun getLock(id: UUID): Boolean {
     val lock = redissonClient.getLock(id.toString())
     return lock.tryLock(config.waitTime, config.leaseTime, java.util.concurrent.TimeUnit.MILLISECONDS)
       .also { if (it) logger.debug("Acquired lock --- $id") else logger.warn("Failed to acquire lock --- $id") }
   }
 
-  override suspend fun freeLock(id: UUID) {
+  private fun freeLock(id: UUID) {
     val lock = redissonClient.getLock(id.toString())
     if (lock.isHeldByCurrentThread) lock.unlock()
     logger.debug("Released lock --- $id")
