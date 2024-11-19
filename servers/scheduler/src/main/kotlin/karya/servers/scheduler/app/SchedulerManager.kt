@@ -1,31 +1,44 @@
 package karya.servers.scheduler.app
 
-import karya.servers.scheduler.usecases.SchedulerFetcher
-import karya.servers.scheduler.usecases.SchedulerWorker
+import karya.servers.scheduler.configs.SchedulerConfig
+import karya.servers.scheduler.di.factories.SchedulerFetcherFactory
+import karya.servers.scheduler.di.factories.SchedulerWorkerFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
+import org.apache.logging.log4j.kotlin.Logging
+import java.time.Duration
+import java.util.concurrent.Executors
 
 class SchedulerManager(
-  private val schedulerFetcher: SchedulerFetcher,
-  private val schedulerWorkers: List<SchedulerWorker>,
-  private val customDispatcher: ExecutorCoroutineDispatcher
+  private val config: SchedulerConfig
 ) {
-  private val scope = CoroutineScope(customDispatcher)
+
+  private val dispatcher = Executors.newFixedThreadPool(config.workers + 1).asCoroutineDispatcher()
+  private val scope = CoroutineScope(dispatcher)
+  private val workers  = List(config.workers) { SchedulerWorkerFactory.create(config) }
+  private val fetcher = SchedulerFetcherFactory.create(config)
+
+  companion object : Logging
 
   fun start() {
-    scope.launch { schedulerFetcher.start() }
-    schedulerWorkers.forEachIndexed { index, worker ->
-      scope.launch { worker.start(index, schedulerFetcher.provideChannel()) }
+    scope.launch { fetcher.start() }
+    workers.forEachIndexed { index, worker ->
+      scope.launch {
+        delay(Duration.ofMillis(index * config.startDelay))
+        logger.info("Starting worker $index after ${index * config.startDelay} ms")
+        worker.start(index, fetcher.provideChannel())
+      }
     }
   }
 
   fun stop() {
-    schedulerFetcher.stop()
-    schedulerWorkers.forEachIndexed { index, worker -> worker.stop(index) }
+    fetcher.stop()
+    workers.forEachIndexed { index, worker -> worker.stop(index) }
     scope.cancel()
-    customDispatcher.close()
+    dispatcher.close()
   }
 
 }

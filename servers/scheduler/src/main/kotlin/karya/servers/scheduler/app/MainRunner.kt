@@ -2,13 +2,9 @@ package karya.servers.scheduler.app
 
 import karya.core.configs.KaryaEnvironmentConfig
 import karya.servers.scheduler.configs.SchedulerConfig
-import karya.servers.scheduler.di.factories.SchedulerFetcherFactory
-import karya.servers.scheduler.di.factories.SchedulerWorkerFactory
-import kotlinx.coroutines.asCoroutineDispatcher
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
 
 val logger: Logger = LogManager.getLogger()
 
@@ -18,11 +14,7 @@ fun main() {
   val config = SchedulerConfig.load(scheduler, providers)
 
   val latch = CountDownLatch(1)
-  val schedulerManager = SchedulerManager(
-    schedulerFetcher = SchedulerFetcherFactory.create(config),
-    schedulerWorkers = List(config.workers) { SchedulerWorkerFactory.create(config) },
-    customDispatcher = Executors.newFixedThreadPool(config.workers + 1).asCoroutineDispatcher()
-  )
+  val schedulerManager = SchedulerManager(config)
 
   Runtime.getRuntime().addShutdownHook(Thread {
     logger.info("Shutdown hook invoked...")

@@ -22,7 +22,7 @@ constructor(
 
   companion object : Logging
 
-  private val taskChannel = Channel<Task>(Channel.UNLIMITED)
+  private val taskChannel = Channel<Task>(capacity = config.channelCapacity)
   val taskReadChannel: ReceiveChannel<Task> get() = taskChannel  // receive only channel for consumers
 
   suspend fun start() {

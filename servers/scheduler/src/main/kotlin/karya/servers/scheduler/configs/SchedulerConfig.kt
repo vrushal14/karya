@@ -7,7 +7,9 @@ import java.util.*
 
 data class SchedulerConfig(
   val workers : Int,
+  val startDelay : Long,
 
+  val channelCapacity : Int,
   val pollFrequency : Long,
   val partitions : List<Int>,
   val executionBufferInMilli : Long,
@@ -29,6 +31,8 @@ data class SchedulerConfig(
 
       return SchedulerConfig(
         workers = getProperty(properties, "application.workers").toInt(),
+        startDelay = getProperty(properties, "application.workers.startDelay"),
+        channelCapacity = getProperty(properties, "application.fetcher.channelCapacity").toInt(),
         pollFrequency = getProperty(properties, "application.fetcher.pollFrequency"),
         partitions = partitions,
         executionBufferInMilli = getProperty(properties, "application.fetcher.executionBuffer"),
