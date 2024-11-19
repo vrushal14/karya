@@ -1,6 +1,6 @@
 package karya.core.entities.messages
 
-import karya.core.entities.Action
+import karya.core.entities.action.Action
 import java.util.UUID
 
 data class ExecutorMessage(

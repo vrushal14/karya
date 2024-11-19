@@ -1,6 +1,6 @@
 package karya.core.entities.requests
 
-import karya.core.entities.Action
+import karya.core.entities.action.Action
 import karya.core.entities.enums.JobType
 import karya.core.utils.UUIDSerializer
 import kotlinx.serialization.Serializable

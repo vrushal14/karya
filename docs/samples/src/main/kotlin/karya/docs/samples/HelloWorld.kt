@@ -2,7 +2,9 @@ package karya.docs.samples
 
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
-import karya.core.entities.Action
+import karya.core.entities.action.Action
+import karya.core.entities.action.http.Method
+import karya.core.entities.action.http.Protocol
 import karya.core.entities.enums.JobType
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
@@ -17,7 +19,16 @@ suspend fun main() {
       userId = user.id,
       periodTime = "PT7S",
       jobType = JobType.RECURRING,
-      action = Action.HttpInvocation("http://google.com")
+      action = Action.HttpInvocation(
+        protocol = Protocol.HTTP,
+        baseUrl = "google.com",
+        method = Method.POST,
+        headers = mapOf(
+          "content-type" to "application/json",
+          "client-header" to "Alice"
+        ),
+        timeout = 1000L
+      )
     )
   )
   client.fetchJob(job.id).also { println(it) }

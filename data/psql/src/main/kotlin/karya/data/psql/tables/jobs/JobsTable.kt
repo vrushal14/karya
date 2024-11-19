@@ -1,6 +1,6 @@
 package karya.data.psql.tables.jobs
 
-import karya.core.entities.Action
+import karya.core.entities.action.Action
 import karya.data.psql.tables.users.UsersTable
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Table

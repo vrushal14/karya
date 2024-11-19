@@ -1,5 +1,6 @@
 package karya.core.entities
 
+import karya.core.entities.action.Action
 import karya.core.entities.enums.JobStatus
 import karya.core.entities.enums.JobType
 import karya.core.entities.requests.UpdateJobRequest
