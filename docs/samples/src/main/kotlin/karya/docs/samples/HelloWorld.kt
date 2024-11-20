@@ -3,6 +3,7 @@ package karya.docs.samples
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
 import karya.core.entities.action.Action
+import karya.core.entities.action.http.Body
 import karya.core.entities.action.http.Method
 import karya.core.entities.action.http.Protocol
 import karya.core.entities.enums.JobType
@@ -26,6 +27,11 @@ suspend fun main() {
         headers = mapOf(
           "content-type" to "application/json",
           "client-header" to "Alice"
+        ),
+        body = Body.JsonBody(
+          data = mapOf(
+            "udf1" to "value"
+          )
         ),
         timeout = 1000L
       )

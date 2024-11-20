@@ -12,6 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import karya.client.configs.KaryaClientConfig
 import karya.client.ktor.KaryaClientImpl
 import karya.core.actors.Client
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
 import javax.inject.Singleton
@@ -52,6 +53,7 @@ class KaryaClientModule {
     install(ContentNegotiation) { json(configureJson()) }
   }
 
+  @OptIn(ExperimentalSerializationApi::class)
   private fun configureJson(): Json {
     return Json {
       isLenient = true
