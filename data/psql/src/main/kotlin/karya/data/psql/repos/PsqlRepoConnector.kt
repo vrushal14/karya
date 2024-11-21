@@ -37,7 +37,14 @@ class PsqlRepoConnector
 					val partitions = config.partitions
 					for (i in 1..partitions) {
 						exec(
-							"CREATE TABLE IF NOT EXISTS tasks_part_$i PARTITION OF tasks FOR VALUES WITH (MODULUS $partitions, REMAINDER $partitions);",
+							"""
+							CREATE TABLE IF NOT EXISTS tasks_part_$i 
+							PARTITION OF tasks 
+							FOR VALUES WITH (
+							    MODULUS $partitions, 
+							    REMAINDER $partitions
+							);
+							""",
 						)
 					}
 				}
