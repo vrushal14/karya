@@ -13,7 +13,6 @@ import java.util.*
 data class SchedulerConfig(
   val threadCount : Int,
   val workers : Int,
-  val startDelay : Long,
 
   val channelCapacity : Int,
   val pollFrequency : Long,
@@ -34,7 +33,6 @@ data class SchedulerConfig(
       return SchedulerConfig(
         threadCount = properties.getKey("application.threadCount"),
         workers = properties.getKey("application.workers"),
-        startDelay = properties.getKey("application.workers.startDelay"),
 
         channelCapacity = properties.getKey("application.fetcher.channelCapacity"),
         pollFrequency = properties.getKey("application.fetcher.pollFrequency"),

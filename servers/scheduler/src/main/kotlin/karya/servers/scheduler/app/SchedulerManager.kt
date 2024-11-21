@@ -26,11 +26,7 @@ class SchedulerManager(
   fun start() {
     scope.launch { fetcher.start() }
     workers.forEachIndexed { index, worker ->
-      scope.launch {
-        delay(Duration.ofMillis(index * config.startDelay))
-        logger.info("Starting worker $index after ${index * config.startDelay} ms")
-        worker.start(index, fetcher.provideChannel())
-      }
+      scope.launch { worker.start(index, fetcher.provideChannel()) }
     }
   }
 
