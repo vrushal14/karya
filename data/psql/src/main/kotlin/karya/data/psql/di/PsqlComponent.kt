@@ -6,8 +6,7 @@ import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
 import karya.core.repos.RepoConnector
-import java.util.Properties
-import javax.inject.Named
+import karya.data.psql.configs.PsqlRepoConfig
 import javax.inject.Singleton
 
 @Singleton
@@ -29,13 +28,7 @@ interface PsqlComponent {
   interface Builder {
 
     @BindsInstance
-    fun partitions(partitions: Int) : Builder
-
-    @BindsInstance
-    fun hikariProperties(@Named("HIKARI") properties: Properties) : Builder
-
-    @BindsInstance
-    fun flywayProperties(@Named("FLYWAY") properties: Properties) : Builder
+    fun config(psqlRepoConfig: PsqlRepoConfig) : Builder
 
     fun build() : PsqlComponent
   }

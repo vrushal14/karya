@@ -4,10 +4,9 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import dagger.Module
 import dagger.Provides
+import karya.data.psql.configs.PsqlRepoConfig
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
-import java.util.*
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -15,7 +14,8 @@ class PsqlUtilsModule {
 
   @Provides
   @Singleton
-  fun provideFlyway(@Named("FLYWAY") properties: Properties) : Flyway {
+  fun provideFlyway(config: PsqlRepoConfig) : Flyway {
+    val properties = config.flywayProperties
     return Flyway.configure()
       .dataSource(properties.getProperty("url"), properties.getProperty("user"), properties.getProperty("password"))
       .locations("classpath:db/migrations")
@@ -26,8 +26,8 @@ class PsqlUtilsModule {
 
   @Provides
   @Singleton
-  fun provideHikariDataSource(@Named("HIKARI") properties: Properties) : HikariDataSource {
-    val hikariConfig = HikariConfig(properties)
+  fun provideHikariDataSource(config: PsqlRepoConfig) : HikariDataSource {
+    val hikariConfig = HikariConfig(config.hikariProperties)
     return HikariDataSource(hikariConfig)
   }
 

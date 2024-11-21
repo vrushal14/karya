@@ -1,4 +1,4 @@
-package karya.data.fused.repos
+package karya.data.fused.utils
 
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo

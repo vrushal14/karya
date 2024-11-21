@@ -16,8 +16,8 @@ object PropsReader {
     }
   }
 
-  inline fun <reified T> getProperty(properties: Properties, key : String): T {
-    val value = properties.getProperty(key) ?: throw IllegalArgumentException("$key value is not set!")
+  inline fun <reified T> Properties.getKey(key : String): T {
+    val value = this.getProperty(key) ?: throw IllegalArgumentException("$key value is not set!")
 
     return when(T::class) {
       Long::class -> value.toLong()

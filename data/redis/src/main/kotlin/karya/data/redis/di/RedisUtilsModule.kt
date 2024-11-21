@@ -15,7 +15,7 @@ class RedisUtilsModule {
   @Singleton
   fun provideRedissonClient(redisLocksConfig: RedisLocksConfig) : RedissonClient {
     val config = Config()
-    config.useSingleServer().setAddress(redisLocksConfig.url)
+    config.useSingleServer().address = redisLocksConfig.getUrl()
     return Redisson.create(config)
   }
 

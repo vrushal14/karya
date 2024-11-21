@@ -1,9 +1,10 @@
 package karya.servers.scheduler.configs
 
 import karya.core.configs.LocksConfig
-import karya.core.utils.PropsReader.getProperty
+import karya.core.configs.RepoConfig
+import karya.core.utils.PropsReader.getKey
 import karya.data.fused.LocksSelector
-import karya.data.fused.repos.RepoConfig
+import karya.data.fused.RepoSelector
 import java.io.File
 import java.util.*
 
@@ -28,16 +29,16 @@ data class SchedulerConfig(
       }
 
       return SchedulerConfig(
-        threadCount = getProperty(properties, "application.threadCount"),
-        workers = getProperty(properties, "application.workers"),
-        startDelay = getProperty(properties, "application.workers.startDelay"),
+        threadCount = properties.getKey("application.threadCount"),
+        workers = properties.getKey("application.workers"),
+        startDelay = properties.getKey("application.workers.startDelay"),
 
-        channelCapacity = getProperty(properties, "application.fetcher.channelCapacity"),
-        pollFrequency = getProperty(properties, "application.fetcher.pollFrequency"),
+        channelCapacity = properties.getKey("application.fetcher.channelCapacity"),
+        pollFrequency = properties.getKey("application.fetcher.pollFrequency"),
         partitions = getPartitions(properties),
-        executionBufferInMilli = getProperty(properties, "application.fetcher.executionBuffer"),
+        executionBufferInMilli = properties.getKey("application.fetcher.executionBuffer"),
 
-        repoConfig = RepoConfig.fromYaml(providerFilePath),
+        repoConfig = RepoSelector.get(providerFilePath),
         locksConfig = LocksSelector.get(providerFilePath)
       )
     }

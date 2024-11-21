@@ -2,6 +2,7 @@ package karya.data.psql.repos
 
 import com.zaxxer.hikari.HikariDataSource
 import karya.core.repos.RepoConnector
+import karya.data.psql.configs.PsqlRepoConfig
 import org.apache.logging.log4j.kotlin.Logging
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
@@ -13,13 +14,13 @@ class PsqlRepoConnector
 constructor(
   private val dataSource: HikariDataSource,
   private val db : Database,
-  private val partitions : Int,
-  private val flyway: Flyway
+  private val flyway: Flyway,
+  private val config: PsqlRepoConfig
 ) : RepoConnector {
 
   companion object : Logging
 
-  override suspend fun getPartitions(): Int = partitions
+  override suspend fun getPartitions(): Int = config.partitions
 
   override suspend fun runMigration() : Boolean {
     try {
@@ -34,8 +35,9 @@ constructor(
   override suspend fun createDynamicPartitions() : Boolean {
     try {
       transaction(db) {
+        val partitions = config.partitions
         for(i in 1..partitions) {
-          exec("CREATE TABLE IF NOT EXISTS tasks_part_$i PARTITION OF tasks FOR VALUES WITH (MODULUS $partitions, REMAINDER ${partitions-i});")
+          exec("CREATE TABLE IF NOT EXISTS tasks_part_$i PARTITION OF tasks FOR VALUES WITH (MODULUS $partitions, REMAINDER $partitions);")
         }
       }
       return true
