@@ -16,7 +16,7 @@ class SchedulerManager(
   private val config: SchedulerConfig
 ) {
 
-  private val dispatcher = Executors.newFixedThreadPool(config.workers + 1).asCoroutineDispatcher()
+  private val dispatcher = Executors.newFixedThreadPool(config.threadCount).asCoroutineDispatcher()
   private val scope = CoroutineScope(dispatcher)
   private val workers  = List(config.workers) { SchedulerWorkerFactory.create(config) }
   private val fetcher = SchedulerFetcherFactory.create(config)
