@@ -12,27 +12,27 @@ import javax.inject.Singleton
 
 @Module
 class RabbitMqQueueModule {
+	@Provides
+	@Singleton
+	fun provideRabbitMqQueueClient(
+		connection: Connection,
+		channel: Channel,
+	): QueueClient = RabbitMqQueueClient(channel, connection)
 
-  @Provides
-  @Singleton
-  fun provideRabbitMqQueueClient(connection: Connection, channel: Channel) : QueueClient =
-    RabbitMqQueueClient(channel, connection)
+	@Provides
+	@Singleton
+	fun provideConnection(config: RabbitMqQueueConfig): Connection {
+		val factory = ConnectionFactory()
+		factory.username = config.username
+		factory.password = config.password
+		factory.virtualHost = config.virtualHost
+		factory.host = config.hostname
+		factory.port = config.port
 
-  @Provides
-  @Singleton
-  fun provideConnection(config: RabbitMqQueueConfig) : Connection {
-    val factory = ConnectionFactory()
-    factory.username = config.username
-    factory.password = config.password
-    factory.virtualHost = config.virtualHost
-    factory.host = config.hostname
-    factory.port = config.port
+		return factory.newConnection("karya-rabbitMq")
+	}
 
-    return factory.newConnection("karya-rabbitMq")
-  }
-
-  @Provides
-  @Singleton
-  fun provideChannel(connection: Connection) : Channel =
-    connection.createChannel()
+	@Provides
+	@Singleton
+	fun provideChannel(connection: Connection): Channel = connection.createChannel()
 }

@@ -14,37 +14,39 @@ import java.time.Instant
 import javax.inject.Inject
 
 class FetcherService
-@Inject
-constructor(
-  private val tasksRepo: TasksRepo,
-  private val config: SchedulerConfig
-){
+	@Inject
+	constructor(
+		private val tasksRepo: TasksRepo,
+		private val config: SchedulerConfig,
+	) {
+		companion object : Logging
 
-  companion object : Logging
+		private val taskChannel = Channel<Task>(capacity = config.channelCapacity)
+		val taskReadChannel: ReceiveChannel<Task> get() = taskChannel // receive only channel for consumers
 
-  private val taskChannel = Channel<Task>(capacity = config.channelCapacity)
-  val taskReadChannel: ReceiveChannel<Task> get() = taskChannel  // receive only channel for consumers
+		suspend fun start() {
+			while (true) {
+				val task = getOpenTask()
+				if (task != null) {
+					taskChannel.send(task)
+				} else {
+					logger.info("Poller fetched 0 tasks...")
+				}
+				delay(config.pollFrequency)
+			}
+		}
 
-  suspend fun start() {
-    while (true) {
-      val task = getOpenTask()
-      if (task != null) taskChannel.send(task)
-      else logger.info("Poller fetched 0 tasks...")
-      delay(config.pollFrequency)
-    }
-  }
+		fun stop() {
+			taskReadChannel.cancel()
+			taskChannel.close()
+		}
 
-  fun stop() {
-    taskReadChannel.cancel()
-    taskChannel.close()
-  }
-
-  private suspend fun getOpenTask(): Task? = GetTasksRequest(
-    partitionKeys = config.partitions,
-    executionTime = Instant.now(),
-    buffer = Duration.ofMillis(config.executionBufferInMilli),
-    status = TaskStatus.CREATED
-  )
-    .let { tasksRepo.get(it) }
-    ?.also { tasksRepo.updateStatus(it.id, TaskStatus.PROCESSING) }
-}
+		private suspend fun getOpenTask(): Task? =
+			GetTasksRequest(
+				partitionKeys = config.partitions,
+				executionTime = Instant.now(),
+				buffer = Duration.ofMillis(config.executionBufferInMilli),
+				status = TaskStatus.CREATED,
+			).let { tasksRepo.get(it) }
+				?.also { tasksRepo.updateStatus(it.id, TaskStatus.PROCESSING) }
+	}

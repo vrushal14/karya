@@ -10,50 +10,51 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import javax.inject.Inject
 
 class PsqlRepoConnector
-@Inject
-constructor(
-  private val dataSource: HikariDataSource,
-  private val db : Database,
-  private val flyway: Flyway,
-  private val config: PsqlRepoConfig
-) : RepoConnector {
+	@Inject
+	constructor(
+		private val dataSource: HikariDataSource,
+		private val db: Database,
+		private val flyway: Flyway,
+		private val config: PsqlRepoConfig,
+	) : RepoConnector {
+		companion object : Logging
 
-  companion object : Logging
+		override suspend fun getPartitions(): Int = config.partitions
 
-  override suspend fun getPartitions(): Int = config.partitions
+		override suspend fun runMigration(): Boolean {
+			try {
+				flyway.migrate()
+				return true
+			} catch (e: Exception) {
+				logger.error(e)
+				return false
+			}
+		}
 
-  override suspend fun runMigration() : Boolean {
-    try {
-      flyway.migrate()
-      return true
-    } catch (e : Exception) {
-      logger.error(e)
-      return false
-    }
-  }
+		override suspend fun createDynamicPartitions(): Boolean {
+			try {
+				transaction(db) {
+					val partitions = config.partitions
+					for (i in 1..partitions) {
+						exec(
+							"CREATE TABLE IF NOT EXISTS tasks_part_$i PARTITION OF tasks FOR VALUES WITH (MODULUS $partitions, REMAINDER $partitions);",
+						)
+					}
+				}
+				return true
+			} catch (e: Exception) {
+				logger.error(e)
+				return false
+			}
+		}
 
-  override suspend fun createDynamicPartitions() : Boolean {
-    try {
-      transaction(db) {
-        val partitions = config.partitions
-        for(i in 1..partitions) {
-          exec("CREATE TABLE IF NOT EXISTS tasks_part_$i PARTITION OF tasks FOR VALUES WITH (MODULUS $partitions, REMAINDER $partitions);")
-        }
-      }
-      return true
-    } catch (e : Exception) {
-      logger.error(e)
-      return false
-    }
-  }
-
-  override suspend fun shutdown() : Boolean {
-    try {
-      dataSource.close()
-      return true
-    } catch (e : Exception) {
-      logger.error(e)
-      return false
-    }
-  }
-}
+		override suspend fun shutdown(): Boolean {
+			try {
+				dataSource.close()
+				return true
+			} catch (e: Exception) {
+				logger.error(e)
+				return false
+			}
+		}
+	}

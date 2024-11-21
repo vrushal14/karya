@@ -8,12 +8,10 @@ import java.util.UUID
 
 @Serializable
 data class SubmitJobRequest(
-
-  @Serializable(with = UUIDSerializer::class)
-  val userId: UUID,
-
-  val periodTime: String,
-  val jobType: JobType,
-  val action: Action,
-  val maxFailureRetry: Int = 3
+	@Serializable(with = UUIDSerializer::class)
+	val userId: UUID,
+	val periodTime: String,
+	val jobType: JobType,
+	val action: Action,
+	val maxFailureRetry: Int = 3,
 )

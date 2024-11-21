@@ -14,55 +14,64 @@ import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
 class ProcessTask
-@Inject
-constructor(
-  private val tasksRepo: TasksRepo,
-  private val jobsRepo: JobsRepo,
-  private val locksClient: LocksClient,
+	@Inject
+	constructor(
+		private val tasksRepo: TasksRepo,
+		private val jobsRepo: JobsRepo,
+		private val locksClient: LocksClient,
+		private val manageTasks: ManageTasks,
+	) {
+		companion object : Logging
 
-  private val manageTasks: ManageTasks
-){
+		suspend fun invoke(task: Task): Boolean {
+			val result = locksClient.withLock(task.id) { processTask(task) }
+			return when (result) {
+				is LockResult.Success -> true
+				is LockResult.Failure -> false
+			}
+		}
 
-  companion object : Logging
+		private suspend fun processTask(task: Task) {
+			logger.info("[PROCESSING TASK] --- TaskId : ${task.id}")
+			val job = jobsRepo.get(task.jobId) ?: throw JobNotFoundException(task.jobId)
+			updateTaskStatus(job, task)
 
-  suspend fun invoke(task: Task) : Boolean {
-    val result = locksClient.withLock(task.id) { processTask(task) }
-    return when(result) {
-      is LockResult.Success -> true
-      is LockResult.Failure -> false
-    }
-  }
+			val updatedJob = transitionJobStatus(job)
+			if (shouldCreateNextTask(job)) manageTasks.invoke(updatedJob, task)
+		}
 
-  private suspend fun processTask(task: Task) {
-    logger.info("[PROCESSING TASK] --- TaskId : ${task.id}")
-    val job = jobsRepo.get(task.jobId) ?: throw JobNotFoundException(task.jobId)
-    updateTaskStatus(job, task)
+		private suspend fun updateTaskStatus(
+			job: Job,
+			task: Task,
+		) = when (job.status) {
+			JobStatus.CREATED, JobStatus.RUNNING -> TaskStatus.PROCESSING
+			JobStatus.COMPLETED -> TaskStatus.SUCCESS
+			JobStatus.CANCELLED -> TaskStatus.CANCELLED
+		}.also {
+			if (task.status != it) {
+				tasksRepo.updateStatus(task.id, it)
+				logger.info("Transitioning task status from : ${task.status} -> $it")
+			}
+		}
 
-    val updatedJob = transitionJobStatus(job)
-    if(shouldCreateNextTask(job)) manageTasks.invoke(updatedJob, task)
-  }
+		private suspend fun transitionJobStatus(job: Job) =
+			when (job.status) {
+				JobStatus.CREATED ->
+					job
+						.copy(status = JobStatus.RUNNING)
+						.also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
+						.also { logger.info("Transitioning job status from : ${job.status} -> ${it.status}") }
+				else -> job
+			}
 
-  private suspend fun updateTaskStatus(job: Job, task: Task) = when(job.status) {
-    JobStatus.CREATED, JobStatus.RUNNING -> TaskStatus.PROCESSING
-    JobStatus.COMPLETED -> TaskStatus.SUCCESS
-    JobStatus.CANCELLED -> TaskStatus.CANCELLED
-  }.also { if (task.status != it) {
-    tasksRepo.updateStatus(task.id, it)
-    logger.info("Transitioning task status from : ${task.status} -> $it")
-    }
-  }
-
-  private suspend fun transitionJobStatus(job: Job) = when(job.status) {
-    JobStatus.CREATED -> job.copy(status = JobStatus.RUNNING)
-      .also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
-      .also { logger.info("Transitioning job status from : ${job.status} -> ${it.status}") }
-    else -> job
-  }
-
-  private fun shouldCreateNextTask(job: Job) : Boolean {
-    val isJobNonTerminal = (job.status == JobStatus.CREATED).or(job.status == JobStatus.RUNNING)
-    val isJobRecurring = (job.type == JobType.RECURRING)
-    return (isJobRecurring && isJobNonTerminal)
-      .also { logger.info { "isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it" } }
-  }
-}
+		private fun shouldCreateNextTask(job: Job): Boolean {
+			val isJobNonTerminal = (job.status == JobStatus.CREATED).or(job.status == JobStatus.RUNNING)
+			val isJobRecurring = (job.type == JobType.RECURRING)
+			return (isJobRecurring && isJobNonTerminal)
+				.also {
+					logger.info {
+						"isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it"
+					}
+				}
+		}
+	}

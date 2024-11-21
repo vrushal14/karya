@@ -6,9 +6,16 @@ import karya.core.repos.entities.GetTasksRequest
 import java.util.UUID
 
 interface TasksRepo {
-  suspend fun add(task: Task)
-  suspend fun getLatest(jobId : UUID) : Task?
-  suspend fun get(request : GetTasksRequest) : Task?
-  suspend fun update(task: Task)
-  suspend fun updateStatus(id : UUID, status: TaskStatus)
+	suspend fun add(task: Task)
+
+	suspend fun getLatest(jobId: UUID): Task?
+
+	suspend fun get(request: GetTasksRequest): Task?
+
+	suspend fun update(task: Task)
+
+	suspend fun updateStatus(
+		id: UUID,
+		status: TaskStatus,
+	)
 }

@@ -5,29 +5,31 @@ import karya.core.exceptions.JobException.UnknownJobStatusException
 import javax.inject.Inject
 
 class JobStatusMapper
-@Inject
-constructor() {
-  companion object {
-    private const val CREATED = 0
-    private const val RUNNING = 1
-    private const val FAILURE = -1
-    private const val COMPLETED = 2
-    private const val CANCELLED = 3
-  }
+	@Inject
+	constructor() {
+		companion object {
+			private const val CREATED = 0
+			private const val RUNNING = 1
+			private const val FAILURE = -1
+			private const val COMPLETED = 2
+			private const val CANCELLED = 3
+		}
 
-  fun toRecord(status: JobStatus) : Int = when(status) {
-    JobStatus.CREATED -> CREATED
-    JobStatus.RUNNING -> RUNNING
-    JobStatus.COMPLETED -> COMPLETED
-    JobStatus.CANCELLED -> CANCELLED
-  }
+		fun toRecord(status: JobStatus): Int =
+			when (status) {
+				JobStatus.CREATED -> CREATED
+				JobStatus.RUNNING -> RUNNING
+				JobStatus.COMPLETED -> COMPLETED
+				JobStatus.CANCELLED -> CANCELLED
+			}
 
-  fun fromRecord(record: Int) : JobStatus = when(record) {
-    CREATED -> JobStatus.CREATED
-    RUNNING -> JobStatus.RUNNING
-    COMPLETED -> JobStatus.COMPLETED
-    CANCELLED -> JobStatus.CANCELLED
+		fun fromRecord(record: Int): JobStatus =
+			when (record) {
+				CREATED -> JobStatus.CREATED
+				RUNNING -> JobStatus.RUNNING
+				COMPLETED -> JobStatus.COMPLETED
+				CANCELLED -> JobStatus.CANCELLED
 
-    else -> throw UnknownJobStatusException(record)
-  }
-}
+				else -> throw UnknownJobStatusException(record)
+			}
+	}

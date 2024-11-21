@@ -9,19 +9,21 @@ import java.util.concurrent.CountDownLatch
 val logger: Logger = LogManager.getLogger()
 
 fun main() {
-  val providers = KaryaEnvironmentConfig.PROVIDERS
-  val scheduler = KaryaEnvironmentConfig.SCHEDULER
-  val config = SchedulerConfig.load(scheduler, providers)
+	val providers = KaryaEnvironmentConfig.PROVIDERS
+	val scheduler = KaryaEnvironmentConfig.SCHEDULER
+	val config = SchedulerConfig.load(scheduler, providers)
 
-  val latch = CountDownLatch(1)
-  val schedulerManager = SchedulerManager(config)
+	val latch = CountDownLatch(1)
+	val schedulerManager = SchedulerManager(config)
 
-  Runtime.getRuntime().addShutdownHook(Thread {
-    logger.info("Shutdown hook invoked...")
-    schedulerManager.stop()
-    println("All worker/fetcher instances stopped. Main thread exiting.")
-  })
+	Runtime.getRuntime().addShutdownHook(
+		Thread {
+			logger.info("Shutdown hook invoked...")
+			schedulerManager.stop()
+			println("All worker/fetcher instances stopped. Main thread exiting.")
+		},
+	)
 
-  schedulerManager.start()
-  latch.await()
+	schedulerManager.start()
+	latch.await()
 }

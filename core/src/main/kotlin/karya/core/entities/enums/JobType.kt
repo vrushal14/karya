@@ -1,6 +1,6 @@
 package karya.core.entities.enums
 
 enum class JobType {
-  RECURRING,
-  ONE_TIME
+	RECURRING,
+	ONE_TIME,
 }

@@ -11,28 +11,29 @@ import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
 class UpdateJob
-@Inject
-constructor(
-  private val locksClient: LocksClient,
-  private val jobsRepo: JobsRepo
-){
-  companion object : Logging
+	@Inject
+	constructor(
+		private val locksClient: LocksClient,
+		private val jobsRepo: JobsRepo,
+	) {
+		companion object : Logging
 
-  suspend fun invoke(request: UpdateJobRequest) : Job {
-    val result = locksClient.withLock(request.jobId) { updateJob(request) }
-    return when(result) {
-      is LockResult.Success -> result.result
-      is LockResult.Failure -> {
-        logger.warn("Unable to acquire lock. Try again later")
-        throw UnableToAcquireLockException(request.jobId)
-      }
-    }
-  }
+		suspend fun invoke(request: UpdateJobRequest): Job {
+			val result = locksClient.withLock(request.jobId) { updateJob(request) }
+			return when (result) {
+				is LockResult.Success -> result.result
+				is LockResult.Failure -> {
+					logger.warn("Unable to acquire lock. Try again later")
+					throw UnableToAcquireLockException(request.jobId)
+				}
+			}
+		}
 
-  private suspend fun updateJob(request: UpdateJobRequest) : Job {
-    val job = jobsRepo.get(request.jobId) ?: throw JobNotFoundException(request.jobId)
-    return job.update(request)
-      .also { jobsRepo.update(it) }
-      .also { logger.info("Updated job --- ${request.jobId}") }
-  }
-}
+		private suspend fun updateJob(request: UpdateJobRequest): Job {
+			val job = jobsRepo.get(request.jobId) ?: throw JobNotFoundException(request.jobId)
+			return job
+				.update(request)
+				.also { jobsRepo.update(it) }
+				.also { logger.info("Updated job --- ${request.jobId}") }
+		}
+	}

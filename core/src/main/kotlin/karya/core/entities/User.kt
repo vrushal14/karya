@@ -8,16 +8,14 @@ import java.util.UUID
 
 @Serializable
 data class User(
-
-  @Serializable(with = UUIDSerializer::class)
-  val id: UUID,
-
-  val name: String,
-  val createdAt: Long
+	@Serializable(with = UUIDSerializer::class)
+	val id: UUID,
+	val name: String,
+	val createdAt: Long,
 ) {
-  constructor(request: CreateUserRequest): this(
-    id = UUID.randomUUID(),
-    name = request.name,
-    createdAt = Instant.now().toEpochMilli()
-  )
+	constructor(request: CreateUserRequest) : this(
+		id = UUID.randomUUID(),
+		name = request.name,
+		createdAt = Instant.now().toEpochMilli(),
+	)
 }

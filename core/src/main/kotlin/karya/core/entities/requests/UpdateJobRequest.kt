@@ -6,10 +6,8 @@ import java.util.UUID
 
 @Serializable
 data class UpdateJobRequest(
-
-  @Serializable(with = UUIDSerializer::class)
-  val jobId : UUID,
-
-  val periodTime : String? = null,
-  val maxFailureRetry : Int? = null
+	@Serializable(with = UUIDSerializer::class)
+	val jobId: UUID,
+	val periodTime: String? = null,
+	val maxFailureRetry: Int? = null,
 )
