@@ -1,7 +1,7 @@
 package karya.servers.server.di
 
+import karya.core.configs.LocksConfig
 import karya.data.fused.repos.RepoConfig
-import karya.data.fused.locks.LocksConfig
 import karya.data.fused.di.DaggerFusedDataComponent
 
 object ServerApplicationFactory {

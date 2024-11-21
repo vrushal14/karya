@@ -16,7 +16,7 @@ repo:
       user: "karya"
       password: "karya"
 
-locks:
+lock:
   provider: "redis"
   properties:
     url: "redis://localhost:6379"
