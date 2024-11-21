@@ -1,4 +1,4 @@
-package karya.core.entities.messages
+package karya.core.queues.entities
 
 import karya.core.entities.action.Action
 import java.util.UUID

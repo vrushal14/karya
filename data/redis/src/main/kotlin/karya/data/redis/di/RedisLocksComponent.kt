@@ -9,11 +9,10 @@ import javax.inject.Singleton
 @Singleton
 @Component(
   modules = [
-    RedisModule::class,
-    RedisUtilsModule::class
+    RedisLocksModule::class
   ]
 )
-interface RedisComponent {
+interface RedisLocksComponent {
 
   val locksClient : LocksClient
 
@@ -23,7 +22,6 @@ interface RedisComponent {
     @BindsInstance
     fun redisLocksConfig(redisLocksConfig: RedisLocksConfig) : Builder
 
-    fun build() : RedisComponent
-
+    fun build() : RedisLocksComponent
   }
 }

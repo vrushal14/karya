@@ -8,9 +8,11 @@ data class PsqlRepoConfig(
   val hikariProperties : Properties,
   val flywayProperties : Properties,
   override val partitions: Int
-) : RepoConfig("psql", partitions) {
+) : RepoConfig(PSQL_IDENTIFIER, partitions) {
 
   companion object {
+
+    const val PSQL_IDENTIFIER = "psql"
 
     fun extractProperties(repo: Map<*, *>, key: String): Properties {
       val propertiesMap = (repo[key] as? Map<*, *>)

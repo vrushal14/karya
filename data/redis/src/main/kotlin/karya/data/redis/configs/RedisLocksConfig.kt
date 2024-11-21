@@ -8,7 +8,11 @@ data class RedisLocksConfig(
   val port : Int,
   val waitTime : Long,
   val leaseTime : Long
-) : LocksConfig("redis") {
+) : LocksConfig(REDIS_IDENTIFIER) {
+
+  companion object {
+    const val REDIS_IDENTIFIER = "redis"
+  }
 
   constructor(props : Map<*,*>) : this(
     hostname = props.readValue("hostname"),

@@ -23,3 +23,12 @@ lock:
     port: 6379
     waitTime: 1000
     leaseTime: 5000
+
+queue:
+  provider: "rabbitmq"
+  properties:
+    username: "karya"
+    password: "karya"
+    virtualHost: "/"
+    hostName: "localhost"
+    port: 5672
