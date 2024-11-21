@@ -18,11 +18,16 @@ class RabbitMqQueueClient(
     private const val ROUTING_KEY = "task-executor"
   }
 
-//  init {
-//    channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE, true)
-//    channel.queueDeclare(EXECUTOR_QUEUE_NAME, true, false, false, null)
-//    channel.queueBind(EXECUTOR_QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY)
-//  }
+  init {
+    try {
+      channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE, true)
+      channel.queueDeclare(EXECUTOR_QUEUE_NAME, true, false, false, null)
+      channel.queueBind(EXECUTOR_QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY)
+    } catch (e: Exception) {
+      logger.error("Error during RabbitMQ initialization: ${e.message}", e)
+      throw e // Optionally rethrow to prevent startup if configuration is critical
+    }
+  }
 
   override suspend fun push(message: ExecutorMessage) {
     logger.info("[TASK PUSHED] --- message pushed to $EXCHANGE_NAME : $message")
