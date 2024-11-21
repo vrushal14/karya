@@ -10,7 +10,7 @@ import karya.core.repos.RepoConnector
 import karya.data.fused.exceptions.UnknownProviderException
 import karya.data.fused.utils.ReposWrapper
 import karya.data.psql.configs.PsqlRepoConfig
-import karya.data.psql.di.DaggerPsqlComponent
+import karya.data.psql.di.PsqlComponentFactory
 import javax.inject.Singleton
 
 @Module
@@ -41,10 +41,7 @@ class FusedRepoModule {
   }
 
   private fun providePsqlRepoWrapper(psqlConfig: PsqlRepoConfig): ReposWrapper {
-    val component = DaggerPsqlComponent.builder()
-      .config(psqlConfig)
-      .build()
-
+    val component = PsqlComponentFactory.build(psqlConfig)
     return ReposWrapper(
       jobsRepo = component.jobsRepo,
       usersRepo = component.usersRepo,
