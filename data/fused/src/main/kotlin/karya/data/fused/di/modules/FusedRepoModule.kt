@@ -1,4 +1,4 @@
-package karya.data.fused.di
+package karya.data.fused.di.modules
 
 import dagger.Module
 import dagger.Provides

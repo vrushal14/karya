@@ -31,9 +31,10 @@ constructor(
   override suspend fun shutdown() : Boolean {
     try {
       redissonClient.shutdown()
+      logger.info("RedisLocksClient successfully shutdown")
       return true
     } catch (e : Exception) {
-      logger.error(e)
+      logger.error("Error shutting down RedisLocksClient --- $e")
       return false
     }
   }

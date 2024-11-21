@@ -6,7 +6,7 @@ import com.rabbitmq.client.ConnectionFactory
 import dagger.Module
 import dagger.Provides
 import karya.core.queues.QueueClient
-import karya.data.rabbitmq.RabbitMqQueueClientClient
+import karya.data.rabbitmq.RabbitMqQueueClient
 import karya.data.rabbitmq.configs.RabbitMqQueueConfig
 import javax.inject.Singleton
 
@@ -16,7 +16,7 @@ class RabbitMqQueueModule {
   @Provides
   @Singleton
   fun provideRabbitMqQueueClient(connection: Connection, channel: Channel) : QueueClient =
-    RabbitMqQueueClientClient(channel, connection)
+    RabbitMqQueueClient(channel, connection)
 
   @Provides
   @Singleton

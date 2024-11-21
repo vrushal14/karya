@@ -5,9 +5,9 @@ import karya.servers.scheduler.di.components.DaggerSchedulerFetcherComponent
 
 object SchedulerFetcherFactory {
 
-  fun create(config : SchedulerConfig) =
+  fun build(config : SchedulerConfig) =
     DaggerSchedulerFetcherComponent.builder()
-      .fusedDataComponent(FusedRepoComponentFactory.create(config))
+      .fusedDataComponent(FusedDataComponentFactory.build(config))
       .config(config)
       .build()
       .schedulerFetcher

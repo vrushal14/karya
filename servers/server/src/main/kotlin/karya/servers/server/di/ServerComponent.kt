@@ -1,13 +1,13 @@
 package karya.servers.server.di
 
 import dagger.Component
-import karya.data.fused.di.FusedDataComponent
+import karya.data.fused.di.components.FusedServerDataComponent
 import karya.servers.server.app.ServerApplication
 
 @ServerScope
 @Component(
   dependencies = [
-    FusedDataComponent::class
+    FusedServerDataComponent::class
   ]
 )
 interface ServerComponent {

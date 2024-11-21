@@ -30,5 +30,5 @@ queue:
     username: "karya"
     password: "karya"
     virtualHost: "/"
-    hostName: "localhost"
+    hostname: "localhost"
     port: 5672

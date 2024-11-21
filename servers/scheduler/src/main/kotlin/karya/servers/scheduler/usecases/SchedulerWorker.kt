@@ -2,6 +2,7 @@ package karya.servers.scheduler.usecases
 
 import karya.core.entities.Task
 import karya.core.locks.LocksClient
+import karya.core.queues.QueueClient
 import karya.core.repos.RepoConnector
 import karya.servers.scheduler.usecases.external.WorkerService
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -15,6 +16,7 @@ constructor(
   private val workerService: WorkerService,
   private val repoConnector: RepoConnector,
   private val locksClient : LocksClient,
+  private val queueClient: QueueClient
 ) {
 
   companion object : Logging
@@ -30,6 +32,7 @@ constructor(
     workerService.stop()
     repoConnector.shutdown()
     locksClient.shutdown()
+    queueClient.shutdown()
     logger.info("Worker Instance $instanceId shutdown complete.")
   }
 

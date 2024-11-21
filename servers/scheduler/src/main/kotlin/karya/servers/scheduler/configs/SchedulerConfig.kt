@@ -1,9 +1,11 @@
 package karya.servers.scheduler.configs
 
 import karya.core.configs.LocksConfig
+import karya.core.configs.QueueConfig
 import karya.core.configs.RepoConfig
 import karya.core.utils.PropsReader.getKey
 import karya.data.fused.LocksSelector
+import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
 import java.io.File
 import java.util.*
@@ -19,7 +21,8 @@ data class SchedulerConfig(
   val executionBufferInMilli : Long,
 
   val repoConfig: RepoConfig,
-  val locksConfig: LocksConfig
+  val locksConfig: LocksConfig,
+  val queueConfig: QueueConfig
 ) {
 
   companion object {
@@ -39,7 +42,8 @@ data class SchedulerConfig(
         executionBufferInMilli = properties.getKey("application.fetcher.executionBuffer"),
 
         repoConfig = RepoSelector.get(providerFilePath),
-        locksConfig = LocksSelector.get(providerFilePath)
+        locksConfig = LocksSelector.get(providerFilePath),
+        queueConfig = QueueSelector.get(providerFilePath)
       )
     }
 

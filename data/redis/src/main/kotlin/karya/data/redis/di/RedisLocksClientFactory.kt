@@ -4,7 +4,7 @@ import karya.data.redis.configs.RedisLocksConfig
 
 object RedisLocksClientFactory {
   fun build(config: RedisLocksConfig) =
-    DaggerRedisComponent.builder()
+    DaggerRedisLocksComponent.builder()
       .redisLocksConfig(config)
       .build()
       .locksClient
