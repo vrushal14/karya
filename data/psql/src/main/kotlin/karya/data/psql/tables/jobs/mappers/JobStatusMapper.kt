@@ -18,7 +18,6 @@ constructor() {
   fun toRecord(status: JobStatus) : Int = when(status) {
     JobStatus.CREATED -> CREATED
     JobStatus.RUNNING -> RUNNING
-    JobStatus.FAILURE -> FAILURE
     JobStatus.COMPLETED -> COMPLETED
     JobStatus.CANCELLED -> CANCELLED
   }
@@ -26,7 +25,6 @@ constructor() {
   fun fromRecord(record: Int) : JobStatus = when(record) {
     CREATED -> JobStatus.CREATED
     RUNNING -> JobStatus.RUNNING
-    FAILURE -> JobStatus.FAILURE
     COMPLETED -> JobStatus.COMPLETED
     CANCELLED -> JobStatus.CANCELLED
 

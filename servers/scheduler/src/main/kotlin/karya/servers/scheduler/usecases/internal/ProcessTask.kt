@@ -45,7 +45,6 @@ constructor(
   private suspend fun updateTaskStatus(job: Job, task: Task) = when(job.status) {
     JobStatus.CREATED, JobStatus.RUNNING -> TaskStatus.PROCESSING
     JobStatus.COMPLETED -> TaskStatus.SUCCESS
-    JobStatus.FAILURE -> TaskStatus.FAILURE
     JobStatus.CANCELLED -> TaskStatus.CANCELLED
   }.also { if (task.status != it) {
     tasksRepo.updateStatus(task.id, it)
