@@ -1,9 +1,11 @@
 package karya.data.rabbitmq
 
+import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import karya.core.queues.QueueClient
 import karya.core.queues.entities.ExecutorMessage
+import kotlinx.serialization.json.Json
 import org.apache.logging.log4j.kotlin.Logging
 
 class RabbitMqQueueClient(
@@ -15,6 +17,15 @@ class RabbitMqQueueClient(
 		private const val EXCHANGE_TYPE = "direct"
 		private const val EXECUTOR_QUEUE_NAME = "karya-executor-queue"
 		private const val ROUTING_KEY = "task-executor"
+		private const val DELIVERY_MODE = 2 // persistent
+		private const val PRIORITY_LEVEL = 1
+
+		private val json =
+			Json {
+				ignoreUnknownKeys = true
+				isLenient = true
+				prettyPrint = false
+			}
 	}
 
 	init {
@@ -29,7 +40,20 @@ class RabbitMqQueueClient(
 	}
 
 	override suspend fun push(message: ExecutorMessage) {
-		logger.info("[TASK PUSHED] --- message pushed to $EXCHANGE_NAME : $message")
+		try {
+			val messageBytes = createPayload(message)
+			val properties = createProperties()
+			channel.basicPublish(
+				EXCHANGE_NAME,
+				ROUTING_KEY,
+				properties,
+				messageBytes,
+			)
+			logger.info("[TASK PUSHED] --- message pushed to $EXCHANGE_NAME : $message")
+		} catch (e: Exception) {
+			logger.error("Error pushing message to RabbitMQ: ${e.message}", e)
+			throw e // TODO: should push to DLQ
+		}
 	}
 
 	override suspend fun shutdown(): Boolean =
@@ -42,4 +66,17 @@ class RabbitMqQueueClient(
 			logger.error("Error shutting down RabbitMqQueueClient --- $e")
 			false
 		}
+
+	private fun createPayload(message: ExecutorMessage) =
+		json
+			.encodeToString(ExecutorMessage.serializer(), message)
+			.toByteArray(Charsets.UTF_8)
+
+	private fun createProperties() =
+		BasicProperties
+			.Builder()
+			.contentType("application/json")
+			.deliveryMode(DELIVERY_MODE)
+			.priority(PRIORITY_LEVEL)
+			.build()
 }

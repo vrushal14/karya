@@ -38,7 +38,6 @@ object Libs {
 		private const val GROUP = "io.ktor"
 		private const val VERSION = "3.0.0"
 
-		const val JACKSON = "$GROUP:ktor-serialization-jackson:$VERSION"
 		const val KOTLINX = "$GROUP:ktor-serialization-kotlinx-json:$VERSION"
 
 		object Server {

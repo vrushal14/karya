@@ -10,6 +10,7 @@ dependencies {
 	implementation(Libs.RABBIT_MQ)
 
 	implementation(Libs.Dagger.DAGGER)
+	implementation(Libs.Kotlinx.JSON_SERIALIZATION)
 
 	implementation(Libs.Log4j.API)
 	implementation(Libs.Log4j.CORE)
