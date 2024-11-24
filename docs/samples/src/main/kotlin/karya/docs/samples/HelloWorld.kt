@@ -22,7 +22,7 @@ suspend fun main() {
 				periodTime = "PT7S",
 				jobType = JobType.RECURRING,
 				action =
-					Action.HttpInvocation(
+					Action.RestApiRequest(
 						protocol = Protocol.HTTP,
 						baseUrl = "google.com",
 						method = Method.POST,

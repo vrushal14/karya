@@ -18,4 +18,10 @@ object Modules {
 		const val SCHEDULER = "$SERVERS-scheduler"
 		const val EXECUTOR = "$SERVERS-executor"
 	}
+
+	object Connectors {
+		private const val CONNECTORS = ":connectors"
+
+		const val REST_API = "$CONNECTORS-restapi"
+	}
 }

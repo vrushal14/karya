@@ -33,3 +33,6 @@ project(":data-rabbitmq").projectDir = File("data/rabbitmq")
 
 include(":docs-samples")
 project(":docs-samples").projectDir = File("docs/samples")
+
+include(":connectors-restapi")
+project(":connectors-restapi").projectDir = File("connectors/restapi")

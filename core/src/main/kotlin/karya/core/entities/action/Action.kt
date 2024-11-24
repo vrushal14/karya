@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Action {
 	@Serializable
-	data class HttpInvocation(
+	data class RestApiRequest(
 		val protocol: Protocol = Protocol.HTTP,
 		val baseUrl: String,
 		val method: Method = Method.GET,
