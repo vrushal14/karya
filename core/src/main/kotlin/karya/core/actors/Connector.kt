@@ -8,6 +8,7 @@ sealed class Result {
 	data class Failure(
 		val reason: String,
 		val action: Action,
+		val exception: Exception? = null,
 	) : Result()
 }
 
