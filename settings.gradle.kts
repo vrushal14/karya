@@ -16,8 +16,8 @@ project(":servers-server").projectDir = File("servers/server")
 include(":servers-scheduler")
 project(":servers-scheduler").projectDir = File("servers/scheduler")
 
-include("servers-worker")
-project(":servers-worker").projectDir = File("servers/worker")
+include("servers-executor")
+project(":servers-executor").projectDir = File("servers/executor")
 
 include(":data-fused")
 project(":data-fused").projectDir = File("data/fused")

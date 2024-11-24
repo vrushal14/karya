@@ -16,6 +16,6 @@ object Modules {
 
 		const val SERVER = "$SERVERS-server"
 		const val SCHEDULER = "$SERVERS-scheduler"
-		const val WORKER = "$SERVERS-worker"
+		const val EXECUTOR = "$SERVERS-executor"
 	}
 }
