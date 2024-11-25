@@ -12,20 +12,20 @@ import java.util.*
 import javax.inject.Inject
 
 class GetJobService
-	@Inject
-	constructor(
-		private val getJob: GetJob,
-	) {
-		companion object : Logging
+@Inject
+constructor(
+  private val getJob: GetJob,
+) {
+  companion object : Logging
 
-		suspend fun invoke(call: ApplicationCall) =
-			try {
-				val params = call.parameters
-				val jobId = UUID.fromString(params.getOrFail("job_id"))
-				val response = getJob.invoke(jobId)
-				call.respond(HttpStatusCode.OK, response)
-			} catch (e: KaryaException) {
-				logger.error(e)
-				e.toHttpResponse(call)
-			}
-	}
+  suspend fun invoke(call: ApplicationCall) =
+    try {
+      val params = call.parameters
+      val jobId = UUID.fromString(params.getOrFail("job_id"))
+      val response = getJob.invoke(jobId)
+      call.respond(HttpStatusCode.OK, response)
+    } catch (e: KaryaException) {
+      logger.error(e)
+      e.toHttpResponse(call)
+    }
+}

@@ -17,32 +17,32 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-	modules = [
-		FusedRepoModule::class,
-		FusedLocksModule::class,
-		FusedQueueModule::class,
-	],
+  modules = [
+    FusedRepoModule::class,
+    FusedLocksModule::class,
+    FusedQueueModule::class,
+  ],
 )
 interface FusedSchedulerDataComponent {
-	val jobsRepo: JobsRepo
-	val tasksRepo: TasksRepo
+  val jobsRepo: JobsRepo
+  val tasksRepo: TasksRepo
 
-	val locksClient: LocksClient
-	val queueClient: QueueClient
+  val locksClient: LocksClient
+  val queueClient: QueueClient
 
-	val repoConnector: RepoConnector
+  val repoConnector: RepoConnector
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun repoConfig(repoConfig: RepoConfig): Builder
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    fun repoConfig(repoConfig: RepoConfig): Builder
 
-		@BindsInstance
-		fun locksConfig(locksConfig: LocksConfig): Builder
+    @BindsInstance
+    fun locksConfig(locksConfig: LocksConfig): Builder
 
-		@BindsInstance
-		fun queueConfig(queueConfig: QueueConfig): Builder
+    @BindsInstance
+    fun queueConfig(queueConfig: QueueConfig): Builder
 
-		fun build(): FusedSchedulerDataComponent
-	}
+    fun build(): FusedSchedulerDataComponent
+  }
 }

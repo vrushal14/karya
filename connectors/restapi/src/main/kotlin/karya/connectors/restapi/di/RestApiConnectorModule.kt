@@ -20,38 +20,38 @@ import javax.inject.Singleton
 
 @Module
 class RestApiConnectorModule {
-	@Provides
-	@Singleton
-	fun provideRestApiConnector(httpClient: HttpClient): Connector<Action.RestApiRequest> = RestApiConnector(httpClient)
+  @Provides
+  @Singleton
+  fun provideRestApiConnector(httpClient: HttpClient): Connector<Action.RestApiRequest> = RestApiConnector(httpClient)
 
-	@Provides
-	@Singleton
-	fun provideHttpClient(config: RestApiConnectorConfig): HttpClient =
-		HttpClient(CIO) {
-			engine {
-				endpoint {
-					keepAliveTime = config.keepAliveTime
-					connectTimeout = config.connectionTimeout
-					connectAttempts = config.connectionAttempt
-				}
-			}
-			defaultRequest {
-				contentType(ContentType.Application.Json)
-				header("connection", "keep-alive")
-			}
-			expectSuccess = false
+  @Provides
+  @Singleton
+  fun provideHttpClient(config: RestApiConnectorConfig): HttpClient =
+    HttpClient(CIO) {
+      engine {
+        endpoint {
+          keepAliveTime = config.keepAliveTime
+          connectTimeout = config.connectionTimeout
+          connectAttempts = config.connectionAttempt
+        }
+      }
+      defaultRequest {
+        contentType(ContentType.Application.Json)
+        header("connection", "keep-alive")
+      }
+      expectSuccess = false
 
-			install(ContentNegotiation) { json(configureJson()) }
-		}
+      install(ContentNegotiation) { json(configureJson()) }
+    }
 
-	@OptIn(ExperimentalSerializationApi::class)
-	private fun configureJson(): Json =
-		Json {
-			isLenient = true
-			ignoreUnknownKeys = true
-			encodeDefaults = true
-			useAlternativeNames = true
-			allowStructuredMapKeys = true
-			namingStrategy = JsonNamingStrategy.SnakeCase
-		}
+  @OptIn(ExperimentalSerializationApi::class)
+  private fun configureJson(): Json =
+    Json {
+      isLenient = true
+      ignoreUnknownKeys = true
+      encodeDefaults = true
+      useAlternativeNames = true
+      allowStructuredMapKeys = true
+      namingStrategy = JsonNamingStrategy.SnakeCase
+    }
 }

@@ -4,14 +4,14 @@ import karya.core.entities.action.Action
 import karya.core.entities.enums.JobType
 import karya.core.utils.UUIDSerializer
 import kotlinx.serialization.Serializable
-import java.util.UUID
+import java.util.*
 
 @Serializable
 data class SubmitJobRequest(
-	@Serializable(with = UUIDSerializer::class)
-	val userId: UUID,
-	val periodTime: String,
-	val jobType: JobType,
-	val action: Action,
-	val maxFailureRetry: Int = 3,
+  @Serializable(with = UUIDSerializer::class)
+  val userId: UUID,
+  val periodTime: String,
+  val jobType: JobType,
+  val action: Action,
+  val maxFailureRetry: Int = 3,
 )

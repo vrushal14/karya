@@ -6,8 +6,8 @@ import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
 
 data class ReposWrapper(
-	val usersRepo: UsersRepo,
-	val jobsRepo: JobsRepo,
-	val tasksRepo: TasksRepo,
-	val repoConnector: RepoConnector,
+  val usersRepo: UsersRepo,
+  val jobsRepo: JobsRepo,
+  val tasksRepo: TasksRepo,
+  val repoConnector: RepoConnector,
 )

@@ -12,19 +12,19 @@ import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
 class SubmitJobService
-	@Inject
-	constructor(
-		private val submitJob: SubmitJob,
-	) {
-		companion object : Logging
+@Inject
+constructor(
+  private val submitJob: SubmitJob,
+) {
+  companion object : Logging
 
-		suspend fun invoke(call: ApplicationCall) =
-			try {
-				val request = call.receive<SubmitJobRequest>()
-				val response = submitJob.invoke(request)
-				call.respond(HttpStatusCode.OK, response)
-			} catch (e: KaryaException) {
-				logger.error(e)
-				e.toHttpResponse(call)
-			}
-	}
+  suspend fun invoke(call: ApplicationCall) =
+    try {
+      val request = call.receive<SubmitJobRequest>()
+      val response = submitJob.invoke(request)
+      call.respond(HttpStatusCode.OK, response)
+    } catch (e: KaryaException) {
+      logger.error(e)
+      e.toHttpResponse(call)
+    }
+}

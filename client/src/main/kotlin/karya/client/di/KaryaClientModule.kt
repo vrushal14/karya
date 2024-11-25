@@ -19,47 +19,47 @@ import javax.inject.Singleton
 
 @Module
 class KaryaClientModule {
-	companion object {
-		private const val KEEP_ALIVE_TIME = 5000L
-		private const val CONNECTION_TIMEOUT = 5000L
-		private const val CONNECTION_ATTEMPT = 5
-	}
+  companion object {
+    private const val KEEP_ALIVE_TIME = 5000L
+    private const val CONNECTION_TIMEOUT = 5000L
+    private const val CONNECTION_ATTEMPT = 5
+  }
 
-	@Provides
-	@Singleton
-	fun provideKaryaClient(httpClient: HttpClient): Client = KaryaClientImpl(httpClient, configureJson())
+  @Provides
+  @Singleton
+  fun provideKaryaClient(httpClient: HttpClient): Client = KaryaClientImpl(httpClient, configureJson())
 
-	@Provides
-	@Singleton
-	fun provideHttpClient(config: KaryaClientConfig): HttpClient =
-		HttpClient(CIO) {
-			engine {
-				endpoint {
-					keepAliveTime = KEEP_ALIVE_TIME
-					connectTimeout = CONNECTION_TIMEOUT
-					connectAttempts = CONNECTION_ATTEMPT
-				}
-			}
-			defaultRequest {
-				url.protocol = config.protocol
-				url.host = config.host
-				url.port = config.port
-				contentType(ContentType.Application.Json)
-				header("connection", "keep-alive")
-			}
-			expectSuccess = false
+  @Provides
+  @Singleton
+  fun provideHttpClient(config: KaryaClientConfig): HttpClient =
+    HttpClient(CIO) {
+      engine {
+        endpoint {
+          keepAliveTime = KEEP_ALIVE_TIME
+          connectTimeout = CONNECTION_TIMEOUT
+          connectAttempts = CONNECTION_ATTEMPT
+        }
+      }
+      defaultRequest {
+        url.protocol = config.protocol
+        url.host = config.host
+        url.port = config.port
+        contentType(ContentType.Application.Json)
+        header("connection", "keep-alive")
+      }
+      expectSuccess = false
 
-			install(ContentNegotiation) { json(configureJson()) }
-		}
+      install(ContentNegotiation) { json(configureJson()) }
+    }
 
-	@OptIn(ExperimentalSerializationApi::class)
-	private fun configureJson(): Json =
-		Json {
-			isLenient = true
-			ignoreUnknownKeys = true
-			encodeDefaults = true
-			useAlternativeNames = true
-			allowStructuredMapKeys = true
-			namingStrategy = JsonNamingStrategy.SnakeCase
-		}
+  @OptIn(ExperimentalSerializationApi::class)
+  private fun configureJson(): Json =
+    Json {
+      isLenient = true
+      ignoreUnknownKeys = true
+      encodeDefaults = true
+      useAlternativeNames = true
+      allowStructuredMapKeys = true
+      namingStrategy = JsonNamingStrategy.SnakeCase
+    }
 }

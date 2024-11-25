@@ -9,19 +9,19 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class JobRouter
-	@Inject
-	constructor(
-		private val submitJobService: Provider<SubmitJobService>,
-		private val getJobService: Provider<GetJobService>,
-		private val updateJobService: Provider<UpdateJobService>,
-		private val cancelJobService: Provider<CancelJobService>,
-	) {
-		fun Route.wireRoutes() {
-			patch { updateJobService.get().invoke(call) }
-			post { submitJobService.get().invoke(call) }
-			route("{job_id}") {
-				get { getJobService.get().invoke(call) }
-				post { cancelJobService.get().invoke(call) }
-			}
-		}
-	}
+@Inject
+constructor(
+  private val submitJobService: Provider<SubmitJobService>,
+  private val getJobService: Provider<GetJobService>,
+  private val updateJobService: Provider<UpdateJobService>,
+  private val cancelJobService: Provider<CancelJobService>,
+) {
+  fun Route.wireRoutes() {
+    patch { updateJobService.get().invoke(call) }
+    post { submitJobService.get().invoke(call) }
+    route("{job_id}") {
+      get { getJobService.get().invoke(call) }
+      post { cancelJobService.get().invoke(call) }
+    }
+  }
+}

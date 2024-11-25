@@ -5,8 +5,8 @@ import java.time.Duration
 import java.time.Instant
 
 data class GetTasksRequest(
-	val partitionKeys: List<Int>,
-	val executionTime: Instant,
-	val buffer: Duration,
-	val status: TaskStatus,
+  val partitionKeys: List<Int>,
+  val executionTime: Instant,
+  val buffer: Duration,
+  val status: TaskStatus,
 )

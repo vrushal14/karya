@@ -8,18 +8,18 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-	modules = [
-		KaryaClientModule::class,
-	],
+  modules = [
+    KaryaClientModule::class,
+  ],
 )
 interface KaryaClientComponent {
-	val client: Client
+  val client: Client
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun clientConfig(config: KaryaClientConfig): Builder
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    fun clientConfig(config: KaryaClientConfig): Builder
 
-		fun build(): KaryaClientComponent
-	}
+    fun build(): KaryaClientComponent
+  }
 }

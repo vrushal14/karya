@@ -12,19 +12,19 @@ import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
 class UpdateJobService
-	@Inject
-	constructor(
-		private val updateJob: UpdateJob,
-	) {
-		companion object : Logging
+@Inject
+constructor(
+  private val updateJob: UpdateJob,
+) {
+  companion object : Logging
 
-		suspend fun invoke(call: ApplicationCall) =
-			try {
-				val request = call.receive<UpdateJobRequest>()
-				val response = updateJob.invoke(request)
-				call.respond(HttpStatusCode.OK, response)
-			} catch (e: KaryaException) {
-				logger.error(e)
-				e.toHttpResponse(call)
-			}
-	}
+  suspend fun invoke(call: ApplicationCall) =
+    try {
+      val request = call.receive<UpdateJobRequest>()
+      val response = updateJob.invoke(request)
+      call.respond(HttpStatusCode.OK, response)
+    } catch (e: KaryaException) {
+      logger.error(e)
+      e.toHttpResponse(call)
+    }
+}

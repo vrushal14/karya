@@ -6,10 +6,10 @@ import karya.servers.server.app.ServerApplication
 
 @ServerScope
 @Component(
-	dependencies = [
-		FusedServerDataComponent::class,
-	],
+  dependencies = [
+    FusedServerDataComponent::class,
+  ],
 )
 interface ServerComponent {
-	val serverApplication: ServerApplication
+  val serverApplication: ServerApplication
 }
