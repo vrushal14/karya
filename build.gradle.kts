@@ -4,11 +4,14 @@ plugins {
 }
 
 allprojects {
+
   apply(plugin = Plugins.Detekt.LIBRARY)
+
   repositories {
     mavenCentral()
     gradlePluginPortal()
   }
+
   detekt {
     toolVersion = Plugins.Detekt.VERSION
     config.setFrom(files("$rootDir/detekt.yml"))

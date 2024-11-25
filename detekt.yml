@@ -13,12 +13,6 @@ config:
 
 console-reports:
   active: true
-  exclude:
-    - ProjectStatisticsReport
-    - ComplexityReport
-    - NotificationReport
-    - FindingsReport
-    - FileBaselineReport
 
 formatting:
   active: true
