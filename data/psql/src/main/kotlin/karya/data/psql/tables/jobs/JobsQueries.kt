@@ -4,12 +4,8 @@ import karya.core.entities.Job
 import karya.core.entities.enums.JobStatus
 import karya.data.psql.tables.jobs.mappers.JobStatusMapper
 import karya.data.psql.tables.jobs.mappers.JobTypeMapper
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import java.time.Instant
 import java.util.*
 import javax.inject.Inject

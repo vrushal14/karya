@@ -1,7 +1,6 @@
 package karya.client.ktor.utils
 
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.*
 import karya.client.exceptions.KaryaServerException
 import karya.core.exceptions.KaryaException
 import kotlinx.serialization.json.Json

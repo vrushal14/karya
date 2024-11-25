@@ -29,5 +29,3 @@ subprojects {
     detektPlugins(Plugins.Detekt.FORMATTING)
   }
 }
-
-ext["kapt.includeCompileClasspath"] = false

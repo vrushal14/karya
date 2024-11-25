@@ -1,10 +1,6 @@
 package karya.servers.server.api.router
 
-import io.ktor.server.routing.get
-import io.ktor.server.routing.patch
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
-import io.ktor.server.routing.Route
+import io.ktor.server.routing.*
 import karya.servers.server.api.service.CancelJobService
 import karya.servers.server.api.service.GetJobService
 import karya.servers.server.api.service.SubmitJobService

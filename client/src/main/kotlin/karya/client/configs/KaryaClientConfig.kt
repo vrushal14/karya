@@ -1,6 +1,6 @@
 package karya.client.configs
 
-import io.ktor.http.URLProtocol
+import io.ktor.http.*
 
 data class KaryaClientConfig(
   val protocol: URLProtocol,

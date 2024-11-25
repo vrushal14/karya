@@ -1,8 +1,8 @@
 package karya.servers.server.app.ktor
 
-import io.ktor.server.application.Application
-import io.ktor.server.cio.CIO
-import io.ktor.server.engine.embeddedServer
+import io.ktor.server.application.*
+import io.ktor.server.cio.*
+import io.ktor.server.engine.*
 import java.time.Duration
 import javax.inject.Inject
 

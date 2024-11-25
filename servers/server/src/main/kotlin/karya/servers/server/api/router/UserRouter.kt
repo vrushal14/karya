@@ -1,7 +1,6 @@
 package karya.servers.server.api.router
 
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.post
+import io.ktor.server.routing.*
 import karya.servers.server.api.service.CreateUserService
 import javax.inject.Inject
 import javax.inject.Provider

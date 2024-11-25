@@ -2,12 +2,7 @@ package karya.servers.scheduler.usecases
 
 import karya.core.repos.RepoConnector
 import karya.servers.scheduler.usecases.external.FetcherService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
