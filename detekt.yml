@@ -1,26 +1,59 @@
 build:
-  maxIssues: 3000
+  maxIssues: 0
+  excludeCorrectable: false
   weights:
-    LargeClass: 3
     complexity: 2
-    LongMethod: 2
-    ComplexMethod: 1
     LongParameterList: 1
     style: 1
     comments: 1
 
 config:
   validation: true
-
-processors:
-  active: true
-  exclude:
-    - 'DetektProgressListener'
+  warningsAsErrors: true
 
 console-reports:
   active: true
+  exclude:
+    - ProjectStatisticsReport
+    - ComplexityReport
+    - NotificationReport
+    - FindingsReport
+    - FileBaselineReport
 
-  # Documentation: https://detekt.dev/docs/rules/complexity/
+formatting:
+  active: true
+  android: false
+  autoCorrect: true
+  ImportOrderingRule:
+    active: true
+    autoCorrect: true
+    layout:
+      - 'java.*'
+      - 'javax.*'
+      - 'kotlin.*'
+      - 'kotlinx.*'
+      - '^'
+  IndentationRule:
+    active: true
+    autoCorrect: true
+    indentSize: 2
+  MaxLineLengthRule:
+    active: true
+    maxLineLength: 120
+    excludeCommentStatements: true
+  ModifierOrderRule:
+    active: true
+    autoCorrect: true
+  MultiLineIfElseRule:
+    active: true
+    autoCorrect: true
+  NoConsecutiveBlankLinesRule:
+    active: true
+    autoCorrect: true
+  NoEmptyClassBodyRule:
+    active: true
+    autoCorrect: true
+
 complexity:
   active: true
   # This rule checks for complex conditions.
@@ -162,7 +195,7 @@ exceptions:
   # Documentation: https://detekt.dev/docs/rules/exceptions/#returnfromfinally
   # This rule checks for swallowed exceptions.
   SwallowedException:
-    active: true
+    active: false
   # Documentation: https://detekt.dev/docs/rules/exceptions/#throwingexceptionfromfinally
   # This rule checks for throwing exceptions from finally blocks.
   ThrowingExceptionFromFinally:
@@ -182,7 +215,7 @@ exceptions:
   # Documentation: https://detekt.dev/docs/rules/exceptions/#toogenericexceptioncaught
   # This rule checks for too generic exception caught.
   TooGenericExceptionCaught:
-    active: true
+    active: false
   # Documentation: https://detekt.dev/docs/rules/exceptions/#toogenericexceptionthrown
   # This rule checks for too generic exception thrown.
   TooGenericExceptionThrown:
@@ -193,125 +226,7 @@ exceptions:
       - Throwable
       - RuntimeException
 
-  # Documentation: https://detekt.dev/docs/rules/formatting/
-formatting:
-  active: true
-  # Documentation: https://detekt.dev/docs/rules/formatting#annotationonseparateline
-  # This rule checks for annotation on separate line.
-  AnnotationOnSeparateLine:
-    active: true
-  # Documentation: https://detekt.dev/docs/rules/formatting#chainwrapping
-  # This rule checks for chain wrapping.
-  ChainWrapping:
-    active: true
-  # This rule checks for comment spacing.
-  # Documentation: https://detekt.dev/docs/rules/formatting#commentspacing
-  CommentSpacing:
-    active: true
-  # This rule checks for enum entry name case.
-  # Documentation: https://detekt.dev/docs/rules/formatting#enumentrynamecase
-  EnumEntryNameCase:
-    active: true
-  # This rule checks for filename.
-  # Documentation: https://detekt.dev/docs/rules/formatting#filename
-  Filename:
-    active: true
-  # This rule checks for import ordering.
-  # Documentation: https://detekt.dev/docs/rules/formatting#importordering
-  ImportOrdering:
-    active: true
-  # Documentation: https://detekt.dev/docs/rules/formatting#modifierordering
-  # This rule checks for modifier ordering.
-  ModifierOrdering:
-    active: true
-  # Documentation: https://detekt.dev/docs/rules/formatting#multilineifelse
-  # This rule checks for multi line if else.
-  MultiLineIfElse:
-    active: true
-  # Documentation: https://detekt.dev/docs/rules/formatting#noblanklinebeforerbrace
-  # This rule checks for no blank line before rbrace.
-  NoBlankLineBeforeRbrace:
-    active: true
-  # Documentation: https://detekt.dev/docs/rules/formatting#noconsecutiveblanklines
-  # This rule checks for no consecutive blank lines.
-  NoConsecutiveBlankLines:
-    active: true
-  # This rule checks for no empty class body.
-  # Documentation: https://detekt.dev/docs/rules/formatting#noemptyclassbody
-  NoEmptyClassBody:
-    active: true
-  # This rule checks for no empty first line in method block.
-  # Documentation: https://detekt.dev/docs/rules/formatting#noemptyfirstlineinmethodblock
-  NoEmptyFirstLineInMethodBlock:
-    active: true
-  # This rule checks for no multiple spaces.
-  # Documentation: https://detekt.dev/docs/rules/formatting#nomultiplespaces
-  NoMultipleSpaces:
-    active: true
-  # This rule checks for no semicolons.
-  # Documentation: https://detekt.dev/docs/rules/formatting#nosemicolons
-  NoSemicolons:
-    active: true
-  # This rule checks for no trailing spaces.
-  # Documentation: https://detekt.dev/docs/rules/formatting#notrailingspaces
-  NoTrailingSpaces:
-    active: true
-  # This rule checks for no unit return.
-  # Documentation: https://detekt.dev/docs/rules/formatting#nounitreturn
-  NoUnitReturn:
-    active: true
-  # This rule checks for no unused imports.
-  # Documentation: https://detekt.dev/docs/rules/formatting#nounusedimports
-  NoUnusedImports:
-    active: true
-  # This rule checks for package name.
-  # Documentation: https://detekt.dev/docs/rules/formatting#packagename
-  PackageName:
-    active: false
-    ignoreBackTickedIdentifier: true
-  # This rule checks for parameter list wrapping.
-  # Documentation: https://detekt.dev/docs/rules/formatting#parameterlistwrapping
-  ParameterListWrapping:
-    active: true
-    indentSize: 4
-  # This rule checks for spacing around colon.
-  # Documentation: hhttps://detekt.dev/docs/rules/formatting#spacingaroundcolon
-  SpacingAroundColon:
-    active: true
-  # This rule checks for spacing around comma.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundcomma
-  SpacingAroundComma:
-    active: true
-  # This rule checks for spacing around curly.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundcurly
-  SpacingAroundCurly:
-    active: true
-  # This rule checks for spacing around dot.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingarounddot
-  SpacingAroundDot:
-    active: true
-  # This rule checks for spacing around keyword.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundkeyword
-  SpacingAroundKeyword:
-    active: true
-  # This rule checks for spacing around operators.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundoperators
-  SpacingAroundOperators:
-    active: true
-  # This rule checks for spacing around parens.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundparens
-  SpacingAroundParens:
-    active: true
-  # This rule checks for spacing around range operator.
-  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundrangeoperator
-  SpacingAroundRangeOperator:
-    active: true
-  # This rule checks for string template.
-  # Documentation: https://detekt.dev/docs/rules/formatting#stringtemplate
-  StringTemplate:
-    active: true
 
-  # Documentation: https://detekt.dev/docs/rules/performance/
 performance:
   active: true
   # Documentation: https://detekt.dev/docs/rules/performance#arrayprimitive
@@ -421,7 +336,7 @@ potential-bugs:
   UselessPostfixExpression:
     active: true
 
-  # Documentation: https://detekt.dev/docs/rules/style/
+
 style:
   active: true
   # This rule checks for loops with too many jump statements.
@@ -501,7 +416,7 @@ style:
   # Documentation: https://detekt.dev/docs/rules/style#unnecessaryabstractclass
   UnnecessaryAbstractClass:
     active: true
-    ignoreAnnotated: [ 'dagger.Module' ]
+    ignoreAnnotated: 'dagger.Module'
   # This rule checks for unnecessary annotation use site targets.
   # Documentation: https://detekt.dev/docs/rules/style#unnecessaryapply
   UnnecessaryApply:

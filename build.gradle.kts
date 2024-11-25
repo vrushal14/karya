@@ -27,19 +27,4 @@ subprojects {
     }
 }
 
-tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektFormat") {
-    description = "Formats whole project."
-    parallel = true
-    buildUponDefaultConfig = true
-    autoCorrect = true
-    setSource(files(projectDir))
-    config.setFrom(files("$rootDir/detekt.yml"))
-    include("**/*.kt", "**/*.kts")
-    exclude("**/resources/**", "**/build/**")
-
-    dependencies {
-        detektPlugins(Plugins.Detekt.FORMATTING)
-    }
-}
-
 ext["kapt.includeCompileClasspath"] = false
