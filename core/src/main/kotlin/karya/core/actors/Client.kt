@@ -9,13 +9,13 @@ import karya.core.entities.responses.GetJobResponse
 import java.util.*
 
 interface Client {
-    suspend fun createUser(request: CreateUserRequest): User
+  suspend fun createUser(request: CreateUserRequest): User
 
-    suspend fun submitJob(request: SubmitJobRequest): Job
+  suspend fun submitJob(request: SubmitJobRequest): Job
 
-    suspend fun fetchJob(jobId: UUID): GetJobResponse
+  suspend fun fetchJob(jobId: UUID): GetJobResponse
 
-    suspend fun updateJob(request: UpdateJobRequest): Job
+  suspend fun updateJob(request: UpdateJobRequest): Job
 
-    suspend fun cancelJob(jobId: UUID): Job
+  suspend fun cancelJob(jobId: UUID): Job
 }

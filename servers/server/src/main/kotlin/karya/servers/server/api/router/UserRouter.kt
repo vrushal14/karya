@@ -9,9 +9,9 @@ import javax.inject.Provider
 class UserRouter
 @Inject
 constructor(
-    private val createUserService: Provider<CreateUserService>,
+  private val createUserService: Provider<CreateUserService>,
 ) {
-    fun Route.wireRoutes() {
-        post { createUserService.get().invoke(call) }
-    }
+  fun Route.wireRoutes() {
+    post { createUserService.get().invoke(call) }
+  }
 }

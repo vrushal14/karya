@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Module
 abstract class RabbitMqQueueModule {
 
-    @Binds
-    @Singleton
-    abstract fun provideRabbitMqQueueClient(client: RabbitMqQueueClient): QueueClient
+  @Binds
+  @Singleton
+  abstract fun provideRabbitMqQueueClient(client: RabbitMqQueueClient): QueueClient
 }

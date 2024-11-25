@@ -4,7 +4,7 @@ import karya.core.entities.User
 import java.util.*
 
 interface UsersRepo {
-    suspend fun add(user: User)
+  suspend fun add(user: User)
 
-    suspend fun get(id: UUID): User?
+  suspend fun get(id: UUID): User?
 }

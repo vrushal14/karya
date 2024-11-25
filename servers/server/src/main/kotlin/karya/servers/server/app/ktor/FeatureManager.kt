@@ -15,27 +15,27 @@ import javax.inject.Inject
 class FeatureManager
 @Inject
 constructor() {
-    @OptIn(ExperimentalSerializationApi::class)
-    fun Application.wireFeatures() {
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    ignoreUnknownKeys = true
-                    allowStructuredMapKeys = true
-                    namingStrategy = JsonNamingStrategy.SnakeCase
-                    useAlternativeNames = true
-                    encodeDefaults = true
-                },
-            )
-        }
-
-        install(CallLogging) {
-            format { call ->
-                val status = call.response.status()
-                val httpMethod = call.request.httpMethod.value
-                val endpoint = call.request.uri
-                "$status - $httpMethod $endpoint"
-            }
-        }
+  @OptIn(ExperimentalSerializationApi::class)
+  fun Application.wireFeatures() {
+    install(ContentNegotiation) {
+      json(
+        Json {
+          ignoreUnknownKeys = true
+          allowStructuredMapKeys = true
+          namingStrategy = JsonNamingStrategy.SnakeCase
+          useAlternativeNames = true
+          encodeDefaults = true
+        },
+      )
     }
+
+    install(CallLogging) {
+      format { call ->
+        val status = call.response.status()
+        val httpMethod = call.request.httpMethod.value
+        val endpoint = call.request.uri
+        "$status - $httpMethod $endpoint"
+      }
+    }
+  }
 }

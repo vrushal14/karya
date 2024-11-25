@@ -9,25 +9,25 @@ import javax.inject.Inject
 class KtorServer
 @Inject
 constructor(
-    private val featureManager: FeatureManager,
-    private val routeManager: RouteManager,
+  private val featureManager: FeatureManager,
+  private val routeManager: RouteManager,
 ) {
-    private val engine = buildEngine()
+  private val engine = buildEngine()
 
-    fun start() {
-        engine.start(false)
-    }
+  fun start() {
+    engine.start(false)
+  }
 
-    fun stop() {
-        val gracePeriod = Duration.ofSeconds(5).toMillis()
-        val timeout = Duration.ofSeconds(15).toMillis()
-        engine.stop(gracePeriod, timeout)
-    }
+  fun stop() {
+    val gracePeriod = Duration.ofSeconds(5).toMillis()
+    val timeout = Duration.ofSeconds(15).toMillis()
+    engine.stop(gracePeriod, timeout)
+  }
 
-    private fun buildEngine() = embeddedServer(CIO, port = 8080, module = { main() })
+  private fun buildEngine() = embeddedServer(CIO, port = 8080, module = { main() })
 
-    private fun Application.main() {
-        featureManager.apply { wireFeatures() }
-        routeManager.apply { wireRoutes() }
-    }
+  private fun Application.main() {
+    featureManager.apply { wireFeatures() }
+    routeManager.apply { wireRoutes() }
+  }
 }

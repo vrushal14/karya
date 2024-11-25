@@ -11,26 +11,26 @@ import javax.inject.Inject
 class ServerApplication
 @Inject
 constructor(
-    private val ktorServer: KtorServer,
-    private val startupResources: StartupResources,
-    private val shutdownResources: ShutdownResources,
+  private val ktorServer: KtorServer,
+  private val startupResources: StartupResources,
+  private val shutdownResources: ShutdownResources,
 ) {
-    companion object : Logging
+  companion object : Logging
 
-    suspend fun start() {
-        runBlocking {
-            startupResources.invoke()
-            ktorServer.start()
-            logger.info("Server started successfully")
-        }
+  suspend fun start() {
+    runBlocking {
+      startupResources.invoke()
+      ktorServer.start()
+      logger.info("Server started successfully")
     }
+  }
 
-    fun stop() {
-        runBlocking {
-            shutdownResources.invoke()
-            ktorServer.stop()
-            logger.info("Server shutdown complete")
-            LogManager.shutdown()
-        }
+  fun stop() {
+    runBlocking {
+      shutdownResources.invoke()
+      ktorServer.stop()
+      logger.info("Server shutdown complete")
+      LogManager.shutdown()
     }
+  }
 }

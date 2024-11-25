@@ -10,12 +10,12 @@ import javax.inject.Inject
 class CreateUser
 @Inject
 constructor(
-    private val usersRepo: UsersRepo,
+  private val usersRepo: UsersRepo,
 ) {
-    companion object : Logging
+  companion object : Logging
 
-    suspend fun invoke(request: CreateUserRequest): User =
-        User(request)
-            .also { usersRepo.add(it) }
-            .also { logger.info("[USER_CREATED] --- $it") }
+  suspend fun invoke(request: CreateUserRequest): User =
+    User(request)
+      .also { usersRepo.add(it) }
+      .also { logger.info("[USER_CREATED] --- $it") }
 }

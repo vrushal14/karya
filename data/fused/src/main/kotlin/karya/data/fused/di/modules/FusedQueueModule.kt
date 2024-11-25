@@ -10,12 +10,12 @@ import javax.inject.Singleton
 
 @Module
 class FusedQueueModule {
-    @Provides
-    @Singleton
-    fun provideQueueClient(queueConfig: QueueConfig) =
-        when (queueConfig) {
-            is RabbitMqQueueConfig -> RabbitMqQueueClientFactory.build(queueConfig)
+  @Provides
+  @Singleton
+  fun provideQueueClient(queueConfig: QueueConfig) =
+    when (queueConfig) {
+      is RabbitMqQueueConfig -> RabbitMqQueueClientFactory.build(queueConfig)
 
-            else -> throw UnknownProviderException("queue", queueConfig.provider)
-        }
+      else -> throw UnknownProviderException("queue", queueConfig.provider)
+    }
 }

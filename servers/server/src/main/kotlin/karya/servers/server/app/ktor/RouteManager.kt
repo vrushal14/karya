@@ -13,17 +13,17 @@ import javax.inject.Inject
 class RouteManager
 @Inject
 constructor(
-    private val userRouter: UserRouter,
-    private val jobRouter: JobRouter,
+  private val userRouter: UserRouter,
+  private val jobRouter: JobRouter,
 ) {
-    fun Application.wireRoutes() {
-        routing {
-            get { call.respond(HttpStatusCode.OK, Unit) }
+  fun Application.wireRoutes() {
+    routing {
+      get { call.respond(HttpStatusCode.OK, Unit) }
 
-            route("v1") {
-                route("user") { userRouter.apply { wireRoutes() } }
-                route("job") { jobRouter.apply { wireRoutes() } }
-            }
-        }
+      route("v1") {
+        route("user") { userRouter.apply { wireRoutes() } }
+        route("job") { jobRouter.apply { wireRoutes() } }
+      }
     }
+  }
 }
