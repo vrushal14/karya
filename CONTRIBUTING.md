@@ -6,12 +6,13 @@
 - This is part of the build step hence ensure `./gradlew detekt` runs successfully for the build to succeed.
 - Ruleset can be found [here](./detekt.yml)
 
-### Intellij Config
+<details>
+<summary><strong>Additional configs for IntelliJ users</strong></summary>
 
-Additionally in Intellij, configure the following:
-
-**Set the indentation to space : 2**
+### Set the indentation to space : 2
 ![indentation_settings](./docs/media/intellij_indentation.png)
 
-**While running the Intellij Formatter, check the below options**
+### While running the Intellij Formatter, check the below options
 ![format_settings](./docs/media/intellij_format.png)
+
+</details>
