@@ -9,20 +9,20 @@ import karya.servers.scheduler.usecases.SchedulerFetcher
 
 @SchedulerScope
 @Component(
-	dependencies = [
-		FusedSchedulerDataComponent::class,
-	],
+    dependencies = [
+        FusedSchedulerDataComponent::class,
+    ],
 )
 interface SchedulerFetcherComponent {
-	val schedulerFetcher: SchedulerFetcher
+    val schedulerFetcher: SchedulerFetcher
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun config(schedulerConfig: SchedulerConfig): Builder
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun config(schedulerConfig: SchedulerConfig): Builder
 
-		fun fusedDataComponent(fusedSchedulerDataComponent: FusedSchedulerDataComponent): Builder
+        fun fusedDataComponent(fusedSchedulerDataComponent: FusedSchedulerDataComponent): Builder
 
-		fun build(): SchedulerFetcherComponent
-	}
+        fun build(): SchedulerFetcherComponent
+    }
 }

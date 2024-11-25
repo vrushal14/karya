@@ -15,41 +15,41 @@ import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class WorkerService
-	@Inject
-	constructor(
-		private val processTask: ProcessTask,
-	) {
-		companion object : Logging
+@Inject
+constructor(
+    private val processTask: ProcessTask,
+) {
+    companion object : Logging
 
-		private lateinit var scope: CoroutineScope
-		private lateinit var customDispatcher: ExecutorCoroutineDispatcher
+    private lateinit var scope: CoroutineScope
+    private lateinit var customDispatcher: ExecutorCoroutineDispatcher
 
-		fun start(
-			name: String,
-			channel: ReceiveChannel<Task>,
-		) {
-			setScope(name)
-			scope.launch {
-				try {
-					for (task in channel) processTask.invoke(task)
-				} catch (e: ClosedReceiveChannelException) {
-					logger.info { "Task channel closed. Shutting down worker." }
-					stop()
-				}
-			}
-		}
+    fun start(
+        name: String,
+        channel: ReceiveChannel<Task>,
+    ) {
+        setScope(name)
+        scope.launch {
+            try {
+                for (task in channel) processTask.invoke(task)
+            } catch (e: ClosedReceiveChannelException) {
+                logger.info { "Task channel closed. Shutting down worker." }
+                stop()
+            }
+        }
+    }
 
-		fun stop() {
-			scope.cancel()
-			customDispatcher.close()
-		}
+    fun stop() {
+        scope.cancel()
+        customDispatcher.close()
+    }
 
-		private fun setScope(name: String) {
-			this.customDispatcher =
-				Executors
-					.newSingleThreadExecutor { runnable ->
-						Thread(runnable, name)
-					}.asCoroutineDispatcher()
-			this.scope = CoroutineScope(customDispatcher + SupervisorJob())
-		}
-	}
+    private fun setScope(name: String) {
+        this.customDispatcher =
+            Executors
+                .newSingleThreadExecutor { runnable ->
+                    Thread(runnable, name)
+                }.asCoroutineDispatcher()
+        this.scope = CoroutineScope(customDispatcher + SupervisorJob())
+    }
+}

@@ -8,18 +8,19 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-	modules = [
-		RabbitMqQueueModule::class,
-	],
+    modules = [
+        RabbitMqQueueModule::class,
+        RabbitMqQueueUtilsModule::class,
+    ],
 )
 interface RabbitMqQueueComponent {
-	val queueClient: QueueClient
+    val queueClient: QueueClient
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun rabbitMqConfig(rabbitMqQueueConfig: RabbitMqQueueConfig): Builder
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun rabbitMqConfig(rabbitMqQueueConfig: RabbitMqQueueConfig): Builder
 
-		fun build(): RabbitMqQueueComponent
-	}
+        fun build(): RabbitMqQueueComponent
+    }
 }

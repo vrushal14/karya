@@ -15,28 +15,28 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-	modules = [
-		FusedRepoModule::class,
-		FusedLocksModule::class,
-	],
+    modules = [
+        FusedRepoModule::class,
+        FusedLocksModule::class,
+    ],
 )
 interface FusedServerDataComponent {
-	val usersRepo: UsersRepo
-	val jobsRepo: JobsRepo
-	val tasksRepo: TasksRepo
+    val usersRepo: UsersRepo
+    val jobsRepo: JobsRepo
+    val tasksRepo: TasksRepo
 
-	val locksClient: LocksClient
+    val locksClient: LocksClient
 
-	val repoConnector: RepoConnector
+    val repoConnector: RepoConnector
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun repoConfig(repoConfig: RepoConfig): Builder
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun repoConfig(repoConfig: RepoConfig): Builder
 
-		@BindsInstance
-		fun locksConfig(locksConfig: LocksConfig): Builder
+        @BindsInstance
+        fun locksConfig(locksConfig: LocksConfig): Builder
 
-		fun build(): FusedServerDataComponent
-	}
+        fun build(): FusedServerDataComponent
+    }
 }

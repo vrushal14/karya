@@ -9,32 +9,32 @@ import java.util.*
 import javax.inject.Inject
 
 class PsqlTasksRepo
-	@Inject
-	constructor(
-		private val tasksQueries: TasksQueries,
-	) : TasksRepo {
-		override suspend fun add(task: Task) {
-			tasksQueries.add(task)
-		}
+@Inject
+constructor(
+    private val tasksQueries: TasksQueries,
+) : TasksRepo {
+    override suspend fun add(task: Task) {
+        tasksQueries.add(task)
+    }
 
-		override suspend fun getLatest(jobId: UUID): Task? = tasksQueries.getLatest(jobId)
+    override suspend fun getLatest(jobId: UUID): Task? = tasksQueries.getLatest(jobId)
 
-		override suspend fun get(request: GetTasksRequest): Task? {
-			val tasks =
-				tasksQueries
-					.getInRange(request)
-					.sortedBy { it.nextExecutionAt?.minus((request.executionTime.toEpochMilli())) }
-			return tasks.firstOrNull()
-		}
+    override suspend fun get(request: GetTasksRequest): Task? {
+        val tasks =
+            tasksQueries
+                .getInRange(request)
+                .sortedBy { it.nextExecutionAt?.minus((request.executionTime.toEpochMilli())) }
+        return tasks.firstOrNull()
+    }
 
-		override suspend fun update(task: Task) {
-			tasksQueries.update(task)
-		}
+    override suspend fun update(task: Task) {
+        tasksQueries.update(task)
+    }
 
-		override suspend fun updateStatus(
-			id: UUID,
-			status: TaskStatus,
-		) {
-			tasksQueries.updateStatus(id, status)
-		}
-	}
+    override suspend fun updateStatus(
+        id: UUID,
+        status: TaskStatus,
+    ) {
+        tasksQueries.updateStatus(id, status)
+    }
+}

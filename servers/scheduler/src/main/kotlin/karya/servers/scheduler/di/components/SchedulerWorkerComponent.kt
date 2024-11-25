@@ -9,20 +9,20 @@ import karya.servers.scheduler.usecases.SchedulerWorker
 
 @SchedulerScope
 @Component(
-	dependencies = [
-		FusedSchedulerDataComponent::class,
-	],
+    dependencies = [
+        FusedSchedulerDataComponent::class,
+    ],
 )
 interface SchedulerWorkerComponent {
-	val schedulerWorker: SchedulerWorker
+    val schedulerWorker: SchedulerWorker
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun config(schedulerConfig: SchedulerConfig): Builder
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun config(schedulerConfig: SchedulerConfig): Builder
 
-		fun fusedDataComponent(fusedSchedulerDataComponent: FusedSchedulerDataComponent): Builder
+        fun fusedDataComponent(fusedSchedulerDataComponent: FusedSchedulerDataComponent): Builder
 
-		fun build(): SchedulerWorkerComponent
-	}
+        fun build(): SchedulerWorkerComponent
+    }
 }

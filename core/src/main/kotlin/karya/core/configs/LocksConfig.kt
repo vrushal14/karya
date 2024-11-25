@@ -1,5 +1,5 @@
 package karya.core.configs
 
 abstract class LocksConfig(
-	val provider: String,
+    val provider: String,
 )

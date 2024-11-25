@@ -6,22 +6,23 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 sealed class Body {
-	@Serializable
-	data class JsonBody(
-		val jsonString: String,
-	) : Body() {
-		companion object {
-			private val json =
-				Json {
-					ignoreUnknownKeys = true
-					isLenient = true
-				}
-		}
-		constructor(data: Map<String, Any>) : this(
-			jsonString = MapJsonStringSerde.serialize(json, data),
-		)
-	}
+    @Serializable
+    data class JsonBody(
+        val jsonString: String,
+    ) : Body() {
+        companion object {
+            private val json =
+                Json {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                }
+        }
 
-	@Serializable
-	object EmptyBody : Body()
+        constructor(data: Map<String, Any>) : this(
+            jsonString = MapJsonStringSerde.serialize(json, data),
+        )
+    }
+
+    @Serializable
+    object EmptyBody : Body()
 }

@@ -11,30 +11,30 @@ import javax.inject.Singleton
 
 @Module
 class PsqlUtilsModule {
-	@Provides
-	@Singleton
-	fun provideFlyway(config: PsqlRepoConfig): Flyway {
-		val properties = config.flywayProperties
-		return Flyway
-			.configure()
-			.dataSource(
-				properties.getProperty("url"),
-				properties.getProperty("user"),
-				properties.getProperty("password"),
-			).locations("classpath:db/migrations")
-			.baselineOnMigrate(true)
-			.placeholderReplacement(true)
-			.load()
-	}
+    @Provides
+    @Singleton
+    fun provideFlyway(config: PsqlRepoConfig): Flyway {
+        val properties = config.flywayProperties
+        return Flyway
+            .configure()
+            .dataSource(
+                properties.getProperty("url"),
+                properties.getProperty("user"),
+                properties.getProperty("password"),
+            ).locations("classpath:db/migrations")
+            .baselineOnMigrate(true)
+            .placeholderReplacement(true)
+            .load()
+    }
 
-	@Provides
-	@Singleton
-	fun provideHikariDataSource(config: PsqlRepoConfig): HikariDataSource {
-		val hikariConfig = HikariConfig(config.hikariProperties)
-		return HikariDataSource(hikariConfig)
-	}
+    @Provides
+    @Singleton
+    fun provideHikariDataSource(config: PsqlRepoConfig): HikariDataSource {
+        val hikariConfig = HikariConfig(config.hikariProperties)
+        return HikariDataSource(hikariConfig)
+    }
 
-	@Provides
-	@Singleton
-	fun provideDatabase(hikariDataSource: HikariDataSource): Database = Database.connect(hikariDataSource)
+    @Provides
+    @Singleton
+    fun provideDatabase(hikariDataSource: HikariDataSource): Database = Database.connect(hikariDataSource)
 }

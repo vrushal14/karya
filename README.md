@@ -1,4 +1,5 @@
 # Karya
+
 Distributed, scalable Job Scheduler
 
 ![overview.png](./docs/media/overiew.png)
@@ -15,7 +16,10 @@ docker run -d --name rabbitmq-karya -e RABBITMQ_DEFAULT_USER=karya -e RABBITMQ_D
 
 ## Linting
 
-- Install [Ktlint IntelliJ Plugin](https://pinterest.github.io/ktlint/latest/install/setup/#ktlint-intellij-plugin-for-direct-feedback-while-coding).
+-
+
+Install [Ktlint IntelliJ Plugin](https://pinterest.github.io/ktlint/latest/install/setup/#ktlint-intellij-plugin-for-direct-feedback-while-coding).
+
 - Configure it to run on save. Format the code before pushing.
 - Ruleset can be found [here](./.editorconfig).
 - Additionally, build will only succeed once the ktlint check is successful.

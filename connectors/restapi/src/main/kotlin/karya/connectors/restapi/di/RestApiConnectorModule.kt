@@ -2,13 +2,15 @@ package karya.connectors.restapi.di
 
 import dagger.Module
 import dagger.Provides
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.cio.endpoint
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
 import karya.connectors.restapi.RestApiConnector
 import karya.connectors.restapi.configs.RestApiConnectorConfig
 import karya.core.actors.Connector
@@ -20,38 +22,38 @@ import javax.inject.Singleton
 
 @Module
 class RestApiConnectorModule {
-	@Provides
-	@Singleton
-	fun provideRestApiConnector(httpClient: HttpClient): Connector<Action.RestApiRequest> = RestApiConnector(httpClient)
+    @Provides
+    @Singleton
+    fun provideRestApiConnector(httpClient: HttpClient): Connector<Action.RestApiRequest> = RestApiConnector(httpClient)
 
-	@Provides
-	@Singleton
-	fun provideHttpClient(config: RestApiConnectorConfig): HttpClient =
-		HttpClient(CIO) {
-			engine {
-				endpoint {
-					keepAliveTime = config.keepAliveTime
-					connectTimeout = config.connectionTimeout
-					connectAttempts = config.connectionAttempt
-				}
-			}
-			defaultRequest {
-				contentType(ContentType.Application.Json)
-				header("connection", "keep-alive")
-			}
-			expectSuccess = false
+    @Provides
+    @Singleton
+    fun provideHttpClient(config: RestApiConnectorConfig): HttpClient =
+        HttpClient(CIO) {
+            engine {
+                endpoint {
+                    keepAliveTime = config.keepAliveTime
+                    connectTimeout = config.connectionTimeout
+                    connectAttempts = config.connectionAttempt
+                }
+            }
+            defaultRequest {
+                contentType(ContentType.Application.Json)
+                header("connection", "keep-alive")
+            }
+            expectSuccess = false
 
-			install(ContentNegotiation) { json(configureJson()) }
-		}
+            install(ContentNegotiation) { json(configureJson()) }
+        }
 
-	@OptIn(ExperimentalSerializationApi::class)
-	private fun configureJson(): Json =
-		Json {
-			isLenient = true
-			ignoreUnknownKeys = true
-			encodeDefaults = true
-			useAlternativeNames = true
-			allowStructuredMapKeys = true
-			namingStrategy = JsonNamingStrategy.SnakeCase
-		}
+    @OptIn(ExperimentalSerializationApi::class)
+    private fun configureJson(): Json =
+        Json {
+            isLenient = true
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+            useAlternativeNames = true
+            allowStructuredMapKeys = true
+            namingStrategy = JsonNamingStrategy.SnakeCase
+        }
 }

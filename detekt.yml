@@ -1,0 +1,533 @@
+build:
+  maxIssues: 3000
+  weights:
+    LargeClass: 3
+    complexity: 2
+    LongMethod: 2
+    ComplexMethod: 1
+    LongParameterList: 1
+    style: 1
+    comments: 1
+
+config:
+  validation: true
+
+processors:
+  active: true
+  exclude:
+    - 'DetektProgressListener'
+
+console-reports:
+  active: true
+
+  # Documentation: https://detekt.dev/docs/rules/complexity/
+complexity:
+  active: true
+  # This rule checks for complex conditions.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#complexcondition
+  ComplexCondition:
+    active: true
+    threshold: 4
+  # This rule checks for complex methods.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#cognitivecomplexmethod
+  CyclomaticComplexMethod:
+    active: true
+  # This rule checks for large classes.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#largeclass
+  LargeClass:
+    active: true
+    excludes: '**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
+    threshold: 600
+  # This rule checks for long methods.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#longmethod
+  LongMethod:
+    active: true
+    excludes: '**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
+    threshold: 60
+  # This rule checks for long parameter lists.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#longparameterlist
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 6
+  # This rule checks for nested block depth.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#nestedblockdepth
+  NestedBlockDepth:
+    active: true
+    threshold: 4
+  # This rule checks for string literal duplication.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#stringliteralduplication
+  StringLiteralDuplication:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/coroutines/
+coroutines:
+  active: true
+  # This rule checks for the usage of GlobalScope.
+  # Documentation: https://detekt.dev/docs/rules/complexity/#globalcoroutineusage
+  GlobalCoroutineUsage:
+    active: true
+  # This rule checks for redundant suspend modifiers.
+  # Documentation: https://detekt.dev/docs/rules/coroutines#redundantsuspendmodifier
+  RedundantSuspendModifier:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/#empty-blocks/
+empty-blocks:
+  active: true
+  # This rule checks for empty catch blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptycatchblock
+  EmptyCatchBlock:
+    active: true
+  # This rule checks for empty class blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyclassblock
+  EmptyClassBlock:
+    active: true
+  # This rule checks for empty default constructors.
+  # Documentation: https://detekt.dev/docs/rules/#emptydefaultconstructor
+  EmptyDefaultConstructor:
+    active: true
+  # This rule checks for empty do-while blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptydowhileblock
+  EmptyDoWhileBlock:
+    active: true
+  # This rule checks for empty else blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyelseblock
+  EmptyElseBlock:
+    active: true
+  # This rule checks for empty finally blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyfinallyblock
+  EmptyFinallyBlock:
+    active: true
+  # This rule checks for empty for blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyforblock
+  EmptyForBlock:
+    active: true
+  # This rule checks for empty function blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyfunctionblock
+  EmptyFunctionBlock:
+    active: false
+  # This rule checks for empty if blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyifblock
+  EmptyIfBlock:
+    active: true
+  # This rule checks for empty init blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptyinitblock
+  EmptyInitBlock:
+    active: true
+  # This rule checks for empty Kotlin files.
+  # Documentation: https://detekt.dev/docs/rules/#emptyktfile
+  EmptyKtFile:
+    active: true
+  # This rule checks for empty secondary constructors.
+  # Documentation: https://detekt.dev/docs/rules/#emptysecondaryconstructor
+  EmptySecondaryConstructor:
+    active: true
+  # This rule checks for empty try blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptytryblock
+  EmptyTryBlock:
+    active: true
+  # This rule checks for empty when blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptywhenblock
+  EmptyWhenBlock:
+    active: true
+  # This rule checks for empty while blocks.
+  # Documentation: https://detekt.dev/docs/rules/#emptywhileblock
+  EmptyWhileBlock:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/exceptions/
+exceptions:
+  active: true
+  # This rule checks for instance of checks for exceptions.
+  # Documentation: https://detekt.dev/docs/rules/exceptions#instanceofcheckforexception
+  InstanceOfCheckForException:
+    active: true
+  # This rule checks for not implemented declarations.
+  # Documentation: https://detekt.dev/docs/rules/exceptions#notimplementeddeclaration
+  NotImplementedDeclaration:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions#printstacktrace
+  # This rule checks for print stack trace calls.
+  PrintStackTrace:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#rethrowcaughtexception
+  # This rule checks for rethrowing caught exceptions.
+  RethrowCaughtException:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions#printstacktrace
+  # This rule checks for return from finally blocks.
+  ReturnFromFinally:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#returnfromfinally
+  # This rule checks for swallowed exceptions.
+  SwallowedException:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#throwingexceptionfromfinally
+  # This rule checks for throwing exceptions from finally blocks.
+  ThrowingExceptionFromFinally:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#throwingexceptioninmain
+  # This rule checks for throwing exceptions in main.
+  ThrowingExceptionInMain:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#throwingexceptionswithoutmessageorcause
+  # This rule checks for throwing exceptions without message or cause.
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#throwingnewinstanceofsameexception
+  # This rule checks for throwing new instance of same exception.
+  ThrowingNewInstanceOfSameException:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#toogenericexceptioncaught
+  # This rule checks for too generic exception caught.
+  TooGenericExceptionCaught:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/exceptions/#toogenericexceptionthrown
+  # This rule checks for too generic exception thrown.
+  TooGenericExceptionThrown:
+    active: true
+    exceptionNames:
+      - Error
+      - Exception
+      - Throwable
+      - RuntimeException
+
+  # Documentation: https://detekt.dev/docs/rules/formatting/
+formatting:
+  active: true
+  # Documentation: https://detekt.dev/docs/rules/formatting#annotationonseparateline
+  # This rule checks for annotation on separate line.
+  AnnotationOnSeparateLine:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/formatting#chainwrapping
+  # This rule checks for chain wrapping.
+  ChainWrapping:
+    active: true
+  # This rule checks for comment spacing.
+  # Documentation: https://detekt.dev/docs/rules/formatting#commentspacing
+  CommentSpacing:
+    active: true
+  # This rule checks for enum entry name case.
+  # Documentation: https://detekt.dev/docs/rules/formatting#enumentrynamecase
+  EnumEntryNameCase:
+    active: true
+  # This rule checks for filename.
+  # Documentation: https://detekt.dev/docs/rules/formatting#filename
+  Filename:
+    active: true
+  # This rule checks for import ordering.
+  # Documentation: https://detekt.dev/docs/rules/formatting#importordering
+  ImportOrdering:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/formatting#modifierordering
+  # This rule checks for modifier ordering.
+  ModifierOrdering:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/formatting#multilineifelse
+  # This rule checks for multi line if else.
+  MultiLineIfElse:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/formatting#noblanklinebeforerbrace
+  # This rule checks for no blank line before rbrace.
+  NoBlankLineBeforeRbrace:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/formatting#noconsecutiveblanklines
+  # This rule checks for no consecutive blank lines.
+  NoConsecutiveBlankLines:
+    active: true
+  # This rule checks for no empty class body.
+  # Documentation: https://detekt.dev/docs/rules/formatting#noemptyclassbody
+  NoEmptyClassBody:
+    active: true
+  # This rule checks for no empty first line in method block.
+  # Documentation: https://detekt.dev/docs/rules/formatting#noemptyfirstlineinmethodblock
+  NoEmptyFirstLineInMethodBlock:
+    active: true
+  # This rule checks for no multiple spaces.
+  # Documentation: https://detekt.dev/docs/rules/formatting#nomultiplespaces
+  NoMultipleSpaces:
+    active: true
+  # This rule checks for no semicolons.
+  # Documentation: https://detekt.dev/docs/rules/formatting#nosemicolons
+  NoSemicolons:
+    active: true
+  # This rule checks for no trailing spaces.
+  # Documentation: https://detekt.dev/docs/rules/formatting#notrailingspaces
+  NoTrailingSpaces:
+    active: true
+  # This rule checks for no unit return.
+  # Documentation: https://detekt.dev/docs/rules/formatting#nounitreturn
+  NoUnitReturn:
+    active: true
+  # This rule checks for no unused imports.
+  # Documentation: https://detekt.dev/docs/rules/formatting#nounusedimports
+  NoUnusedImports:
+    active: true
+  # This rule checks for package name.
+  # Documentation: https://detekt.dev/docs/rules/formatting#packagename
+  PackageName:
+    active: false
+    ignoreBackTickedIdentifier: true
+  # This rule checks for parameter list wrapping.
+  # Documentation: https://detekt.dev/docs/rules/formatting#parameterlistwrapping
+  ParameterListWrapping:
+    active: true
+    indentSize: 4
+  # This rule checks for spacing around colon.
+  # Documentation: hhttps://detekt.dev/docs/rules/formatting#spacingaroundcolon
+  SpacingAroundColon:
+    active: true
+  # This rule checks for spacing around comma.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundcomma
+  SpacingAroundComma:
+    active: true
+  # This rule checks for spacing around curly.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundcurly
+  SpacingAroundCurly:
+    active: true
+  # This rule checks for spacing around dot.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingarounddot
+  SpacingAroundDot:
+    active: true
+  # This rule checks for spacing around keyword.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundkeyword
+  SpacingAroundKeyword:
+    active: true
+  # This rule checks for spacing around operators.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundoperators
+  SpacingAroundOperators:
+    active: true
+  # This rule checks for spacing around parens.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundparens
+  SpacingAroundParens:
+    active: true
+  # This rule checks for spacing around range operator.
+  # Documentation: https://detekt.dev/docs/rules/formatting#spacingaroundrangeoperator
+  SpacingAroundRangeOperator:
+    active: true
+  # This rule checks for string template.
+  # Documentation: https://detekt.dev/docs/rules/formatting#stringtemplate
+  StringTemplate:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/performance/
+performance:
+  active: true
+  # Documentation: https://detekt.dev/docs/rules/performance#arrayprimitive
+  # This rule checks for array primitive.
+  ArrayPrimitive:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/performance#foreachonrange
+  # This rule checks for for-each on range.
+  ForEachOnRange:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/performance#spreadoperator
+  # This rule checks for spread operator.
+  UnnecessaryTemporaryInstantiation:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/naming/
+naming:
+  active: true
+  # This rule checks for class naming.
+  # Documentation: https://detekt.dev/docs/rules/naming#classnaming
+  ClassNaming:
+    active: true
+  # This rule checks for enum naming.
+  # Documentation: https://detekt.dev/docs/rules/naming#enumnaming
+  EnumNaming:
+    active: true
+  # This rule checks for function max length.
+  # Documentation: https://detekt.dev/docs/rules/naming#functionmaxlength
+  FunctionMaxLength:
+    active: false
+    maximumFunctionNameLength: 30
+  # This rule checks for function min length.
+  # Documentation: https://detekt.dev/docs/rules/naming#functionminlength
+  FunctionMinLength:
+    active: false
+    minimumFunctionNameLength: 3
+  # This rule checks for function naming.
+  # Documentation: https://detekt.dev/docs/rules/naming#functionnaming
+  FunctionNaming:
+    active: true
+    excludes: '**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
+  # This rule checks for package naming.
+  # Documentation: https://detekt.dev/docs/rules/naming#packagenaming
+  PackageNaming:
+    active: true
+    packagePattern: '[a-z`]+(\.[a-z`][A-Za-z0-9]*)*'
+  # This rule checks for variable max length.
+  # Documentation: https://detekt.dev/docs/rules/naming#variablemaxlength
+  VariableMaxLength:
+    active: false
+    maximumVariableNameLength: 40
+  # This rule checks for variable min length.
+  # Documentation: https://detekt.dev/docs/rules/naming#variableminlength
+  VariableMinLength:
+    active: false
+    minimumVariableNameLength: 1
+  # This rule checks for variable naming.
+  # Documentation: https://detekt.dev/docs/rules/naming#variablenaming
+  VariableNaming:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs/
+potential-bugs:
+  active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#equalsalwaysreturnstrueorfalse
+  # This rule checks if equals always returns true or false.
+  EqualsAlwaysReturnsTrueOrFalse:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#equalswithhashcodeexist
+  # This rule checks if equals and hashCode exist together.
+  EqualsWithHashCodeExist:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#explicitgarbagecollectioncall
+  # This rule checks for explicit garbage collection calls.
+  ExplicitGarbageCollectionCall:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#invalidrange
+  # This rule checks for invalid ranges.
+  InvalidRange:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#iteratorhasnextcallsnextmethod
+  # This rule checks if hasNext is called before next in an iterator.
+  IteratorHasNextCallsNextMethod:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#iteratornotthrowingnosuchelementexception
+  # This rule checks if an iterator throws NoSuchElementException.
+  IteratorNotThrowingNoSuchElementException:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#unconditionaljumpstatementinloop
+  # This rule checks for unconditional jump statements in loops.
+  UnconditionalJumpStatementInLoop:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#unreachablecode
+  # This rule checks for unreachable code.
+  UnreachableCode:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#unsafecallonnullabletype
+  # This rule checks for unsafe calls on nullable types.
+  UnsafeCallOnNullableType:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#unsafecast
+  # This rule checks for unsafe casts.
+  UnsafeCast:
+    active: true
+  # Documentation: https://detekt.dev/docs/rules/potential-bugs#uselesspostfixexpression
+  # This rule checks for useless postfix expressions.
+  UselessPostfixExpression:
+    active: true
+
+  # Documentation: https://detekt.dev/docs/rules/style/
+style:
+  active: true
+  # This rule checks for loops with too many jump statements.
+  # Documentation: https://detekt.dev/docs/rules/style#loopwithtoomanyjumpstatements
+  LoopWithTooManyJumpStatements:
+    active: true
+    maxJumpCount: 1
+  # This rule checks for magic numbers.
+  # Documentation: https://detekt.dev/docs/rules/style#magicnumber
+  MagicNumber:
+    active: true
+    excludes: '**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
+    ignoreHashCodeFunction: true
+    ignorePropertyDeclaration: true
+    ignoreLocalVariableDeclaration: true
+    ignoreConstantDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreAnnotation: true
+    ignoreNamedArgument: true
+    ignoreEnums: true
+    ignoreRanges: true
+  # This rule checks for mandatory braces in if statements.
+  # Documentation: https://detekt.dev/docs/rules/style#maxlinelength
+  MaxLineLength:
+    active: true
+    excludes: '**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
+    maxLineLength: 120
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: false
+  # This rule checks if a value can be declared as const.
+  # Documentation: https://detekt.dev/docs/rules/style#maybeconst
+  MayBeConst:
+    active: true
+  # This rule checks for modifier order.
+  # Documentation: https://detekt.dev/docs/rules/style#modifierorder
+  ModifierOrder:
+    active: true
+  # This rule checks for visibility of nested classes.
+  # Documentation: https://detekt.dev/docs/rules/style#nestedclassesvisibility
+  NestedClassesVisibility:
+    active: false
+  # This rule checks for a new line at the end of a file.
+  # Documentation: https://detekt.dev/docs/rules/style#newlineatendoffile
+  NewLineAtEndOfFile:
+    active: true
+  # This rule checks if the abstract keyword is optional.
+  # Documentation: https://detekt.dev/docs/rules/style#optionalabstractkeyword
+  OptionalAbstractKeyword:
+    active: true
+  # This rule checks if to is preferred over pair syntax.
+  # Documentation: https://detekt.dev/docs/rules/style#protectedmemberinfinalclass
+  ProtectedMemberInFinalClass:
+    active: true
+  # This rule checks for safe casts.
+  # Documentation: https://detekt.dev/docs/rules/style#safecast
+  SafeCast:
+    active: true
+  # This rule checks for serialVersionUID in serializable classes.
+  # Documentation: https://detekt.dev/docs/rules/style#serialversionuidinserializableclass
+  SerialVersionUIDInSerializableClass:
+    active: true
+  # This rule checks for spacing between package and imports.
+  # Documentation: https://detekt.dev/docs/rules/style#spacingbetweenpackageandimports
+  SpacingBetweenPackageAndImports:
+    active: false
+  # This rule checks for the number of throws in a function.
+  # Documentation: https://detekt.dev/docs/rules/style#throwscount
+  ThrowsCount:
+    active: false
+    max: 2
+  # This rule checks for trailing whitespace.
+  # Documentation: https://detekt.dev/docs/rules/style#trailingwhitespace
+  TrailingWhitespace:
+    active: false
+  # This rule checks for unnecessary abstract classes.
+  # Documentation: https://detekt.dev/docs/rules/style#unnecessaryabstractclass
+  UnnecessaryAbstractClass:
+    active: true
+    ignoreAnnotated: [ 'dagger.Module' ]
+  # This rule checks for unnecessary annotation use site targets.
+  # Documentation: https://detekt.dev/docs/rules/style#unnecessaryapply
+  UnnecessaryApply:
+    active: false
+  # This rule checks for unnecessary inheritance.
+  # Documentation: https://detekt.dev/docs/rules/style#unnecessaryinheritance
+  UnnecessaryInheritance:
+    active: true
+  # This rule checks for unused imports.
+  # Documentation: https://detekt.dev/docs/rules/style#unusedimports
+  UnusedImports:
+    active: true
+  # This rule checks for unused private classes.
+  # Documentation: https://detekt.dev/docs/rules/style#unusedprivateclass
+  UnusedPrivateClass:
+    active: true
+  # This rule checks for unused private members.
+  # Documentation: https://detekt.dev/docs/rules/style#unusedprivatemember
+  UnusedPrivateMember:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID)'
+  # This rule checks for array literals in annotations.
+  # Documentation: https://detekt.dev/docs/rules/style#usearrayliteralsinannotations
+  UseArrayLiteralsInAnnotations:
+    active: true
+  # This rule checks for utility classes with public constructors.
+  # Documentation: https://detekt.dev/docs/rules/style#utilityclasswithpublicconstructor
+  UtilityClassWithPublicConstructor:
+    active: true

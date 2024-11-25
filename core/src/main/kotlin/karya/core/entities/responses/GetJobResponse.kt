@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetJobResponse(
-	val job: Job,
-	val latestTask: Task,
+    val job: Job,
+    val latestTask: Task,
 )

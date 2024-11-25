@@ -10,12 +10,12 @@ import javax.inject.Singleton
 
 @Module
 class FusedLocksModule {
-	@Provides
-	@Singleton
-	fun provideLocksClient(locksConfig: LocksConfig) =
-		when (locksConfig) {
-			is RedisLocksConfig -> RedisLocksClientFactory.build(locksConfig)
+    @Provides
+    @Singleton
+    fun provideLocksClient(locksConfig: LocksConfig) =
+        when (locksConfig) {
+            is RedisLocksConfig -> RedisLocksClientFactory.build(locksConfig)
 
-			else -> throw UnknownProviderException("lock", locksConfig.provider)
-		}
+            else -> throw UnknownProviderException("lock", locksConfig.provider)
+        }
 }

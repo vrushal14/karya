@@ -12,18 +12,18 @@ import javax.inject.Singleton
 
 @Module
 class RedisLocksModule {
-	@Provides
-	@Singleton
-	fun provideRedisLocksClient(
-		config: RedisLocksConfig,
-		redissonClient: RedissonClient,
-	): LocksClient = RedisLocksClient(redissonClient, config)
+    @Provides
+    @Singleton
+    fun provideRedisLocksClient(
+        config: RedisLocksConfig,
+        redissonClient: RedissonClient,
+    ): LocksClient = RedisLocksClient(redissonClient, config)
 
-	@Provides
-	@Singleton
-	fun provideRedissonClient(redisLocksConfig: RedisLocksConfig): RedissonClient {
-		val config = Config()
-		config.useSingleServer().address = redisLocksConfig.getUrl()
-		return Redisson.create(config)
-	}
+    @Provides
+    @Singleton
+    fun provideRedissonClient(redisLocksConfig: RedisLocksConfig): RedissonClient {
+        val config = Config()
+        config.useSingleServer().address = redisLocksConfig.getUrl()
+        return Redisson.create(config)
+    }
 }
