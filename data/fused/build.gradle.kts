@@ -9,9 +9,6 @@ dependencies {
   implementation(project(Modules.Data.REDIS))
   implementation(project(Modules.Data.RABBIT_MQ))
 
-  implementation(Libs.Jackson.CORE)
-  implementation(Libs.Jackson.YML_FORMAT)
-
   implementation(Libs.Dagger.DAGGER)
   kapt(Libs.Dagger.COMPILER)
 }

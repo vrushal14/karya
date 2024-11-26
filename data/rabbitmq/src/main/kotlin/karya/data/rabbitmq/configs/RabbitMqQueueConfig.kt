@@ -1,7 +1,7 @@
 package karya.data.rabbitmq.configs
 
 import karya.core.configs.QueueConfig
-import karya.core.utils.PropertyReader.readValue
+import karya.core.utils.readValue
 
 data class RabbitMqQueueConfig(
   val username: String,

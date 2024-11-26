@@ -1,4 +1,4 @@
-package karya.data.fused.utils
+package karya.data.fused.entities
 
 import karya.core.repos.JobsRepo
 import karya.core.repos.RepoConnector

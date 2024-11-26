@@ -6,9 +6,9 @@ import karya.core.actors.Connector
 import karya.core.configs.QueueConfig
 import karya.core.configs.RepoConfig
 import karya.core.entities.action.Action
+import karya.core.utils.getSection
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
-import karya.servers.executor.utils.getListSection
 
 data class ExecutorConfig(
   val connectors: List<Connector<out Action>>,
@@ -24,7 +24,7 @@ data class ExecutorConfig(
     ): ExecutorConfig {
 
       val connectors = mutableListOf<Connector<out Action>>()
-      val properties = getListSection(executorFilePath, "connectors")
+      val properties: List<*> = getSection(executorFilePath, "connectors")
       connectors.addConnectors(properties)
 
       return ExecutorConfig(

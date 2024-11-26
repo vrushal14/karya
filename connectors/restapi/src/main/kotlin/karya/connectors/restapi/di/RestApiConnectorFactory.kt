@@ -1,7 +1,7 @@
 package karya.connectors.restapi.di
 
 import karya.connectors.restapi.configs.RestApiConnectorConfig
-import karya.core.utils.PropertyReader.readValue
+import karya.core.utils.readValue
 
 object RestApiConnectorFactory {
 
