@@ -3,7 +3,7 @@ package karya.servers.scheduler.configs
 import karya.core.configs.LocksConfig
 import karya.core.configs.QueueConfig
 import karya.core.configs.RepoConfig
-import karya.core.utils.PropsReader.getKey
+import karya.core.utils.PropertyReader.getKey
 import karya.data.fused.LocksSelector
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
@@ -21,6 +21,7 @@ data class SchedulerConfig(
   val locksConfig: LocksConfig,
   val queueConfig: QueueConfig,
 ) {
+
   companion object {
     fun load(
       schedulerFilePath: String,

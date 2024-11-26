@@ -1,7 +1,7 @@
 package karya.data.redis.configs
 
 import karya.core.configs.LocksConfig
-import karya.core.utils.PropsReader.readValue
+import karya.core.utils.PropertyReader.readValue
 
 data class RedisLocksConfig(
   val hostname: String,

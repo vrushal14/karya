@@ -2,7 +2,8 @@ package karya.core.utils
 
 import java.util.*
 
-object PropsReader {
+object PropertyReader {
+
   inline fun <reified T> Map<*, *>.readValue(key: String): T {
     val value = this[key] ?: throw IllegalArgumentException("$key value is not set!")
 

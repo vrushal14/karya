@@ -1,7 +1,7 @@
 package karya.data.fused
 
 import karya.core.configs.RepoConfig
-import karya.core.utils.PropsReader.readValue
+import karya.core.utils.PropertyReader.readValue
 import karya.data.fused.exceptions.UnknownProviderException
 import karya.data.fused.utils.getSection
 import karya.data.psql.configs.PsqlRepoConfig
