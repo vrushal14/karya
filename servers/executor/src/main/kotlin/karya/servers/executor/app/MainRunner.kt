@@ -1,6 +1,8 @@
 package karya.servers.executor.app
 
+import karya.core.actors.Connector
 import karya.core.configs.KaryaEnvironmentConfig
+import karya.core.entities.action.Action
 import karya.servers.executor.configs.ExecutorConfig
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -22,5 +24,17 @@ suspend fun main() {
     }
   )
 
+  tempRun(config)
   latch.await()
+}
+
+private suspend fun tempRun(config: ExecutorConfig) {
+  val action = Action.RestApiRequest(baseUrl = "google.com")
+  val connector = config.connectors[action::class] as? Connector<Action>
+  connector?.invoke(action)?.let {
+    println(it)
+  } ?: run {
+    println("No connector found for action: ${action::class}")
+  }
+
 }

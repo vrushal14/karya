@@ -16,13 +16,13 @@ inline fun <reified T> getSection(
 }
 
 inline fun <reified T> Map<*, *>.readValue(key: String): T {
-  val value = this[key] ?: throw IllegalArgumentException("$key value is not set!")
+  val value = this[key] ?: throw KaryaException("$key value is not set!")
 
   return when (T::class) {
     Long::class -> (value as? Number)?.toLong() as T
     Int::class -> (value as? Number)?.toInt() as T
     Double::class -> (value as? Number)?.toDouble() as T
     Float::class -> (value as? Number)?.toFloat() as T
-    else -> value as? T ?: throw IllegalArgumentException("Invalid type for key '$key'")
+    else -> value as? T ?: throw KaryaException("Invalid type for key '$key'")
   }
 }

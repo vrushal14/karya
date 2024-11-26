@@ -9,7 +9,7 @@ object RestApiConnectorFactory {
     RestApiConnectorConfig(
       keepAliveTime = configMap.readValue("keepAliveTime"),
       connectionTimeout = configMap.readValue("connectionTimeout"),
-      connectionAttempt = configMap.readValue("connectionAttempt"),
+      connectionAttempts = configMap.readValue("connectionAttempts"),
     ).let { build(it) }
 
   fun build(config: RestApiConnectorConfig) =

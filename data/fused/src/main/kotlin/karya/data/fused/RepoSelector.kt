@@ -8,9 +8,11 @@ import karya.data.psql.configs.PsqlRepoConfig
 import karya.data.psql.configs.PsqlRepoConfig.Companion.PSQL_IDENTIFIER
 
 object RepoSelector {
+
   fun get(filePath: String): RepoConfig {
     val section: Map<String, *> = getSection(filePath, "repo")
     val properties = section["properties"] as Map<*, *>
+
     return when (val provider = section["provider"]) {
       PSQL_IDENTIFIER -> PsqlRepoConfig(properties, section.readValue("partitions"))
 
