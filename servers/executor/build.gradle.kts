@@ -12,9 +12,6 @@ dependencies {
   implementation(Libs.SLF4J)
   implementation(Libs.KOTLIN_REFLECT)
 
-  implementation(Libs.Jackson.CORE)
-  implementation(Libs.Jackson.YML_FORMAT)
-
   implementation(Libs.Log4j.API)
   implementation(Libs.Log4j.CORE)
   implementation(Libs.Log4j.KOTLIN_API)
