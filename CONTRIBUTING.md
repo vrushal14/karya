@@ -2,7 +2,8 @@
 
 ## Local Setup
 
-This will help setup and run the application locally. For this, we shall be creating a Postgres instance as a repo provider, Redis for locks provider and RabbitMq as queue provider.
+This will help set up and run the application locally. For this, we shall be creating a Postgres instance as a repo
+provider, Redis for locks provider and RabbitMq as queue provider.
 
 ### Pre-Requisites
 
