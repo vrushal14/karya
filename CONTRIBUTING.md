@@ -1,5 +1,42 @@
 # Contributing to Karya
 
+## Local Setup
+
+This will help setup and run the application locally. For this, we shall be creating a Postgres instance as a repo provider, Redis for locks provider and RabbitMq as queue provider.
+
+### Pre-Requisites
+
+- Make sure docker is installed on your machine
+- Run the following command to start the required provider services
+  ```shell
+  docker-compose -f ./docs/local-setup/providers.docker-compose.yml up -d
+  ```
+
+### Running the application
+
+Start the application in the following order:
+
+1. Start the server
+   ```shell 
+    export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
+   
+    ./gradlew servers-server:run
+   ```
+2. Start the scheduler
+    ```shell 
+    export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
+    export KARYA_SCHEDULER_CONFIG_PATH=path/to/scheduler.yml
+   
+    ./gradlew servers-scheduler:run
+   ```
+3. Start the executor
+    ```shell 
+    export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
+    export KARYA_EXECUTOR_CONFIG_PATH=path/to/executor.yml
+   
+    ./gradlew servers-executor:run
+   ```
+
 ## Linting and Formatting
 
 - [Detekt](https://detekt.dev/) Plugin is being used to enforce code style and formatting
