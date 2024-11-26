@@ -3,12 +3,11 @@ package karya.servers.scheduler.configs
 import karya.core.configs.LocksConfig
 import karya.core.configs.QueueConfig
 import karya.core.configs.RepoConfig
-import karya.core.utils.PropertyReader.getKey
+import karya.core.utils.getSection
+import karya.core.utils.readValue
 import karya.data.fused.LocksSelector
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
-import java.io.File
-import java.util.*
 
 data class SchedulerConfig(
   val threadCount: Int,
@@ -27,29 +26,28 @@ data class SchedulerConfig(
       schedulerFilePath: String,
       providerFilePath: String,
     ): SchedulerConfig {
-      val properties =
-        Properties().apply {
-          load(File(schedulerFilePath).inputStream())
-        }
+
+      val application: Map<String, *> = getSection(schedulerFilePath, "application")
+      val fetcher = application["fetcher"] as Map<*, *>?
+        ?: throw IllegalArgumentException("application.fetcher is required")
 
       return SchedulerConfig(
-        threadCount = properties.getKey("application.threadCount"),
-        workers = properties.getKey("application.workers"),
-        channelCapacity = properties.getKey("application.fetcher.channelCapacity"),
-        pollFrequency = properties.getKey("application.fetcher.pollFrequency"),
-        partitions = getPartitions(properties),
-        executionBufferInMilli = properties.getKey("application.fetcher.executionBuffer"),
+        threadCount = application.readValue("threadCount"),
+        workers = application.readValue("workers"),
+
+        channelCapacity = fetcher.readValue("channelCapacity"),
+        pollFrequency = fetcher.readValue("pollFrequency"),
+        executionBufferInMilli = fetcher.readValue("executionBuffer"),
+        partitions = getPartitions(fetcher),
+
         repoConfig = RepoSelector.get(providerFilePath),
         locksConfig = LocksSelector.get(providerFilePath),
         queueConfig = QueueSelector.get(providerFilePath),
       )
     }
 
-    private fun getPartitions(properties: Properties) =
-      properties
-        .getProperty("application.fetcher.repoPartitions")
-        ?.split(",")
-        ?.map { it.trim().toInt() }
-        ?: throw IllegalArgumentException("application.fetcher.repoPartitions is required")
+    private fun getPartitions(fetcherProperties: Map<*, *>) =
+      fetcherProperties["repoPartitions"]?.let { it as List<*> }?.map { it as Int }
+        ?: throw IllegalArgumentException("repoPartitions is required")
   }
 }
