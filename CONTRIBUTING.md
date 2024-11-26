@@ -10,9 +10,11 @@
 <summary><strong>Additional configs for IntelliJ users</strong></summary>
 
 ### Set the indentation to space : 2
+
 ![indentation_settings](./docs/media/intellij_indentation.png)
 
 ### While running the Intellij Formatter, check the below options
+
 ![format_settings](./docs/media/intellij_format.png)
 
 </details>

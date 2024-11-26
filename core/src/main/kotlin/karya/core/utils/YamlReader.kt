@@ -12,7 +12,7 @@ inline fun <reified T> getSection(
   val mapper = ObjectMapper(YAMLFactory()).apply { findAndRegisterModules() }
   val yamlContent = File(filePath).readText()
   val yamlMap = mapper.readValue(yamlContent, Map::class.java) as Map<*, *>
-  return yamlMap[section] as? T?: throw KaryaException("Section $section not found in YAML file!")
+  return yamlMap[section] as? T ?: throw KaryaException("Section $section not found in YAML file!")
 }
 
 inline fun <reified T> Map<*, *>.readValue(key: String): T {
