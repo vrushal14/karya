@@ -42,7 +42,7 @@ constructor(
 							PARTITION OF tasks 
 							FOR VALUES WITH (
 							    MODULUS $partitions, 
-							    REMAINDER $partitions
+							    REMAINDER ${i % partitions}
 							);
 							""",
           )

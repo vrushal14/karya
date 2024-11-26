@@ -1,0 +1,13 @@
+application:
+  threadCount: 2
+  workers: 3
+  fetcher:
+    channelCapacity: 10
+    pollFrequency: 300
+    executionBuffer: 1000
+    repoPartitions:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5

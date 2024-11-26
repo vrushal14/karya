@@ -3,6 +3,8 @@ package karya.connectors.restapi.di
 import dagger.BindsInstance
 import dagger.Component
 import karya.connectors.restapi.configs.RestApiConnectorConfig
+import karya.core.actors.Connector
+import karya.core.entities.action.Action
 import javax.inject.Singleton
 
 @Singleton
@@ -12,6 +14,9 @@ import javax.inject.Singleton
   ],
 )
 interface RestApiConnectorComponent {
+
+  val connector: Connector<Action.RestApiRequest>
+
   @Component.Builder
   interface Builder {
     @BindsInstance

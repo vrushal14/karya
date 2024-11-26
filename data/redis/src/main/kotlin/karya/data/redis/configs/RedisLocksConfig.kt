@@ -1,7 +1,7 @@
 package karya.data.redis.configs
 
 import karya.core.configs.LocksConfig
-import karya.core.utils.PropsReader.readValue
+import karya.core.utils.readValue
 
 data class RedisLocksConfig(
   val hostname: String,
@@ -9,6 +9,7 @@ data class RedisLocksConfig(
   val waitTime: Long,
   val leaseTime: Long,
 ) : LocksConfig(REDIS_IDENTIFIER) {
+
   companion object {
     const val REDIS_IDENTIFIER = "redis"
   }

@@ -7,14 +7,15 @@ import karya.core.repos.JobsRepo
 import karya.core.repos.RepoConnector
 import karya.core.repos.TasksRepo
 import karya.core.repos.UsersRepo
+import karya.data.fused.entities.ReposWrapper
 import karya.data.fused.exceptions.UnknownProviderException
-import karya.data.fused.utils.ReposWrapper
 import karya.data.psql.configs.PsqlRepoConfig
 import karya.data.psql.di.PsqlComponentFactory
 import javax.inject.Singleton
 
 @Module
 class FusedRepoModule {
+
   @Provides
   @Singleton
   fun provideRepoConnector(wrapper: ReposWrapper): RepoConnector = wrapper.repoConnector

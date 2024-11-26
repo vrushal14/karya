@@ -32,7 +32,7 @@ class RestApiConnectorModule {
         endpoint {
           keepAliveTime = config.keepAliveTime
           connectTimeout = config.connectionTimeout
-          connectAttempts = config.connectionAttempt
+          connectAttempts = config.connectionAttempts
         }
       }
       defaultRequest {

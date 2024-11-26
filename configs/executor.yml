@@ -1,0 +1,8 @@
+application:
+  workers: 2
+  connectors:
+    - type: "restapi"
+      configs:
+        keepAliveTime: 3000
+        connectionTimeout: 1000
+        connectionAttempts: 3
