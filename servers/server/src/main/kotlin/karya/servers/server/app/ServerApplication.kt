@@ -17,7 +17,7 @@ constructor(
 ) {
   companion object : Logging
 
-  suspend fun start() {
+  fun start() {
     runBlocking {
       startupResources.invoke()
       ktorServer.start()

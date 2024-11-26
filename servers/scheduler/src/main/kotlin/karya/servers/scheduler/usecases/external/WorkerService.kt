@@ -1,12 +1,11 @@
 package karya.servers.scheduler.usecases.external
 
 import karya.core.entities.Task
+import karya.servers.scheduler.app.SchedulerManager
 import karya.servers.scheduler.usecases.internal.ProcessTask
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.channels.ReceiveChannel
 import org.apache.logging.log4j.kotlin.Logging
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class WorkerService
@@ -16,35 +15,17 @@ constructor(
 ) {
   companion object : Logging
 
-  private lateinit var scope: CoroutineScope
-  private lateinit var customDispatcher: ExecutorCoroutineDispatcher
+  suspend fun invoke(channel: ReceiveChannel<Task>) {
+    try {
+      if (SchedulerManager.isStopped.get()) return
+      for (task in channel) processTask.invoke(task)
 
-  fun start(
-    name: String,
-    channel: ReceiveChannel<Task>,
-  ) {
-    setScope(name)
-    scope.launch {
-      try {
-        for (task in channel) processTask.invoke(task)
-      } catch (e: ClosedReceiveChannelException) {
-        logger.info { "Task channel closed. Shutting down worker." }
-        stop()
-      }
+    } catch (e: ClosedReceiveChannelException) {
+      logger.info { "Task channel closed. Shutting down worker." }
+
+    } catch (e: Exception) {
+      logger.error(e) { "Unexpected error in worker processing." }
+      throw e
     }
-  }
-
-  fun stop() {
-    scope.cancel()
-    customDispatcher.close()
-  }
-
-  private fun setScope(name: String) {
-    this.customDispatcher =
-      Executors
-        .newSingleThreadExecutor { runnable ->
-          Thread(runnable, name)
-        }.asCoroutineDispatcher()
-    this.scope = CoroutineScope(customDispatcher + SupervisorJob())
   }
 }

@@ -1,8 +1,15 @@
 package karya.servers.scheduler.usecases
 
+import karya.core.entities.Task
 import karya.core.repos.RepoConnector
+import karya.servers.scheduler.configs.SchedulerConfig
 import karya.servers.scheduler.usecases.external.FetcherService
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -11,34 +18,25 @@ class SchedulerFetcher
 constructor(
   private val fetcherService: FetcherService,
   private val repoConnector: RepoConnector,
+  config: SchedulerConfig
 ) {
   companion object : Logging
 
-  private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+  private val taskChannel = Channel<Task>(capacity = config.channelCapacity)
+  val taskReadChannel: ReceiveChannel<Task> get() = taskChannel // receive only channel for consumers
 
-  fun provideChannel() = fetcherService.taskReadChannel
-
-  fun start() {
+  suspend fun start() {
     logger.info { "Starting fetcher..." }
-    scope.launch {
-      setFetcherName()
-      fetcherService.start()
+    withContext(CoroutineName("scheduler-karya-fetcher")) {
+      fetcherService.invoke(taskChannel)
     }
     logger.info("Fetcher started.")
   }
 
-  fun stop() =
-    runBlocking {
-      logger.info { "Shutting down fetcher..." }
-      repoConnector.shutdown()
-      fetcherService.stop()
-      scope.cancel()
-      logger.info("Fetcher shutdown complete.")
-    }
-
-  private fun setFetcherName(): String {
-    val name = "scheduler-karya-fetcher"
-    Thread.currentThread().name = name
-    return name
+  suspend fun stop() {
+    logger.info { "Shutting down fetcher..." }
+    repoConnector.shutdown()
+    taskChannel.close()
+    logger.info("Fetcher shutdown complete.")
   }
 }
