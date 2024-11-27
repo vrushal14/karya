@@ -12,55 +12,55 @@ updates:
         patterns:
           - "org.jetbrains.kotlin*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       ktor-dependencies:
         patterns:
           - "io.ktor*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       exposed-dependencies:
         patterns:
           - "org.jetbrains.exposed*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       jackson-dependencies:
         patterns:
           - "com.fasterxml.jackson*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       kotlinx-dependencies:
         patterns:
           - "org.jetbrains.kotlinx*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       logging-dependencies:
         patterns:
           - "org.slf4j*"
           - "org.apache.logging.log4j*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       database-dependencies:
         patterns:
           - "org.postgresql*"
           - "com.zaxxer:HikariCP*"
           - "org.flywaydb*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       other-dependencies:
         patterns:
           - "org.redisson*"
           - "com.rabbitmq*"
           - "com.google.dagger*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
 
   # Update GitHub Actions
   - package-ecosystem: "github-actions"
