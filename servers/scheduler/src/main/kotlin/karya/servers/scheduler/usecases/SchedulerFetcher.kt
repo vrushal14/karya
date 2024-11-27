@@ -4,10 +4,9 @@ import karya.core.entities.Task
 import karya.core.repos.RepoConnector
 import karya.servers.scheduler.configs.SchedulerConfig
 import karya.servers.scheduler.usecases.external.FetcherService
-import kotlinx.coroutines.CoroutineName
+import karya.servers.scheduler.usecases.utils.withNamedContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.withContext
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -25,16 +24,14 @@ constructor(
 
   suspend fun start() {
     logger.info { "Starting fetcher..." }
-    withContext(CoroutineName("scheduler-karya-fetcher")) {
-      fetcherService.invoke(taskChannel)
-    }
-    logger.info("Fetcher started.")
+    withNamedContext("scheduler-karya-fetcher") { fetcherService.invoke(taskChannel) }
+    logger.info { "Fetcher started." }
   }
 
   suspend fun stop() {
     logger.info { "Shutting down fetcher..." }
     repoConnector.shutdown()
     taskChannel.close()
-    logger.info("Fetcher shutdown complete.")
+    logger.info { "Fetcher shutdown complete." }
   }
 }
