@@ -26,9 +26,11 @@ class SchedulerManager(
   }
 
   fun start() {
-    scope.launch(fetcherErrorHandler) { fetcher.start() }
-    workers.forEachIndexed { index, worker ->
-      scope.launch(workerErrorHandlerFor(index, worker)) { worker.start(index, fetcher.taskReadChannel) }
+    runBlocking {
+      scope.launch(fetcherErrorHandler) { fetcher.start() }
+      workers.forEachIndexed { index, worker ->
+        scope.launch(workerErrorHandlerFor(index, worker)) { worker.start(index, fetcher.taskReadChannel) }
+      }
     }
   }
 
@@ -36,8 +38,8 @@ class SchedulerManager(
     if (isStopped.compareAndSet(false, true)) {
       runBlocking {
         coroutineScope {
-          launch { fetcher.stop() }
-          workers.forEachIndexed { index, worker -> launch { worker.stop(index) } }
+          fetcher.stop()
+          workers.forEachIndexed { index, worker -> worker.stop(index) }
         }
         dispatcher.close()
         logger.info { "Scheduler manager stopped completely." }

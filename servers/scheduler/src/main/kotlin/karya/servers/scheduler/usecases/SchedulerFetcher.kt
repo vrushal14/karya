@@ -7,8 +7,6 @@ import karya.servers.scheduler.usecases.external.FetcherService
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
