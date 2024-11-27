@@ -1,9 +1,7 @@
 package karya.client.ktor.utils
 
 import io.ktor.client.statement.*
-import karya.client.exceptions.KaryaClientException.KaryaServer4xxException
-import karya.client.exceptions.KaryaClientException.KaryaServer5xxException
-import karya.client.exceptions.KaryaClientException.KaryaServerUnknownException
+import karya.client.exceptions.KaryaClientException.*
 import kotlinx.serialization.json.Json
 
 suspend inline fun <reified Success> HttpResponse.deserialize(json: Json): Success {

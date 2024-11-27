@@ -40,7 +40,7 @@ constructor(
         .selectAll()
         .where { JobsTable.id eq id }
         .firstOrNull()
-    }?.let { fromRecord(it) }
+    }?.let(::fromRecord)
 
   fun update(job: Job) =
     transaction(db) {
