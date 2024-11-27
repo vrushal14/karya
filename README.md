@@ -2,7 +2,7 @@
 
 Distributed, scalable Job Scheduler
 
-- [How to contribute](./CONTRIBUTING.md)
+- [How to contribute](.github/CONTRIBUTING.md)
 
 ---
 
