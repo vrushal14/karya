@@ -4,13 +4,10 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import karya.core.exceptions.*
-import karya.core.exceptions.JobException
-import karya.core.exceptions.TaskException
-import karya.core.exceptions.UserException
 
 suspend fun KaryaException.toHttpResponse(call: ApplicationCall) =
   when (this) {
-    is UserException.UserNotFoundException -> call.respond(HttpStatusCode.NotFound, this.)
+    is UserException.UserNotFoundException -> call.respond(HttpStatusCode.NotFound, this.message)
 
     is JobException.UnknownJobTypeException -> call.respond(HttpStatusCode.InternalServerError, this.message)
     is JobException.UnknownJobStatusException -> call.respond(HttpStatusCode.InternalServerError, this.message)
