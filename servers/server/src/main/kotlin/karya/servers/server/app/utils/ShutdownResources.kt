@@ -16,6 +16,6 @@ constructor(
   suspend fun invoke() {
     if (repoConnector.shutdown()) logger.info { "Repo connector shutdown successfully..." }
     if (locksClient.shutdown()) logger.info { "Locks connector shutdown successfully..." }
-    logger.info("Repo Connector shutdown complete")
+    logger.info { "Shutdown Resources complete" }
   }
 }

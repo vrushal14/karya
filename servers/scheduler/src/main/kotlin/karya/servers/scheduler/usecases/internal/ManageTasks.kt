@@ -9,6 +9,7 @@ import karya.core.repos.RepoConnector
 import karya.core.repos.TasksRepo
 import karya.core.usecases.createPartitionKey
 import karya.core.usecases.getNextExecutionAt
+import karya.servers.scheduler.usecases.utils.getInstanceName
 import org.apache.logging.log4j.kotlin.Logging
 import org.apache.logging.log4j.kotlin.logger
 import java.time.Instant
@@ -24,10 +25,7 @@ constructor(
 ) {
   companion object : Logging
 
-  suspend fun invoke(
-    job: Job,
-    task: Task,
-  ) {
+  suspend fun invoke(job: Job, task: Task) {
     createNextTask(job)
     pushCurrentTaskToQueue(job, task)
   }
@@ -42,12 +40,9 @@ constructor(
       executedAt = null,
       nextExecutionAt = getNextExecutionAt(Instant.now(), job.periodTime),
     ).also { tasksRepo.add(it) }
-      .also { logger.info("[NEXT TASK CREATED] --- $it") }
+      .also { logger.info("[${getInstanceName()}] : [NEXT TASK CREATED] --- $it") }
 
-  private suspend fun pushCurrentTaskToQueue(
-    job: Job,
-    task: Task,
-  ) = ExecutorMessage(
+  private suspend fun pushCurrentTaskToQueue(job: Job, task: Task) = ExecutorMessage(
     jobId = job.id,
     taskId = task.id,
     action = job.action,

@@ -10,6 +10,7 @@ import karya.core.locks.LocksClient
 import karya.core.locks.entities.LockResult
 import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
+import karya.servers.scheduler.usecases.utils.getInstanceName
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ constructor(
   }
 
   private suspend fun processTaskInternal(task: Task) {
-    logger.info("[PROCESSING TASK] --- TaskId : ${task.id}")
+    logger.info("[${getInstanceName()}] : [PROCESSING TASK] --- TaskId : ${task.id}")
     val job = jobsRepo.get(task.jobId) ?: throw JobNotFoundException(task.jobId)
     updateTaskStatus(job, task)
 
@@ -40,17 +41,14 @@ constructor(
     if (shouldCreateNextTask(job)) manageTasks.invoke(updatedJob, task)
   }
 
-  private suspend fun updateTaskStatus(
-    job: Job,
-    task: Task,
-  ) = when (job.status) {
+  private suspend fun updateTaskStatus(job: Job, task: Task) = when (job.status) {
     JobStatus.CREATED, JobStatus.RUNNING -> TaskStatus.PROCESSING
     JobStatus.COMPLETED -> TaskStatus.SUCCESS
     JobStatus.CANCELLED -> TaskStatus.CANCELLED
   }.also {
     if (task.status != it) {
       tasksRepo.updateStatus(task.id, it)
-      logger.info("Transitioning task status from : ${task.status} -> $it")
+      logger.info("[${getInstanceName()}] : Transitioning task status from : ${task.status} -> $it")
     }
   }
 
@@ -60,19 +58,19 @@ constructor(
         job
           .copy(status = JobStatus.RUNNING)
           .also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
-          .also { logger.info("Transitioning job status from : ${job.status} -> ${it.status}") }
+          .also { logger.info("[${getInstanceName()}] : Transitioning job status from : ${job.status} -> ${it.status}") }
 
       else -> job
     }
 
-  private fun shouldCreateNextTask(job: Job): Boolean {
+  private suspend fun shouldCreateNextTask(job: Job): Boolean {
     val isJobNonTerminal = (job.status == JobStatus.CREATED).or(job.status == JobStatus.RUNNING)
     val isJobRecurring = (job.type == JobType.RECURRING)
     return (isJobRecurring && isJobNonTerminal)
       .also {
-        logger.info {
-          "isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it"
-        }
+        logger.info(
+          "[${getInstanceName()}] : isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it"
+        )
       }
   }
 }
