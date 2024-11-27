@@ -19,4 +19,12 @@ sealed class KaryaClientException : KaryaException() {
     override val message: String = "Server responded with --- [$url] --- [$statusCode | $text]"
   ) : KaryaClientException()
 
+  @Serializable
+  data class KaryaServerUnknownException(
+    private val url: String,
+    private val statusCode: Int,
+    private val text: String,
+    override val message: String = "Server responded with --- [$url] --- [$statusCode | $text]"
+  ) : KaryaClientException()
+
 }
