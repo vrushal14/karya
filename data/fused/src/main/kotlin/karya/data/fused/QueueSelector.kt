@@ -2,7 +2,7 @@ package karya.data.fused
 
 import karya.core.configs.QueueConfig
 import karya.core.utils.getSection
-import karya.data.fused.exceptions.UnknownProviderException
+import karya.data.fused.exceptions.FusedDataException.UnknownProviderException
 import karya.data.rabbitmq.configs.RabbitMqQueueConfig
 import karya.data.rabbitmq.configs.RabbitMqQueueConfig.Companion.RABBITMQ_IDENTIFIER
 

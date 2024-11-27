@@ -2,11 +2,10 @@ package karya.core.exceptions
 
 import java.util.*
 
-sealed class UserException(
-  override val message: String,
-) : KaryaException(message) {
+sealed class UserException : KaryaException() {
+
   data class UserNotFoundException(
-    val userId: UUID,
+    private val userId: UUID,
     override val message: String = "User ($userId) not found",
-  ) : UserException(message)
+  ) : UserException()
 }

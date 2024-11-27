@@ -58,7 +58,7 @@ constructor(
         job
           .copy(status = JobStatus.RUNNING)
           .also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
-          .also { logger.info("[${getInstanceName()}] : Transitioning job status from : ${job.status} -> ${it.status}") }
+          .also { logger.info("[${getInstanceName()}] : Job Status updated : ${job.status} -> ${it.status}") }
 
       else -> job
     }
@@ -69,7 +69,7 @@ constructor(
     return (isJobRecurring && isJobNonTerminal)
       .also {
         logger.info(
-          "[${getInstanceName()}] : isJobRecurring : $isJobRecurring && isJobNonTerminal : $isJobNonTerminal = shouldCreateNextJob : $it"
+          "[${getInstanceName()}] : shouldCreateNextJob : $it"
         )
       }
   }

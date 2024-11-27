@@ -3,7 +3,7 @@ package karya.data.fused
 import karya.core.configs.RepoConfig
 import karya.core.utils.getSection
 import karya.core.utils.readValue
-import karya.data.fused.exceptions.UnknownProviderException
+import karya.data.fused.exceptions.FusedDataException.UnknownProviderException
 import karya.data.psql.configs.PsqlRepoConfig
 import karya.data.psql.configs.PsqlRepoConfig.Companion.PSQL_IDENTIFIER
 

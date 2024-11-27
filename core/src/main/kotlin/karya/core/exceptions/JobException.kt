@@ -1,22 +1,21 @@
 package karya.core.exceptions
 
-import java.util.*
+import java.util.UUID
 
-sealed class JobException(
-  override val message: String,
-) : KaryaException(message) {
+sealed class JobException : KaryaException() {
+
   data class JobNotFoundException(
     val id: UUID,
     override val message: String = "Job not found --- $id",
-  ) : JobException(message)
+  ) : JobException()
 
   data class UnknownJobTypeException(
     val jobTypeId: Int,
     override val message: String = "Unknown Job Type ID --- $jobTypeId",
-  ) : JobException(message)
+  ) : JobException()
 
   data class UnknownJobStatusException(
     val jobStatusId: Int,
     override val message: String = "Unknown Job Status ID --- $jobStatusId",
-  ) : JobException(message)
+  ) : JobException()
 }

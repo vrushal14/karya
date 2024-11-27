@@ -3,7 +3,7 @@ package karya.servers.scheduler.configs
 import karya.core.configs.LocksConfig
 import karya.core.configs.QueueConfig
 import karya.core.configs.RepoConfig
-import karya.core.exceptions.KaryaException
+import karya.core.exceptions.ConfigException.YamlMapKeyNotSetException
 import karya.core.utils.getSection
 import karya.core.utils.readValue
 import karya.data.fused.LocksSelector
@@ -30,7 +30,7 @@ data class SchedulerConfig(
 
       val application: Map<String, *> = getSection(schedulerFilePath, "application")
       val fetcher = application["fetcher"] as Map<*, *>?
-        ?: throw KaryaException("application.fetcher is required")
+        ?: throw YamlMapKeyNotSetException("application.fetcher")
 
       return SchedulerConfig(
         threadCount = application.readValue("threadCount"),
