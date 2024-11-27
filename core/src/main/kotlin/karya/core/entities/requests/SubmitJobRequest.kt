@@ -10,6 +10,7 @@ import java.util.*
 data class SubmitJobRequest(
   @Serializable(with = UUIDSerializer::class)
   val userId: UUID,
+  val description: String,
   val periodTime: String,
   val jobType: JobType,
   val action: Action,

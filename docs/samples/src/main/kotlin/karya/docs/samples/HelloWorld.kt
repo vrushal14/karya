@@ -19,6 +19,7 @@ suspend fun main() {
     client.submitJob(
       SubmitJobRequest(
         userId = user.id,
+        description = "Sample run",
         periodTime = "PT7S",
         jobType = JobType.RECURRING,
         action =
@@ -65,5 +66,5 @@ suspend fun main() {
       ),
     ).also { println(it) }
 
-//  client.cancelJob(UUID.fromString("9cf88d16-fac7-4abd-9bb6-3ccf497f28bb")).also { println(it) }
+//  client.cancelJob(UUID.fromString("b92a1108-a16d-4b6c-b33a-e7ebf284b613")).also { println(it) }
 }

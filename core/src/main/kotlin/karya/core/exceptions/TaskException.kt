@@ -2,16 +2,15 @@ package karya.core.exceptions
 
 import java.util.*
 
-sealed class TaskException(
-  override val message: String,
-) : KaryaException(message) {
+sealed class TaskException : KaryaException() {
+
   data class TaskNotCreatedException(
-    val jobId: UUID,
+    private val jobId: UUID,
     override val message: String = "Task not created for Job --- $jobId",
-  ) : TaskException(message)
+  ) : TaskException()
 
   data class UnknownTaskStatusException(
-    val taskStatusId: Int,
+    private val taskStatusId: Int,
     override val message: String = "Unknown Task Status ID --- $taskStatusId",
-  ) : TaskException(message)
+  ) : TaskException()
 }

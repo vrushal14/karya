@@ -42,6 +42,7 @@ constructor(
   ) = Job(
     id = UUID.randomUUID(),
     userId = user.id,
+    description = request.description,
     periodTime = request.periodTime,
     type = request.jobType,
     status = JobStatus.CREATED,

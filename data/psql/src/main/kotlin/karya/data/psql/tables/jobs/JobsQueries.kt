@@ -17,11 +17,13 @@ constructor(
   private val jobStatusMapper: JobStatusMapper,
   private val jobTypeMapper: JobTypeMapper,
 ) {
+
   fun add(job: Job) =
     transaction(db) {
       JobsTable.insert {
         it[id] = job.id
         it[userId] = job.userId
+        it[description] = job.description
         it[periodTime] = job.periodTime
         it[type] = jobTypeMapper.toRecord(job.type)
         it[status] = jobStatusMapper.toRecord(job.status)
@@ -65,6 +67,7 @@ constructor(
     Job(
       id = resultRow[JobsTable.id],
       userId = resultRow[JobsTable.userId],
+      description = resultRow[JobsTable.description],
       periodTime = resultRow[JobsTable.periodTime],
       type = jobTypeMapper.fromRecord(resultRow[JobsTable.type]),
       status = jobStatusMapper.fromRecord(resultRow[JobsTable.status]),

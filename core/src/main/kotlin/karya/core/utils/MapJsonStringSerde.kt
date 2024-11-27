@@ -22,19 +22,13 @@ object MapJsonStringSerde {
       is String -> JsonPrimitive(value)
       is Number -> JsonPrimitive(value)
       is Boolean -> JsonPrimitive(value)
-      is List<*> ->
-        buildJsonArray {
-          value.forEach {
-            add(convertToJsonElement(it))
-          }
-        }
+      is List<*> -> buildJsonArray {
+        value.forEach { add(convertToJsonElement(it)) }
+      }
 
-      is Map<*, *> ->
-        buildJsonObject {
-          (value as Map<String, *>).forEach { (k, v) ->
-            put(k, convertToJsonElement(v))
-          }
-        }
+      is Map<*, *> -> buildJsonObject {
+        value.forEach { (k, v) -> put(k.toString(), convertToJsonElement(v)) }
+      }
 
       else -> JsonPrimitive(value.toString())
     }

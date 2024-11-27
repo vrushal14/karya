@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.json.json
 object JobsTable : Table("jobs") {
   val id = uuid("id")
   val userId = uuid("user_id") references UsersTable.id
+  val description = varchar("description", 255)
   val periodTime = varchar("period_time", 255)
   val type = integer("type")
   val status = integer("status")
