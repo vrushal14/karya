@@ -59,7 +59,7 @@ constructor(
   override suspend fun shutdown(): Boolean {
     try {
       dataSource.close()
-      logger.info("PsqlRepoConnector shutdown successfully")
+      logger.info("PsqlRepoConnector successfully shutdown")
       return true
     } catch (e: Exception) {
       logger.error(e) { "Error shutting down PsqlRepoConnector" }
