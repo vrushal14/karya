@@ -50,7 +50,7 @@ application:
 
 - Executors receive a task from the worker-queue and does the heavy work that the user specifies.
 - User can specify what action should the executor perform once it receives the task. This is done via setting an environment variable `KARYA_EXECUTOR_CONFIG_PATH` that the executor will look for to initialize the connector-plugins at run time.
-- [Connector-Plugins](##Connector-Plugins) define what operations at the time of execution should the executor support.
+- [Connector-Plugins](./README.md/##connector-plugin) define what operations at the time of execution should the executor support.
 
   ```yml
   application:
