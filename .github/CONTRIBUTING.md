@@ -33,7 +33,6 @@ Start the application in the following order:
     ./gradlew servers-server:run
    ```
    
-   ```
 2. Start the executor
     ```shell 
     export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
@@ -48,6 +47,9 @@ Start the application in the following order:
     export KARYA_SCHEDULER_CONFIG_PATH=path/to/scheduler.yml
    
     ./gradlew servers-scheduler:run
+    ```
+   
+A sample [HelloWorld.kt](../docs/samples/HelloWorld.kt) file is provided to schedule a dummy job and check if the setup is working fine.
 
 ## Linting and Formatting
 
