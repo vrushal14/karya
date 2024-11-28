@@ -138,9 +138,9 @@ To swap in a different connector, change the `provider` key in any of repo/lock/
 
 | connector type       | connector      | provider key       |
 |-------------|-------------|-------------|
-| Postgres | repo      | psql     |
-| Redis | locks      | redis     |
-| RabbitMQ | queue      | rabbitmq     |
+| Postgres | repo      | *psql*     |
+| Redis | locks      | *redis*     |
+| RabbitMQ | queue      | *rabbitmq*     |
 
 ---
 
@@ -151,4 +151,4 @@ This has to be set in the executor.yml file before starting the executor. Curren
 
 | executor.yml key      | description      |
 |-------------|-------------|
-| restapi | This plugin helps support the executor make a REST Api call |
+| *restapi* | This plugin helps support the executor make a REST Api call |
