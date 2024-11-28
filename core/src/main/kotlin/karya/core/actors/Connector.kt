@@ -18,4 +18,5 @@ sealed class Result {
 
 interface Connector<T : Action> {
   suspend fun invoke(action: T): Result
+  suspend fun shutdown()
 }

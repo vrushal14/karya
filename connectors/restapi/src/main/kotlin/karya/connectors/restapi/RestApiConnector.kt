@@ -34,6 +34,10 @@ constructor(
     Result.Failure(message, action, e, Instant.now())
   }
 
+  override suspend fun shutdown() {
+    httpClient.close()
+  }
+
   private fun buildUrl(action: RestApiRequest) = "${action.protocol.name.lowercase()}://${action.baseUrl}"
 
   private fun mapMethod(method: Method) =

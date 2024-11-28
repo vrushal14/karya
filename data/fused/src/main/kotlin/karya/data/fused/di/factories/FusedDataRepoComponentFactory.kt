@@ -1,11 +1,11 @@
 package karya.data.fused.di.factories
 
 import karya.core.configs.RepoConfig
-import karya.data.fused.di.components.DaggerFusedRepoDataComponent
+import karya.data.fused.di.components.DaggerFusedDataRepoComponent
 
-object FusedRepoComponentFactory {
+object FusedDataRepoComponentFactory {
   fun build(repoConfig: RepoConfig) =
-    DaggerFusedRepoDataComponent.builder()
+    DaggerFusedDataRepoComponent.builder()
       .repoConfig(repoConfig)
       .build()
 }

@@ -2,14 +2,16 @@ package karya.servers.executor.di
 
 import dagger.BindsInstance
 import dagger.Component
-import karya.data.fused.di.components.FusedExecutorDataComponent
+import karya.data.fused.di.components.FusedDataQueueComponent
+import karya.data.fused.di.components.FusedDataRepoComponent
 import karya.servers.executor.configs.ExecutorConfig
 import karya.servers.executor.usecase.external.ExecutorService
 
 @ExecutorScope
 @Component(
   dependencies = [
-    FusedExecutorDataComponent::class
+    FusedDataQueueComponent::class,
+    FusedDataRepoComponent::class
   ]
 )
 interface ExecutorComponent {
@@ -22,7 +24,9 @@ interface ExecutorComponent {
     @BindsInstance
     fun config(config: ExecutorConfig): Builder
 
-    fun fusedDataComponent(fusedExecutorDataComponent: FusedExecutorDataComponent): Builder
+    fun fusedQueueComponent(fusedDataQueueComponent: FusedDataQueueComponent): Builder
+
+    fun fusedRepoComponent(fusedDataRepoComponent: FusedDataRepoComponent): Builder
 
     fun build(): ExecutorComponent
   }

@@ -55,8 +55,5 @@ data class ExecutorConfig(
       this.connectors[Action.ChainedRequest::class] = ChainedJobConnectorFactory.build(this.repoConfig)
       return this
     }
-
-
   }
-
 }

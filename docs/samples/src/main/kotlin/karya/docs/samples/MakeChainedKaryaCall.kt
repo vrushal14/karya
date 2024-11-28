@@ -19,8 +19,8 @@ suspend fun main() {
     action = Action.ChainedRequest(
       request = SubmitJobRequest(
         userId = user.id,
-        description = "Sample run",
-        periodTime = "PT7S",
+        description = "Chained delay run",
+        periodTime = "PT5S",
         jobType = JobType.RECURRING,
         action = Action.RestApiRequest(
           baseUrl = "eox7wbcodh9parh.m.pipedream.net",

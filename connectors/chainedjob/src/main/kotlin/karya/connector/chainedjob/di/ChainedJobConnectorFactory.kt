@@ -1,12 +1,12 @@
 package karya.connector.chainedjob.di
 
 import karya.core.configs.RepoConfig
-import karya.data.fused.di.factories.FusedRepoComponentFactory
+import karya.data.fused.di.factories.FusedDataRepoComponentFactory
 
 object ChainedJobConnectorFactory {
   fun build(config: RepoConfig) =
     DaggerChainedJobConnectorComponent.builder()
-      .fusedRepoDataComponent(FusedRepoComponentFactory.build(config))
+      .fusedDataRepoComponent(FusedDataRepoComponentFactory.build(config))
       .build()
       .connector
 }

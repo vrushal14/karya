@@ -16,7 +16,7 @@ import javax.inject.Singleton
     FusedRepoModule::class
   ],
 )
-interface FusedRepoDataComponent {
+interface FusedDataRepoComponent {
 
   val usersRepo: UsersRepo
   val jobsRepo: JobsRepo
@@ -29,7 +29,7 @@ interface FusedRepoDataComponent {
     @BindsInstance
     fun repoConfig(repoConfig: RepoConfig): Builder
 
-    fun build(): FusedRepoDataComponent
+    fun build(): FusedDataRepoComponent
   }
 }
 

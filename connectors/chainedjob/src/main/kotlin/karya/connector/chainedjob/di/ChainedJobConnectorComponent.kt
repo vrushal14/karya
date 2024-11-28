@@ -3,12 +3,12 @@ package karya.connector.chainedjob.di
 import dagger.Component
 import karya.core.actors.Connector
 import karya.core.entities.action.Action
-import karya.data.fused.di.components.FusedRepoDataComponent
+import karya.data.fused.di.components.FusedDataRepoComponent
 
 @ChainedJobConnectorScope
 @Component(
   dependencies = [
-    FusedRepoDataComponent::class
+    FusedDataRepoComponent::class
   ],
   modules = [
     ChainedJobConnectorModule::class,

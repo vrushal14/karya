@@ -19,6 +19,7 @@ interface RestApiConnectorComponent {
 
   @Component.Builder
   interface Builder {
+
     @BindsInstance
     fun config(config: RestApiConnectorConfig): Builder
 
