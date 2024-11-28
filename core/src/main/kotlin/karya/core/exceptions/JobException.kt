@@ -18,4 +18,14 @@ sealed class JobException : KaryaException() {
     private val jobStatusId: Int,
     override val message: String = "Unknown Job Status ID --- $jobStatusId",
   ) : JobException()
+
+  data class RecurisveDepthExceededException(
+    private val passed: Int,
+    private val allowed: Int,
+    override val message: String = "Depth exceeded for chained request --- passed: $passed | allowed: $allowed",
+  ) : JobException()
+
+  data class InvalidChainedRequestException(
+    override val message: String = "Chained requests cannot be recurring",
+  ) : JobException()
 }
