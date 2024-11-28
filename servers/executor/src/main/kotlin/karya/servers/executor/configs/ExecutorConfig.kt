@@ -8,7 +8,6 @@ import karya.core.entities.action.Action
 import karya.core.entities.action.Action.ChainedRequest
 import karya.core.entities.action.Action.RestApiRequest
 import karya.core.utils.getSection
-import karya.core.utils.readValue
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
 import karya.data.fused.di.components.FusedDataQueueComponent
@@ -18,7 +17,6 @@ import karya.data.fused.di.factories.FusedDataRepoComponentFactory
 import kotlin.reflect.KClass
 
 data class ExecutorConfig(
-  val workers: Int,
   val fusedDataRepoComponent: FusedDataRepoComponent,
   val fusedDataQueueComponent: FusedDataQueueComponent
 ) {
@@ -34,7 +32,6 @@ data class ExecutorConfig(
       val queueConfig = QueueSelector.get(providerFilePath)
 
       return ExecutorConfig(
-        workers = application.readValue("workers"),
         fusedDataRepoComponent = FusedDataRepoComponentFactory.build(repoConfig),
         fusedDataQueueComponent = FusedDataQueueComponentFactory.build(queueConfig)
       )

@@ -1,5 +1,4 @@
 application:
-  workers: 2
   connectors:
     - type: "restapi"
       configs:
