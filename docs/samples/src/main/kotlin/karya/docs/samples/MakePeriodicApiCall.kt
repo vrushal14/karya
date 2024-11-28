@@ -55,7 +55,7 @@ suspend fun main() {
         ),
     ),
   )
-  client.fetchJob(job.id).also { println(it) }
+  client.fetchJob(job.id).also(::println)
 
   client
     .updateJob(
@@ -63,7 +63,7 @@ suspend fun main() {
         jobId = job.id,
         maxFailureRetry = 4,
       ),
-    ).also { println(it) }
+    ).also (::println)
 
-//  client.cancelJob(UUID.fromString("b92a1108-a16d-4b6c-b33a-e7ebf284b613")).also { println(it) }
+//  client.cancelJob(UUID.fromString("b92a1108-a16d-4b6c-b33a-e7ebf284b613")).also(::println)
 }

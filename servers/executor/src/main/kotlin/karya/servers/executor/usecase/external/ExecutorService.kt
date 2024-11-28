@@ -30,8 +30,10 @@ constructor(
     queueClient.shutdown()
     repoConnector.shutdown()
     config.connectors.forEach { action, connector ->
-      runBlocking { connector.shutdown() }
-      logger.info("Shutdown connector complete for action : $action")
+      runBlocking {
+        connector.shutdown()
+        logger.info("Connector for action [$action] shutdown complete.")
+      }
     }
     logger.info("Executor service shutdown complete.")
   }

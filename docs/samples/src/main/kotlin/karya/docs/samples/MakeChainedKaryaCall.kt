@@ -14,7 +14,7 @@ suspend fun main() {
   val request = SubmitJobRequest(
     userId = user.id,
     description = "Sample chained run",
-    periodTime = "PT10S",
+    periodTime = "PT15S",
     jobType = JobType.ONE_TIME,
     action = Action.ChainedRequest(
       request = SubmitJobRequest(
@@ -28,4 +28,6 @@ suspend fun main() {
       ),
     ),
   )
+
+  client.submitJob(request).also(::println)
 }
