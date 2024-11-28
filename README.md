@@ -36,21 +36,14 @@ This is a web server via which the client interacts. It has the following functi
 
 This is a configurable component as Karya will look for an environment variable `KARYA_SCHEDULER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
-```yml
-application:
-  threadCount: 2          // how many threads you want one instance of scheduler to use
-  workers: 3              // how many workers within the instance do you want to spin up. Useful when the throughput is high
-  fetcher:                // Karya internally fetches the tasks during polling and pushes into an internal queue for the workers to pick up. This here defines properties of the poller
-    channelCapacity: 10   // size of the queue which the fetcher pushes to and the workers consume from
-    pollFrequency: 300    // polling frequency from the repo, lesser the value, better the precision of when the task should be executed
-    executionBuffer: 1000 // This specifies how far back from the time of polling should scheduler fetch an unexecuted task. This should always be higher than pollFrequency
-    repoPartitions:       // From which partitions should the scheduler instance should poll from.
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-```
+| scheduler.yml key        | sample value       | description       |
+|-------------|-------------|-------------|
+| application.threadCount | 2      | How many threads you want one instance of scheduler to use     |
+| application.workers | 3      | How many workers within the instance do you want to spin up. Useful when the throughput is high     |
+| application.fetcher.channelCapacity | 10      | Executor *polls* for messages from the repo and pushes it to a local queue from which the workers consume from. This property defines the size of this queue explicitly to prevent a OOM scenario.     |
+| application.fetcher.pollFrequency | 250      | Polling frequency from the repo, lesser the value, better the precision of when the task should be executed |
+| application.fetcher.executionBuffer | 1000      | PThis specifies how far back from the time of polling should scheduler look for an unexecuted task. This should always be higher than pollFrequency |
+| application.fetcher.repoPartitions | List<Int>      | From which partitions of the repo should the scheduler instance should poll from. |
 
 [Sample scheduler.yml file](.configs/scheduler.yml)
 
@@ -152,3 +145,22 @@ This has to be set in the executor.yml file before starting the executor. Curren
 | executor.yml key      | description      |
 |-------------|-------------|
 | *restapi* | This plugin helps support the executor make a REST Api call |
+
+[Sample MakePeriodicRestApiCall.kt example](./docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicApiCall.kt).
+
+### Default Connector Plugins
+
+Some plugins need not be specified in the `executor.yml` file as they are natively supported by the Executor. They are:
+
+#### Chained Jobs
+
+Sometimes, one would have a usecase where they would want to schedule a periodic job, *starting* from a definite point in the future. This could be achieved by scheduling a one time job to trigger at the that point in time in the future. And that trigger would be to schedule the periodic job that you want to run. We call this **chained jobs**.
+
+Karya supports chained jobs, albeit with some configuration which needs to be specified in the `server.yml`.
+
+| server.yml key      | description      |
+|-------------|-------------|
+| application.strictMode | This key if set *true* will allow chained jobs to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
+| application.chainedDepth | Chained Jobs are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
+
+[Sample MakeChainedKaryaCall.kt.kt example](./docs/samples/src/main/kotlin/karya/docs/samples/MakeChainedKaryaCall.kt.kt).
