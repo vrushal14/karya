@@ -10,7 +10,7 @@ object RestApiConnectorFactory {
       keepAliveTime = configMap.readValue("keepAliveTime"),
       connectionTimeout = configMap.readValue("connectionTimeout"),
       connectionAttempts = configMap.readValue("connectionAttempts"),
-    ).let { build(it) }
+    ).let(::build)
 
   fun build(config: RestApiConnectorConfig) =
     DaggerRestApiConnectorComponent.builder()

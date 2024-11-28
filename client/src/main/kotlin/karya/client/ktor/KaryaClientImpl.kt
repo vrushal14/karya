@@ -11,7 +11,6 @@ import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.entities.requests.UpdateJobRequest
 import karya.core.entities.responses.GetJobResponse
-import karya.core.exceptions.KaryaException
 import kotlinx.serialization.json.Json
 import java.util.*
 
@@ -28,31 +27,31 @@ class KaryaClientImpl(
       .post {
         url { path(VERSION, "user") }
         setBody(request)
-      }.deserialize<User, KaryaException>(json)
+      }.deserialize<User>(json)
 
   override suspend fun submitJob(request: SubmitJobRequest): Job =
     httpClient
       .post {
         url { path(VERSION, "job") }
         setBody(request)
-      }.deserialize<Job, KaryaException>(json)
+      }.deserialize<Job>(json)
 
   override suspend fun fetchJob(jobId: UUID): GetJobResponse =
     httpClient
       .get {
         url { path(VERSION, "job", jobId.toString()) }
-      }.deserialize<GetJobResponse, KaryaException>(json)
+      }.deserialize<GetJobResponse>(json)
 
   override suspend fun updateJob(request: UpdateJobRequest): Job =
     httpClient
       .patch {
         url { path(VERSION, "job") }
         setBody(request)
-      }.deserialize<Job, KaryaException>(json)
+      }.deserialize<Job>(json)
 
   override suspend fun cancelJob(jobId: UUID): Job =
     httpClient
       .post {
         url { path(VERSION, "job", jobId.toString()) }
-      }.deserialize<Job, KaryaException>(json)
+      }.deserialize<Job>(json)
 }

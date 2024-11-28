@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Action {
+
   @Serializable
   data class RestApiRequest(
     val protocol: Protocol = Protocol.HTTP,

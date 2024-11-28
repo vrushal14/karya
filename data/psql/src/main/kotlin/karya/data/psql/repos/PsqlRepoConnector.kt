@@ -17,6 +17,7 @@ constructor(
   private val flyway: Flyway,
   private val config: PsqlRepoConfig,
 ) : RepoConnector {
+
   companion object : Logging
 
   override suspend fun getPartitions(): Int = config.partitions
@@ -58,9 +59,10 @@ constructor(
   override suspend fun shutdown(): Boolean {
     try {
       dataSource.close()
+      logger.info("PsqlRepoConnector successfully shutdown")
       return true
     } catch (e: Exception) {
-      logger.error(e)
+      logger.error(e) { "Error shutting down PsqlRepoConnector" }
       return false
     }
   }

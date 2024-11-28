@@ -1,6 +1,6 @@
 package karya.core.configs
 
-import karya.core.exceptions.KaryaException
+import karya.core.exceptions.ConfigException.EnvironmentVariableNotSetException
 
 object KaryaEnvironmentConfig {
   val PROVIDERS by lazy { getEnv("KARYA_PROVIDERS_CONFIG_PATH") }
@@ -8,5 +8,5 @@ object KaryaEnvironmentConfig {
   val EXECUTOR by lazy { getEnv("KARYA_EXECUTOR_CONFIG_PATH") }
 
   private fun getEnv(name: String): String =
-    System.getenv(name) ?: throw KaryaException("Provide $name environment variable")
+    System.getenv(name) ?: throw EnvironmentVariableNotSetException(name)
 }

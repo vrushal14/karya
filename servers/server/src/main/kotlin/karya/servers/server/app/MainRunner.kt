@@ -7,7 +7,7 @@ import karya.servers.server.di.ServerApplicationFactory
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.CountDownLatch
 
-suspend fun main() {
+fun main() {
   val providers = KaryaEnvironmentConfig.PROVIDERS
   val repoConfig = RepoSelector.get(providers)
   val locksConfig = LocksSelector.get(providers)

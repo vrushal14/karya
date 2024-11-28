@@ -15,6 +15,7 @@ data class Job(
   val id: UUID,
   @Serializable(with = UUIDSerializer::class)
   val userId: UUID,
+  val description: String,
   val periodTime: String,
   val type: JobType,
   val status: JobStatus,
@@ -27,6 +28,7 @@ data class Job(
     Job(
       id = id,
       userId = userId,
+      description = description,
       periodTime = request.periodTime ?: periodTime,
       type = type,
       status = status,

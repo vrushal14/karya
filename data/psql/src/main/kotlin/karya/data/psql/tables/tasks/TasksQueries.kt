@@ -16,6 +16,11 @@ constructor(
   private val db: Database,
   private val taskStatusMapper: TaskStatusMapper,
 ) {
+
+  companion object {
+    private const val RANGE_QUERY_LIMIT = 1
+  }
+
   fun add(task: Task) =
     transaction(db) {
       TasksTable.insert {
@@ -36,7 +41,7 @@ constructor(
         .where { TasksTable.jobId eq jobId }
         .orderBy(TasksTable.createdAt, SortOrder.DESC)
         .firstOrNull()
-    }?.let { fromRecord(it) }
+    }?.let(::fromRecord)
 
   fun getInRange(request: GetTasksRequest) =
     transaction(db) {
@@ -46,8 +51,13 @@ constructor(
           (TasksTable.partitionKey inList request.partitionKeys) and
               (TasksTable.status eq taskStatusMapper.toRecord(request.status)) and
               (TasksTable.nextExecutionAt lessEq request.executionTime) and
-              (TasksTable.nextExecutionAt greaterEq request.executionTime.minus(request.buffer))
-        }.map { fromRecord(it) }
+              (TasksTable.nextExecutionAt greaterEq request.executionTime.minus(request.buffer)) and
+              (TasksTable.nextExecutionAt.isNotNull())
+        }
+        .orderBy(TasksTable.nextExecutionAt)
+        .limit(RANGE_QUERY_LIMIT)
+        .firstOrNull()
+        ?.let(::fromRecord)
     }
 
   fun update(task: Task) =

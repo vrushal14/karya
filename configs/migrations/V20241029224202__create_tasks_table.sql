@@ -10,4 +10,5 @@ CREATE TABLE IF NOT EXISTS tasks (
     PRIMARY KEY (id, partition_key)
 ) PARTITION BY HASH (partition_key);
 
-CREATE INDEX idx_tasks_next_execution_at ON tasks(next_execution_at);
+CREATE INDEX idx_tasks_partition_key_status_next_execution_at
+ON tasks(partition_key, status, next_execution_at);

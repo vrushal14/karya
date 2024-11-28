@@ -4,7 +4,6 @@ import karya.servers.server.app.ktor.KtorServer
 import karya.servers.server.app.utils.ShutdownResources
 import karya.servers.server.app.utils.StartupResources
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -17,11 +16,11 @@ constructor(
 ) {
   companion object : Logging
 
-  suspend fun start() {
+  fun start() {
     runBlocking {
       startupResources.invoke()
       ktorServer.start()
-      logger.info("Server started successfully")
+      logger.info { "Server started successfully" }
     }
   }
 
@@ -29,8 +28,7 @@ constructor(
     runBlocking {
       shutdownResources.invoke()
       ktorServer.stop()
-      logger.info("Server shutdown complete")
-      LogManager.shutdown()
+      logger.info { "Server shutdown complete" }
     }
   }
 }

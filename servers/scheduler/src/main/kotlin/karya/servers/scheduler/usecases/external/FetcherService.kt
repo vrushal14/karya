@@ -4,9 +4,9 @@ import karya.core.entities.Task
 import karya.core.entities.enums.TaskStatus
 import karya.core.repos.TasksRepo
 import karya.core.repos.entities.GetTasksRequest
+import karya.servers.scheduler.app.SchedulerManager
 import karya.servers.scheduler.configs.SchedulerConfig
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
 import org.apache.logging.log4j.kotlin.Logging
 import java.time.Duration
@@ -21,11 +21,9 @@ constructor(
 ) {
   companion object : Logging
 
-  private val taskChannel = Channel<Task>(capacity = config.channelCapacity)
-  val taskReadChannel: ReceiveChannel<Task> get() = taskChannel // receive only channel for consumers
-
-  suspend fun start() {
+  suspend fun invoke(taskChannel: Channel<Task>) {
     while (true) {
+      if (SchedulerManager.isStopped.get()) return
       val task = getOpenTask()
       if (task != null) {
         taskChannel.send(task)
@@ -34,11 +32,6 @@ constructor(
       }
       delay(config.pollFrequency)
     }
-  }
-
-  fun stop() {
-    taskReadChannel.cancel()
-    taskChannel.close()
   }
 
   private suspend fun getOpenTask(): Task? =

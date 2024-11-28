@@ -30,7 +30,7 @@ constructor(
         .selectAll()
         .where { UsersTable.id eq id }
         .firstOrNull()
-    }?.let { fromRecord(it) }
+    }?.let(::fromRecord)
 
   private fun fromRecord(resultRow: ResultRow) =
     User(
