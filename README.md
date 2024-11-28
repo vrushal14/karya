@@ -1,6 +1,6 @@
 # Karya
 
-Distributed, scalable Job Scheduler
+Distributed, scalable Job Scheduler built for high throughput.
 
 - [How to contribute](.github/CONTRIBUTING.md)
 
@@ -9,3 +9,69 @@ Distributed, scalable Job Scheduler
 ## Overview
 
 ![overview.png](./docs/media/overiew.png)
+
+## Connectors
+
+Karya's "distributed" nature comes not olny from it's ability to scale by spinning up more scheduler/executor nodes. But it leverages the distributed nature of other softwares. To run, it needs at least these 3 components:
+
+1. **Repo** : Karya uses a SQL based database for persistent storage of jobs/tasks/users
+2. **Locks** : Karya uses a distributed mutex lock to prevent tasks to prevent race conditions
+3. **Queue** : Karya buffers the execution of tasks in queues.
+
+**NOTE** : Karya is built for high throughput and the tradeoff for it is precision as to when a task should be executed. But the hit in precision can be minimized by the configurability that Karya provides albeit at the cost of more resources.
+
+### Supported Connectors
+
+Karya provides ability to just plug and play. Users can easily connect their existing repo/locks/queues with Karya, spin up Karya's nodes and start scheduliing jobs! The following connectors are currently configured to work with Karya with rest more on the way:
+
+| repo        | locks       | queue       |
+|-------------|-------------|-------------|
+| [Postgres](https://www.postgresql.org/) | [Redis](https://redis.io/)      | [RabbitMQ](https://www.rabbitmq.com/)     |
+
+### How to configure connectors?
+
+Karya looks for an environment variable `KARYA_PROVIDERS_CONFIG_PATH` where it will look for a yml file from which to pick up the configuration. The format of the `providers.yml` file is as follows:
+
+```yml
+
+// repo configurations
+repo:
+  provider: "psql"
+  partitions: 5  // how many partitions you would want in your database
+  properties:
+    hikari:
+      // can provide any Hikari datasource properties here
+    flyway:
+      url: "jdbc:postgresql://localhost:5432/karya"
+      user: "karya"
+      password: "karya"
+
+// lock configurations
+lock:
+  provider: "redis"
+  properties:
+    hostname: "localhost"
+    port: 6379
+    waitTime: 1000
+    leaseTime: 5000
+
+// queue configurations
+queue:
+  provider: "rabbitmq"
+  properties:
+    username: "karya"
+    password: "karya"
+    virtualHost: "/"
+    hostname: "localhost"
+    port: 5672
+```
+
+The above .yml file describes a way where we are using *Postgres as repo*, *Redis as Locks* and *RabbitMQ as queue*. But you can connect any connector of your choice and provided Karya has the ability to support it, it should be okay. 
+
+To swap in a different connector, change the `provider` key in any of repo/lock/queue section and pass in the properties accordingly. The mapping of connector to provider key is as follows:
+
+| connector type       | connector      | provider key       |
+|-------------|-------------|-------------|
+| Postgres | repo      | psql     |
+| Redis | locks      | redis     |
+| RabbitMQ | queue      | rabbitmq     |
