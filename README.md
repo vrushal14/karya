@@ -10,6 +10,8 @@ Distributed, scalable Job Scheduler built for high throughput.
 
 ![overview.png](./docs/media/overiew.png)
 
+---
+
 ## Connectors
 
 Karya's "distributed" nature comes not olny from it's ability to scale by spinning up more scheduler/executor nodes. But it leverages the distributed nature of other softwares. To run, it needs at least these 3 components:
@@ -31,6 +33,8 @@ Karya provides ability to just plug and play. Users can easily connect their exi
 ### How to configure connectors?
 
 Karya looks for an environment variable `KARYA_PROVIDERS_CONFIG_PATH` where it will look for a yml file from which to pick up the configuration. The format of the `providers.yml` file is as follows:
+
+ [Sample providers.yml file](./configs/providers.yml)
 
 ```yml
 
