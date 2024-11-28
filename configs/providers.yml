@@ -7,12 +7,12 @@ repo:
       dataSource.user: "karya"
       dataSource.password: "karya"
       dataSource.databaseName: "karya"
-      dataSource.portNumber: 5431
+      dataSource.portNumber: 5432
       dataSource.serverName: "localhost"
       maximumPoolSize: 1
       connectionTimeout: 5000
     flyway:
-      url: "jdbc:postgresql://localhost:5431/karya"
+      url: "jdbc:postgresql://localhost:5432/karya"
       user: "karya"
       password: "karya"
 
