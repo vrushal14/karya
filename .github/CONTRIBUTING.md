@@ -12,6 +12,9 @@ provider, Redis for locks provider and RabbitMq as queue provider.
   ```shell
   docker-compose -f ./docs/local-setup/providers.docker-compose.yml up -d
   ```
+- Create a `providers.yml` file. A sample file can be found [here](../configs/providers.yml). For more information on how to configure the providers, refer to the [Connectors](#connectors) section.
+- Create a `executor.yml` file. A sample file can be found [here](../configs/executor.yml).
+- Create a `scheduler.yml` file. A sample file can be found [here](../configs/scheduler.yml).
 
 ### Running the application
 
@@ -23,20 +26,22 @@ Start the application in the following order:
    
     ./gradlew servers-server:run
    ```
-2. Start the scheduler
-    ```shell 
-    export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
-    export KARYA_SCHEDULER_CONFIG_PATH=path/to/scheduler.yml
    
-    ./gradlew servers-scheduler:run
    ```
-3. Start the executor
+2. Start the executor
     ```shell 
     export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
     export KARYA_EXECUTOR_CONFIG_PATH=path/to/executor.yml
    
     ./gradlew servers-executor:run
    ```
+
+3. Start the scheduler
+    ```shell 
+    export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
+    export KARYA_SCHEDULER_CONFIG_PATH=path/to/scheduler.yml
+   
+    ./gradlew servers-scheduler:run
 
 ## Linting and Formatting
 
