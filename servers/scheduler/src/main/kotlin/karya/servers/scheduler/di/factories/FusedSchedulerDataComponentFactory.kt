@@ -3,7 +3,7 @@ package karya.servers.scheduler.di.factories
 import karya.data.fused.di.components.DaggerFusedSchedulerDataComponent
 import karya.servers.scheduler.configs.SchedulerConfig
 
-object FusedDataComponentFactory {
+object FusedSchedulerDataComponentFactory {
   fun build(schedulerConfig: SchedulerConfig) =
     DaggerFusedSchedulerDataComponent
       .builder()

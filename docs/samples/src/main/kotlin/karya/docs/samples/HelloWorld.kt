@@ -24,8 +24,8 @@ suspend fun main() {
         jobType = JobType.RECURRING,
         action =
           Action.RestApiRequest(
-            protocol = Protocol.HTTP,
-            baseUrl = "google.com",
+            protocol = Protocol.HTTPS,
+            baseUrl = "eox7wbcodh9parh.m.pipedream.net",
             method = Method.POST,
             headers =
               mapOf(
@@ -62,7 +62,7 @@ suspend fun main() {
     .updateJob(
       UpdateJobRequest(
         jobId = job.id,
-        maxFailureRetry = 42,
+        maxFailureRetry = 4,
       ),
     ).also { println(it) }
 

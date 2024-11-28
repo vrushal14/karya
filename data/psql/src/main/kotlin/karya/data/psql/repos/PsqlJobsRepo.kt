@@ -22,10 +22,7 @@ constructor(
     jobsQueries.update(job)
   }
 
-  override suspend fun updateStatus(
-    id: UUID,
-    status: JobStatus,
-  ) {
+  override suspend fun updateStatus(id: UUID, status: JobStatus, ) {
     jobsQueries.updateStatus(id, status)
   }
 }

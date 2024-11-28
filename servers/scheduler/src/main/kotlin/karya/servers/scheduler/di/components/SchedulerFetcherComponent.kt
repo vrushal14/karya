@@ -14,10 +14,12 @@ import karya.servers.scheduler.usecases.SchedulerFetcher
   ],
 )
 interface SchedulerFetcherComponent {
+
   val schedulerFetcher: SchedulerFetcher
 
   @Component.Builder
   interface Builder {
+
     @BindsInstance
     fun config(schedulerConfig: SchedulerConfig): Builder
 
