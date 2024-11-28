@@ -11,8 +11,5 @@ interface JobsRepo {
 
   suspend fun update(job: Job)
 
-  suspend fun updateStatus(
-    id: UUID,
-    status: JobStatus,
-  )
+  suspend fun updateStatus(id: UUID, status: JobStatus, )
 }
