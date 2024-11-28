@@ -8,8 +8,8 @@ import karya.core.queues.entities.QueueType
 import karya.data.rabbitmq.configs.ExchangeConfig.DL_EXCHANGE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.DL_ROUTING_KEY
 import karya.data.rabbitmq.configs.ExchangeConfig.EXCHANGE_NAME
-import karya.data.rabbitmq.configs.ExchangeConfig.QUEUE_NAME
-import karya.data.rabbitmq.configs.ExchangeConfig.ROUTING_KEY
+import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_QUEUE_NAME
+import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_ROUTING_KEY
 import karya.data.rabbitmq.usecases.external.InitializeConfiguration
 import karya.data.rabbitmq.usecases.external.RabbitMqConsumer
 import karya.data.rabbitmq.usecases.internal.MessageEncoder
@@ -59,8 +59,8 @@ constructor(
   // will maintain a persistent connection so no need for polling
   override suspend fun consume(onMessage: suspend (ExecutorMessage) -> Unit) {
     consumer.onMessage = onMessage
-    channel.basicConsume(QUEUE_NAME, false, consumer)
-    logger.info("Started consuming messages from queue: $QUEUE_NAME")
+    channel.basicConsume(EXECUTOR_QUEUE_NAME, false, consumer)
+    logger.info("Started consuming messages from queue: $EXECUTOR_QUEUE_NAME")
   }
 
   override suspend fun shutdown(): Boolean = try {
@@ -74,7 +74,7 @@ constructor(
   }
 
   private fun provideExchangeAndRoutingKey(queueType: QueueType): Pair<String, String> = when (queueType) {
-    QueueType.REGULAR -> Pair(EXCHANGE_NAME, ROUTING_KEY)
+    QueueType.REGULAR -> Pair(EXCHANGE_NAME, EXECUTOR_ROUTING_KEY)
     QueueType.DEAD_LETTER -> Pair(DL_EXCHANGE_NAME, DL_ROUTING_KEY)
   }
 }

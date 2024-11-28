@@ -6,8 +6,8 @@ import karya.data.rabbitmq.configs.ExchangeConfig.DL_QUEUE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.DL_ROUTING_KEY
 import karya.data.rabbitmq.configs.ExchangeConfig.EXCHANGE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.EXCHANGE_TYPE
-import karya.data.rabbitmq.configs.ExchangeConfig.QUEUE_NAME
-import karya.data.rabbitmq.configs.ExchangeConfig.ROUTING_KEY
+import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_QUEUE_NAME
+import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_ROUTING_KEY
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -31,11 +31,11 @@ constructor(
   private fun declareExchange() {
     channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE, true)
     channel.queueDeclare(
-      QUEUE_NAME, true, false, false, mapOf(
+      EXECUTOR_QUEUE_NAME, true, false, false, mapOf(
         "x-dead-letter-exchange" to DL_EXCHANGE_NAME
       )
     )
-    channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY)
+    channel.queueBind(EXECUTOR_QUEUE_NAME, EXCHANGE_NAME, EXECUTOR_ROUTING_KEY)
     logger.info("RabbitMQ exchange [$EXCHANGE_NAME] initialized.")
   }
 
