@@ -15,47 +15,46 @@ suspend fun main() {
   val client = KaryaClientFactory.create(KaryaClientConfig.Dev)
 
   val user = client.createUser(CreateUserRequest("Alice"))
-  val job =
-    client.submitJob(
-      SubmitJobRequest(
-        userId = user.id,
-        description = "Sample run",
-        periodTime = "PT7S",
-        jobType = JobType.RECURRING,
-        action =
-          Action.RestApiRequest(
-            protocol = Protocol.HTTPS,
-            baseUrl = "eox7wbcodh9parh.m.pipedream.net",
-            method = Method.POST,
-            headers =
-              mapOf(
-                "content-type" to "application/json",
-                "client-header" to "Alice",
-              ),
-            body =
-              Body.JsonBody(
-                data =
-                  mapOf(
-                    "udf1" to "value",
-                    "udf2" to 1,
-                    "udf3" to true,
-                    "udf4" to 1.2,
-                    "udf5" to listOf(1, 2, 3, 4),
-                    "udf6" to
-                        mapOf(
-                          "nested-udf1" to listOf("a", "b", "c"),
-                          "nested-udf2" to mapOf("nested-nested-udf1" to true),
-                        ),
-                    "udf7" to
-                        listOf(
-                          mapOf("nested-udf3" to listOf(1, 2, 3)),
-                        ),
-                  ),
-              ),
-            timeout = 1000L,
-          ),
-      ),
-    )
+  val job = client.submitJob(
+    SubmitJobRequest(
+      userId = user.id,
+      description = "Sample run",
+      periodTime = "PT7S",
+      jobType = JobType.RECURRING,
+      action =
+        Action.RestApiRequest(
+          protocol = Protocol.HTTPS,
+          baseUrl = "eox7wbcodh9parh.m.pipedream.net",
+          method = Method.POST,
+          headers =
+            mapOf(
+              "content-type" to "application/json",
+              "client-header" to "Alice",
+            ),
+          body =
+            Body.JsonBody(
+              data =
+                mapOf(
+                  "udf1" to "value",
+                  "udf2" to 1,
+                  "udf3" to true,
+                  "udf4" to 1.2,
+                  "udf5" to listOf(1, 2, 3, 4),
+                  "udf6" to
+                      mapOf(
+                        "nested-udf1" to listOf("a", "b", "c"),
+                        "nested-udf2" to mapOf("nested-nested-udf1" to true),
+                      ),
+                  "udf7" to
+                      listOf(
+                        mapOf("nested-udf3" to listOf(1, 2, 3)),
+                      ),
+                ),
+            ),
+          timeout = 1000L,
+        ),
+    ),
+  )
   client.fetchJob(job.id).also { println(it) }
 
   client

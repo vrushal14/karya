@@ -43,6 +43,7 @@ data class ExecutorConfig(
     }
 
     private fun ExecutorConfig.addDefaultConnectors(): ExecutorConfig {
+      this.connectors = mutableMapOf()
       this.connectors[ChainedRequest::class] = ChainedJobConnectorFactory.build(this.fusedDataRepoComponent)
       return this
     }
