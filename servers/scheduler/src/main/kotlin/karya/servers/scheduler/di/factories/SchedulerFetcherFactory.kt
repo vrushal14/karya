@@ -7,7 +7,7 @@ object SchedulerFetcherFactory {
   fun build(config: SchedulerConfig) =
     DaggerSchedulerFetcherComponent
       .builder()
-      .fusedDataComponent(FusedDataComponentFactory.build(config))
+      .fusedDataComponent(FusedSchedulerDataComponentFactory.build(config))
       .config(config)
       .build()
       .schedulerFetcher

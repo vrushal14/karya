@@ -5,7 +5,7 @@ import com.rabbitmq.client.Channel
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
 import karya.core.queues.entities.ExecutorMessage
-import karya.data.rabbitmq.RabbitMqQueueClient
+import karya.data.rabbitmq.usecases.internal.MessageEncoder
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
@@ -14,6 +14,7 @@ class RabbitMqConsumer
 @Inject
 constructor(
   private val channel: Channel,
+  private val messageEncoder: MessageEncoder
 ) : DefaultConsumer(channel) {
   companion object : Logging
 
@@ -27,7 +28,7 @@ constructor(
   ) {
     envelope?.let {
       try {
-        val message = parseMessage(body)
+        val message = messageEncoder.decode(body)
         onMessage?.let { handler -> runBlocking { handler(message) } }
         channel.basicAck(envelope.deliveryTag, false)
 
@@ -36,11 +37,5 @@ constructor(
         logger.error("Error processing message: ${e.message}", e)
       }
     } ?: logger.error("Received null envelope, message discarded.")
-  }
-
-  private fun parseMessage(body: ByteArray?): ExecutorMessage {
-    val messageJson = body?.toString(Charsets.UTF_8)
-      ?: throw IllegalArgumentException("Message body is null")
-    return RabbitMqQueueClient.Companion.json.decodeFromString<ExecutorMessage>(messageJson)
   }
 }

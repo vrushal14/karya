@@ -14,7 +14,6 @@ import karya.data.rabbitmq.usecases.external.InitializeConfiguration
 import karya.data.rabbitmq.usecases.external.RabbitMqConsumer
 import karya.data.rabbitmq.usecases.internal.MessageEncoder
 import karya.data.rabbitmq.usecases.internal.MessagePropertiesBuilder
-import kotlinx.serialization.json.Json
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -30,13 +29,7 @@ constructor(
   initializeConfiguration: InitializeConfiguration,
 ) : QueueClient {
 
-  companion object : Logging {
-    val json = Json {
-      ignoreUnknownKeys = true
-      isLenient = true
-      prettyPrint = false
-    }
-  }
+  companion object : Logging
 
   init {
     initializeConfiguration.invoke()

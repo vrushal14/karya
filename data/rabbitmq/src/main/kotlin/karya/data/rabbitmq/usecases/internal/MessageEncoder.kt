@@ -14,4 +14,9 @@ constructor(
     return json.encodeToString(ExecutorMessage.serializer(), message)
       .toByteArray(Charsets.UTF_8)
   }
+
+  fun decode(message: ByteArray?): ExecutorMessage {
+    val messageJson = message?.toString(Charsets.UTF_8)
+      ?: throw IllegalArgumentException("Message body is null")
+    return json.decodeFromString<ExecutorMessage>(messageJson)  }
 }
