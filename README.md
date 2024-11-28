@@ -14,6 +14,14 @@ Distributed, scalable Job Scheduler built for high throughput.
 
 Karya has the following components which helps it achieve its functionality. Note that **all of the components are stateless** hence can be scaled in numbers according to your requirements without any issue.
 
+#### Client
+
+Users can integrate the Karya client into their services to:
+
+- Create a user
+- Use that user to schedule jobs
+- Update/cancel jobs
+
 #### Server
 
 This is a web server via which the client interacts. It has the following functions:
@@ -21,7 +29,7 @@ This is a web server via which the client interacts. It has the following functi
 1. Manage users. Only a registered user can schedule a job.
 2. Pushes the job to the repo connector from which the scheduler will poll from
 
-### Scheduler
+#### Scheduler
 
 - This is the heart of Karya. it will constantly keep polling the repo, and when it is time to execute the task, will it push to the queue.
 - This is the component which has the logic as to when and if the next task is to be scheduled.
@@ -46,7 +54,7 @@ application:
 
 [Sample scheduler.yml file](.configs/scheduler.yml)
 
-### Executor
+#### Executor
 
 - Executors receive a task from the worker-queue and does the heavy work that the user specifies.
 - User can specify what action should the executor perform once it receives the task. This is done via setting an environment variable `KARYA_EXECUTOR_CONFIG_PATH` that the executor will look for to initialize the connector-plugins at run time.
@@ -138,7 +146,8 @@ To swap in a different connector, change the `provider` key in any of repo/lock/
 
 ## Connector-Plugins
 
-This here is the section which defines what all actions does Karya supports when a task has to be executed by the executor. Currently, the following connector plugins are available:
+This here is the section which defines what all actions does Karya supports when a task has to be executed by the executor.
+This has to be set in the executor.yml file before starting the executor. Currently, the following connector plugins are available:
 
 | executor.yml key      | description      |
 |-------------|-------------|
