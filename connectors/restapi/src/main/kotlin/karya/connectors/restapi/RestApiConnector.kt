@@ -1,6 +1,7 @@
 package karya.connectors.restapi
 
 import io.ktor.client.*
+import io.ktor.client.call.body
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -52,11 +53,11 @@ constructor(
     }
   }
 
-  private fun handleResponse(response: HttpResponse, action: Action.RestApiRequest, timestamp: Instant): Result =
+  private suspend fun handleResponse(response: HttpResponse, action: Action.RestApiRequest, timestamp: Instant): Result =
     if (response.status.isSuccess()) {
       Result.Success(timestamp)
     } else {
-      val message = "REST call failed with status ${response.status.value}"
+      val message = "REST call failed with status [${response.status.value} | ${response.request.url}] | ${response.bodyAsText()}"
       Result.Failure(message, action, null, timestamp)
     }
 }

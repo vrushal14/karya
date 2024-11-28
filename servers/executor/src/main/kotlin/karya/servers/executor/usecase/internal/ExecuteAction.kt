@@ -45,7 +45,7 @@ constructor(
 
   private suspend fun handleSuccess(result: Result.Success, message: ExecutorMessage) =
     tasksRepo.updateStatus(message.taskId, SUCCESS, result.timestamp)
-      .also { logger.info("[TASK EXECUTED SUCCESSFULLY] --- message : $message") }
+      .also { logger.info("[TASK EXECUTED SUCCESSFULLY] --- [taskId : ${message.taskId} | result : $result]") }
 
   private suspend fun handleFailure(result: Result.Failure, message: ExecutorMessage) {
     val updatedMessage = message.copy(maxFailureRetry = message.maxFailureRetry - 1)
@@ -55,7 +55,7 @@ constructor(
 
     } else {
       queueClient.push(updatedMessage)
-      logger.warn("[ACTION FAILED | RETRYING] --- retrying action : $updatedMessage")
+      logger.warn("[ACTION FAILED | RETRYING] --- [result : ${result.reason} | retry count : ${updatedMessage.maxFailureRetry}]")
     }
     tasksRepo.updateStatus(message.taskId, FAILURE, result.timestamp)
   }
