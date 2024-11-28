@@ -20,6 +20,7 @@ import javax.inject.Singleton
 
 @Module
 class RestApiConnectorModule {
+
   @Provides
   @Singleton
   fun provideRestApiConnector(httpClient: HttpClient): Connector<Action.RestApiRequest> = RestApiConnector(httpClient)

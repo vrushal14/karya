@@ -8,6 +8,7 @@ dependencies {
   implementation(project(Modules.Data.FUSED))
 
   implementation(project(Modules.Connectors.REST_API))
+  implementation(project(Modules.Connectors.CHAINED_JOB))
 
   implementation(Libs.SLF4J)
   implementation(Libs.KOTLIN_REFLECT)

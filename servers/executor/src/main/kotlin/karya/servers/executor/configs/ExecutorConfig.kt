@@ -1,5 +1,6 @@
 package karya.servers.executor.configs
 
+import karya.connector.chainedjob.di.ChainedJobConnectorFactory
 import karya.connectors.restapi.configs.RestApiConnectorConfig
 import karya.connectors.restapi.di.RestApiConnectorFactory
 import karya.core.actors.Connector
@@ -14,7 +15,7 @@ import kotlin.reflect.KClass
 
 data class ExecutorConfig(
   val workers: Int,
-  val connectors: Map<KClass<out Action>, Connector<out Action>>,
+  val connectors: MutableMap<KClass<out Action>, Connector<out Action>>,
 
   val repoConfig: RepoConfig,
   val queueConfig: QueueConfig
@@ -38,7 +39,7 @@ data class ExecutorConfig(
 
         repoConfig = RepoSelector.get(providerFilePath),
         queueConfig = QueueSelector.get(providerFilePath),
-      )
+      ).addDefaultConnectors()
     }
 
     private fun MutableMap<KClass<out Action>, Connector<out Action>>.addConnectors(properties: List<*>) {
@@ -49,6 +50,12 @@ data class ExecutorConfig(
         }
       }
     }
+
+    private fun ExecutorConfig.addDefaultConnectors(): ExecutorConfig {
+      this.connectors[Action.ChainedRequest::class] = ChainedJobConnectorFactory.build(this.repoConfig)
+      return this
+    }
+
 
   }
 

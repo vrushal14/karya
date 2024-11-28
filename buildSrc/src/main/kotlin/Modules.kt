@@ -23,5 +23,6 @@ object Modules {
     private const val CONNECTORS = ":connectors"
 
     const val REST_API = "$CONNECTORS-restapi"
+    const val CHAINED_JOB = "$CONNECTORS-chainedjob"
   }
 }
