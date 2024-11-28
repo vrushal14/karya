@@ -1,11 +1,11 @@
-package karya.data.rabbitmq
+package karya.data.rabbitmq.usecases.external
 
-import com.rabbitmq.client.AMQP
+import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
 import karya.core.queues.entities.ExecutorMessage
-import karya.data.rabbitmq.RabbitMqQueueClient.Companion.json
+import karya.data.rabbitmq.RabbitMqQueueClient
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
@@ -22,16 +22,15 @@ constructor(
   override fun handleDelivery(
     consumerTag: String?,
     envelope: Envelope?,
-    properties: AMQP.BasicProperties?,
+    properties: BasicProperties?,
     body: ByteArray?,
   ) {
     envelope?.let {
       try {
         val message = parseMessage(body)
-        onMessage?.let { handler ->
-          runBlocking { handler(message) } // Process the message
-        }
+        onMessage?.let { handler -> runBlocking { handler(message) } }
         channel.basicAck(envelope.deliveryTag, false)
+
       } catch (e: Exception) {
         channel.basicNack(envelope.deliveryTag, false, true) // Requeue message on failure
         logger.error("Error processing message: ${e.message}", e)
@@ -40,9 +39,8 @@ constructor(
   }
 
   private fun parseMessage(body: ByteArray?): ExecutorMessage {
-    val messageJson =
-      body?.toString(Charsets.UTF_8)
-        ?: throw IllegalArgumentException("Message body is null")
-    return json.decodeFromString<ExecutorMessage>(messageJson)
+    val messageJson = body?.toString(Charsets.UTF_8)
+      ?: throw IllegalArgumentException("Message body is null")
+    return RabbitMqQueueClient.Companion.json.decodeFromString<ExecutorMessage>(messageJson)
   }
 }
