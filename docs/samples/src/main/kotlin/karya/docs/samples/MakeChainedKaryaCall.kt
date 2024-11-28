@@ -22,7 +22,7 @@ suspend fun main() {
         userId = user.id,
         description = "Chained delay run",
         periodTime = "PT5S",
-        jobType = JobType.Recurring(Instant.MAX.toEpochMilli()),
+        jobType = JobType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
         action = Action.RestApiRequest(
           baseUrl = "eox7wbcodh9parh.m.pipedream.net",
         ),

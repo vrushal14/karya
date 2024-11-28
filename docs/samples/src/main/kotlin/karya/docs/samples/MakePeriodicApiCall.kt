@@ -52,7 +52,7 @@ suspend fun main() {
     userId = user.id,
     description = "Sample run",
     periodTime = "PT7S",
-    jobType = JobType.Recurring(Instant.MAX.toEpochMilli()),
+    jobType = JobType.Recurring(null),
     action = apiRequest
   )
 
