@@ -55,7 +55,7 @@ constructor(
 
     } else {
       queueClient.push(updatedMessage)
-      logger.warn("[ACTION FAILED | RETRYING] --- [result : ${result.reason} | retry count : ${updatedMessage.maxFailureRetry}]")
+      logger.warn("[ACTION FAILED | RETRYING (${updatedMessage.maxFailureRetry})] --- result : ${result.reason}")
     }
     tasksRepo.updateStatus(message.taskId, FAILURE, result.timestamp)
   }

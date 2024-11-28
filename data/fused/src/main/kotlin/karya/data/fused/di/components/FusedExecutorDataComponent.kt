@@ -8,6 +8,7 @@ import karya.core.queues.QueueClient
 import karya.core.repos.JobsRepo
 import karya.core.repos.RepoConnector
 import karya.core.repos.TasksRepo
+import karya.core.repos.UsersRepo
 import karya.data.fused.di.modules.FusedQueueModule
 import karya.data.fused.di.modules.FusedRepoModule
 import javax.inject.Singleton
@@ -22,6 +23,7 @@ import javax.inject.Singleton
 interface FusedExecutorDataComponent {
   val jobsRepo: JobsRepo
   val tasksRepo: TasksRepo
+  val usersRepo: UsersRepo
 
   val queueClient: QueueClient
 
