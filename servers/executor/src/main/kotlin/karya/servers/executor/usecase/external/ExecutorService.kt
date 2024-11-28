@@ -13,13 +13,14 @@ constructor(
   private val repoConnector: RepoConnector,
   private val queueClient: QueueClient,
   private val executeAction: ExecuteAction
-){
+) {
 
   companion object : Logging
 
   suspend fun start() {
     logger.info("Starting executor service...")
-   queueClient.consume { message -> executeAction.invoke(message) }
+    queueClient.initialize()
+    queueClient.consume { message -> executeAction.invoke(message) }
   }
 
   fun stop() = runBlocking {

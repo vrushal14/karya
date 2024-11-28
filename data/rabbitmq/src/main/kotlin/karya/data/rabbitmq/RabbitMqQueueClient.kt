@@ -25,13 +25,12 @@ constructor(
   private val consumer: RabbitMqConsumer,
   private val messageEncoder: MessageEncoder,
   private val messagePropertiesBuilder: MessagePropertiesBuilder,
-
-  initializeConfiguration: InitializeConfiguration,
+  private val initializeConfiguration: InitializeConfiguration,
 ) : QueueClient {
 
   companion object : Logging
 
-  init {
+  override suspend fun initialize() {
     initializeConfiguration.invoke()
   }
 
