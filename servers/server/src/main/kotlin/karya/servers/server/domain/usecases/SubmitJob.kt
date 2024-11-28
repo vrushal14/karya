@@ -27,19 +27,16 @@ constructor(
   private val tasksRepo: TasksRepo,
   private val repoConnector: RepoConnector,
 ) {
+
   companion object : Logging
 
-  suspend fun invoke(request: SubmitJobRequest): Job =
-    usersRepo
-      .get(request.userId)
-      ?.let { createJob(request, it) }
-      ?.also { createTask(it) }
-      ?: throw UserException.UserNotFoundException(request.userId)
+  suspend fun invoke(request: SubmitJobRequest): Job = usersRepo
+    .get(request.userId)
+    ?.let { createJob(request, it) }
+    ?.also { createTask(it) }
+    ?: throw UserException.UserNotFoundException(request.userId)
 
-  private suspend fun createJob(
-    request: SubmitJobRequest,
-    user: User,
-  ) = Job(
+  private suspend fun createJob(request: SubmitJobRequest, user: User) = Job(
     id = UUID.randomUUID(),
     userId = user.id,
     description = request.description,
@@ -53,15 +50,14 @@ constructor(
   ).also { jobsRepo.add(it) }
     .also { logger.info("[JOB CREATED] --- $it") }
 
-  private suspend fun createTask(job: Job) =
-    Task(
-      id = UUID.randomUUID(),
-      jobId = job.id,
-      partitionKey = createPartitionKey(repoConnector.getPartitions()),
-      status = TaskStatus.CREATED,
-      createdAt = Instant.now().toEpochMilli(),
-      executedAt = null,
-      nextExecutionAt = getNextExecutionAt(Instant.ofEpochMilli(job.createdAt), job.periodTime),
-    ).also { tasksRepo.add(it) }
-      .also { logger.info("[TASK CREATED] --- $it") }
+  private suspend fun createTask(job: Job) = Task(
+    id = UUID.randomUUID(),
+    jobId = job.id,
+    partitionKey = createPartitionKey(repoConnector.getPartitions()),
+    status = TaskStatus.CREATED,
+    createdAt = Instant.now().toEpochMilli(),
+    executedAt = null,
+    nextExecutionAt = getNextExecutionAt(Instant.ofEpochMilli(job.createdAt), job.periodTime),
+  ).also { tasksRepo.add(it) }
+    .also { logger.info("[TASK CREATED] --- $it") }
 }
