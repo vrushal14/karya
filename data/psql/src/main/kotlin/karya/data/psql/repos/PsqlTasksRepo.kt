@@ -5,6 +5,7 @@ import karya.core.entities.enums.TaskStatus
 import karya.core.repos.TasksRepo
 import karya.core.repos.entities.GetTasksRequest
 import karya.data.psql.tables.tasks.TasksQueries
+import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 
@@ -29,5 +30,9 @@ constructor(
 
   override suspend fun updateStatus(id: UUID, status: TaskStatus) {
     tasksQueries.updateStatus(id, status)
+  }
+
+  override suspend fun updateStatus(id: UUID, status: TaskStatus, executedAt: Instant) {
+    tasksQueries.updateStatus(id, status, executedAt)
   }
 }

@@ -18,11 +18,14 @@ constructor(
   companion object : Logging
 
   suspend fun start() {
+    logger.info("Starting executor service...")
    queueClient.consume { message -> executeAction.invoke(message) }
   }
 
   fun stop() = runBlocking {
+    logger.info("Shutting down executor service...")
     queueClient.shutdown()
     repoConnector.shutdown()
+    logger.info("Executor service shutdown complete.")
   }
 }

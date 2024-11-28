@@ -3,6 +3,7 @@ package karya.core.repos
 import karya.core.entities.Task
 import karya.core.entities.enums.TaskStatus
 import karya.core.repos.entities.GetTasksRequest
+import java.time.Instant
 import java.util.*
 
 interface TasksRepo {
@@ -14,8 +15,7 @@ interface TasksRepo {
 
   suspend fun update(task: Task)
 
-  suspend fun updateStatus(
-    id: UUID,
-    status: TaskStatus,
-  )
+  suspend fun updateStatus(id: UUID, status: TaskStatus)
+
+  suspend fun updateStatus(id: UUID, status: TaskStatus, executedAt: Instant)
 }
