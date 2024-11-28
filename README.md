@@ -160,7 +160,7 @@ Karya supports chained jobs, albeit with some configuration which needs to be sp
 
 | server.yml key      | description      |
 |-------------|-------------|
-| application.strictMode | This key if set *true* will allow chained jobs to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
+| application.strictMode | This key if set *false* will allow chained jobs to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
 | application.chainedDepth | Chained Jobs are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
 
 [Sample MakeChainedKaryaCall.kt.kt example](./docs/samples/src/main/kotlin/karya/docs/samples/MakeChainedKaryaCall.kt.kt).
