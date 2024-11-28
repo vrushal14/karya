@@ -49,7 +49,7 @@ Start the application in the following order:
     ./gradlew servers-scheduler:run
     ```
    
-A sample [HelloWorld.kt](../docs/samples/HelloWorld.kt) file is provided to schedule a dummy job and check if the setup is working fine.
+A sample [HelloWorld.kt](../docs/samples/src/main/kotlin/karya/docs/samples/HelloWorld.kt) file is provided to schedule a dummy job and check if the setup is working fine.
 
 ## Linting and Formatting
 
