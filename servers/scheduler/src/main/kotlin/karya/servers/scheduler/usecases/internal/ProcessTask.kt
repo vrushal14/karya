@@ -3,7 +3,6 @@ package karya.servers.scheduler.usecases.internal
 import karya.core.entities.Job
 import karya.core.entities.Task
 import karya.core.entities.enums.JobStatus
-import karya.core.entities.enums.JobType
 import karya.core.entities.enums.TaskStatus
 import karya.core.exceptions.JobException.JobNotFoundException
 import karya.core.locks.LocksClient
@@ -38,7 +37,7 @@ constructor(
     updateTaskStatus(job, task)
 
     val updatedJob = transitionJobStatus(job)
-    if (shouldCreateNextTask(job)) manageTasks.invoke(updatedJob, task)
+    manageTasks.invoke(updatedJob, task)
   }
 
   private suspend fun updateTaskStatus(job: Job, task: Task) = when (job.status) {
@@ -52,25 +51,12 @@ constructor(
     }
   }
 
-  private suspend fun transitionJobStatus(job: Job) =
-    when (job.status) {
-      JobStatus.CREATED ->
-        job
-          .copy(status = JobStatus.RUNNING)
-          .also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
-          .also { logger.info("[${getInstanceName()}] : Job Status updated : ${job.status} -> ${it.status}") }
+  private suspend fun transitionJobStatus(job: Job) = when (job.status) {
+    JobStatus.CREATED -> job
+      .copy(status = JobStatus.RUNNING)
+      .also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
+      .also { logger.info("[${getInstanceName()}] : Job Status updated : ${job.status} -> ${it.status}") }
 
-      else -> job
-    }
-
-  private suspend fun shouldCreateNextTask(job: Job): Boolean {
-    val isJobNonTerminal = (job.status == JobStatus.CREATED).or(job.status == JobStatus.RUNNING)
-    val isJobRecurring = (job.type == JobType.RECURRING)
-    return (isJobRecurring && isJobNonTerminal)
-      .also {
-        logger.info(
-          "[${getInstanceName()}] : shouldCreateNextJob : $it"
-        )
-      }
+    else -> job
   }
 }

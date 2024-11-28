@@ -6,7 +6,8 @@ import karya.servers.executor.di.DaggerExecutorComponent
 object ExecutorServiceFactory {
   fun build(config: ExecutorConfig) = DaggerExecutorComponent.builder()
     .config(config)
-    .fusedDataComponent(FusedExecutorDataComponentFactory.build(config))
+    .fusedRepoComponent(config.fusedDataRepoComponent)
+    .fusedQueueComponent(config.fusedDataQueueComponent)
     .build()
     .executorService
 }

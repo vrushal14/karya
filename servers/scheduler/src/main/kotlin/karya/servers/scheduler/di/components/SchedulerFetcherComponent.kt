@@ -2,7 +2,7 @@ package karya.servers.scheduler.di.components
 
 import dagger.BindsInstance
 import dagger.Component
-import karya.data.fused.di.components.FusedSchedulerDataComponent
+import karya.data.fused.di.components.FusedDataRepoComponent
 import karya.servers.scheduler.configs.SchedulerConfig
 import karya.servers.scheduler.di.SchedulerScope
 import karya.servers.scheduler.usecases.SchedulerFetcher
@@ -10,7 +10,7 @@ import karya.servers.scheduler.usecases.SchedulerFetcher
 @SchedulerScope
 @Component(
   dependencies = [
-    FusedSchedulerDataComponent::class,
+    FusedDataRepoComponent::class
   ],
 )
 interface SchedulerFetcherComponent {
@@ -21,9 +21,9 @@ interface SchedulerFetcherComponent {
   interface Builder {
 
     @BindsInstance
-    fun config(schedulerConfig: SchedulerConfig): Builder
+    fun executorConfig(schedulerConfig: SchedulerConfig): Builder
 
-    fun fusedDataComponent(fusedSchedulerDataComponent: FusedSchedulerDataComponent): Builder
+    fun fusedRepoComponent(fusedDataRepoComponent: FusedDataRepoComponent): Builder
 
     fun build(): SchedulerFetcherComponent
   }

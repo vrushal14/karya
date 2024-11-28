@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     user_id UUID REFERENCES users(id),
     description VARCHAR(255) NOT NULL,
     period_time VARCHAR(255) NOT NULL,
-    type INT NOT NULL,
+    type JSON NOT NULL,
     status INT NOT NULL,
     max_failure_retry INT NOT NULL,
     action JSON NOT NULL,

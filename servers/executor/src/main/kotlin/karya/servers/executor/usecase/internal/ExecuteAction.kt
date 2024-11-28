@@ -3,20 +3,15 @@ package karya.servers.executor.usecase.internal
 import karya.core.actors.Connector
 import karya.core.actors.Result
 import karya.core.entities.action.Action
-import karya.core.entities.enums.JobStatus
-import karya.core.entities.enums.JobType
 import karya.core.entities.enums.TaskStatus.FAILURE
 import karya.core.entities.enums.TaskStatus.SUCCESS
-import karya.core.exceptions.JobException.JobNotFoundException
 import karya.core.queues.QueueClient
 import karya.core.queues.entities.ExecutorMessage
 import karya.core.queues.entities.QueueType
-import karya.core.repos.JobsRepo
 import karya.core.repos.TasksRepo
 import karya.servers.executor.configs.ExecutorConfig
 import karya.servers.executor.exceptions.ExecutorException.ConnectorNotFoundException
 import org.apache.logging.log4j.kotlin.Logging
-import java.util.*
 import javax.inject.Inject
 
 class ExecuteAction
@@ -25,7 +20,7 @@ constructor(
   private val config: ExecutorConfig,
   private val queueClient: QueueClient,
   private val tasksRepo: TasksRepo,
-  private val jobsRepo: JobsRepo
+  private val maybeUpdateJob: MaybeUpdateJob
 ) {
 
   companion object : Logging
@@ -36,7 +31,7 @@ constructor(
       is Result.Success -> handleSuccess(result, message)
       is Result.Failure -> handleFailure(result, message)
     }
-    maybeUpdateJob(message.jobId)
+    maybeUpdateJob.invoke(message.jobId)
   }
 
   private fun getConnector(action: Action) =
@@ -55,17 +50,8 @@ constructor(
 
     } else {
       queueClient.push(updatedMessage)
-      logger.warn("[ACTION FAILED | RETRYING] --- [result : ${result.reason} | retry count : ${updatedMessage.maxFailureRetry}]")
+      logger.warn("[ACTION FAILED | RETRYING (${updatedMessage.maxFailureRetry})] --- result : ${result.reason}")
     }
     tasksRepo.updateStatus(message.taskId, FAILURE, result.timestamp)
-  }
-
-  private suspend fun maybeUpdateJob(jobId: UUID) {
-    val job = jobsRepo.get(jobId) ?: throw JobNotFoundException(jobId)
-    when (job.type) {
-      JobType.RECURRING -> return
-      JobType.ONE_TIME -> jobsRepo.updateStatus(jobId, JobStatus.COMPLETED)
-    }
-    logger.info("[JOB COMPLETED] --- jobId : $jobId")
   }
 }

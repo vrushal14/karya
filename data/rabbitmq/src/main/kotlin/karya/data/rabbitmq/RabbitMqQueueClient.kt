@@ -1,5 +1,6 @@
 package karya.data.rabbitmq
 
+import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import karya.core.queues.QueueClient
@@ -13,7 +14,6 @@ import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_ROUTING_KEY
 import karya.data.rabbitmq.usecases.external.InitializeConfiguration
 import karya.data.rabbitmq.usecases.external.RabbitMqConsumer
 import karya.data.rabbitmq.usecases.internal.MessageEncoder
-import karya.data.rabbitmq.usecases.internal.MessagePropertiesBuilder
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
@@ -24,11 +24,14 @@ constructor(
   private val connection: Connection,
   private val consumer: RabbitMqConsumer,
   private val messageEncoder: MessageEncoder,
-  private val messagePropertiesBuilder: MessagePropertiesBuilder,
-  private val initializeConfiguration: InitializeConfiguration,
+  private val initializeConfiguration: InitializeConfiguration
 ) : QueueClient {
 
-  companion object : Logging
+  companion object : Logging {
+    private const val CONTENT_TYPE = "application/json"
+    private const val DELIVERY_MODE = 2 // persistent
+    private const val PRIORITY = 1
+  }
 
   override suspend fun initialize() {
     initializeConfiguration.invoke()
@@ -37,7 +40,7 @@ constructor(
   override suspend fun push(message: ExecutorMessage, queueType: QueueType) {
     try {
       val messageBytes = messageEncoder.encode(message)
-      val properties = messagePropertiesBuilder.build()
+      val properties = buildProperties()
       val (exchangeToUse, routingKeyToUse) = provideExchangeAndRoutingKey(queueType)
       channel.basicPublish(exchangeToUse, routingKeyToUse, properties, messageBytes)
       logger.info("[TASK PUSHED] --- message pushed to $exchangeToUse : $message")
@@ -69,4 +72,11 @@ constructor(
     QueueType.REGULAR -> Pair(EXCHANGE_NAME, EXECUTOR_ROUTING_KEY)
     QueueType.DEAD_LETTER -> Pair(DL_EXCHANGE_NAME, DL_ROUTING_KEY)
   }
+
+  private fun buildProperties(): BasicProperties = BasicProperties
+    .Builder()
+    .contentType(CONTENT_TYPE)
+    .deliveryMode(DELIVERY_MODE) // persistent
+    .priority(PRIORITY)
+    .build()
 }

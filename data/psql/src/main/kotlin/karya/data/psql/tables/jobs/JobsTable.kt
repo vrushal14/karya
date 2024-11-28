@@ -1,5 +1,6 @@
 package karya.data.psql.tables.jobs
 
+import karya.core.entities.JobType
 import karya.core.entities.action.Action
 import karya.data.psql.tables.users.UsersTable
 import kotlinx.serialization.json.Json
@@ -12,7 +13,7 @@ object JobsTable : Table("jobs") {
   val userId = uuid("user_id") references UsersTable.id
   val description = varchar("description", 255)
   val periodTime = varchar("period_time", 255)
-  val type = integer("type")
+  val type = json<JobType>("type", Json)
   val status = integer("status")
   val maxFailureRetry = integer("max_failure_retry")
   val action = json<Action>("action", Json)

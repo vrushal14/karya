@@ -2,24 +2,14 @@ package karya.servers.server.di
 
 import karya.core.configs.LocksConfig
 import karya.core.configs.RepoConfig
-import karya.data.fused.di.components.DaggerFusedServerDataComponent
+import karya.data.fused.di.factories.FusedDataLocksComponentFactory
+import karya.data.fused.di.factories.FusedDataRepoComponentFactory
 
 object ServerApplicationFactory {
-  fun create(
-    repoConfig: RepoConfig,
-    locksConfig: LocksConfig,
-  ) = DaggerServerComponent
+  fun create(repoConfig: RepoConfig, locksConfig: LocksConfig) = DaggerServerComponent
     .builder()
-    .fusedServerDataComponent(provideFusedRepoComponent(repoConfig, locksConfig))
+    .fusedDataRepoComponent(FusedDataRepoComponentFactory.build(repoConfig))
+    .fusedDataLocksComponent(FusedDataLocksComponentFactory.build(locksConfig))
     .build()
     .serverApplication
-
-  private fun provideFusedRepoComponent(
-    repoConfig: RepoConfig,
-    locksConfig: LocksConfig,
-  ) = DaggerFusedServerDataComponent
-    .builder()
-    .repoConfig(repoConfig)
-    .locksConfig(locksConfig)
-    .build()
 }

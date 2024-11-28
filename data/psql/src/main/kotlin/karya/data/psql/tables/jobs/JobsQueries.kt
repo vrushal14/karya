@@ -3,7 +3,6 @@ package karya.data.psql.tables.jobs
 import karya.core.entities.Job
 import karya.core.entities.enums.JobStatus
 import karya.data.psql.tables.jobs.mappers.JobStatusMapper
-import karya.data.psql.tables.jobs.mappers.JobTypeMapper
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
@@ -15,7 +14,6 @@ class JobsQueries
 constructor(
   private val db: Database,
   private val jobStatusMapper: JobStatusMapper,
-  private val jobTypeMapper: JobTypeMapper,
 ) {
 
   fun add(job: Job) = transaction(db) {
@@ -24,7 +22,7 @@ constructor(
       it[userId] = job.userId
       it[description] = job.description
       it[periodTime] = job.periodTime
-      it[type] = jobTypeMapper.toRecord(job.type)
+      it[type] = job.type
       it[status] = jobStatusMapper.toRecord(job.status)
       it[maxFailureRetry] = job.maxFailureRetry
       it[action] = job.action
@@ -62,7 +60,7 @@ constructor(
     userId = resultRow[JobsTable.userId],
     description = resultRow[JobsTable.description],
     periodTime = resultRow[JobsTable.periodTime],
-    type = jobTypeMapper.fromRecord(resultRow[JobsTable.type]),
+    type = resultRow[JobsTable.type],
     status = jobStatusMapper.fromRecord(resultRow[JobsTable.status]),
     maxFailureRetry = resultRow[JobsTable.maxFailureRetry],
     action = resultRow[JobsTable.action],

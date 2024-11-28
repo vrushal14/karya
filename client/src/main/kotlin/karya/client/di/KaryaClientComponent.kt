@@ -17,6 +17,7 @@ interface KaryaClientComponent {
 
   @Component.Builder
   interface Builder {
+
     @BindsInstance
     fun clientConfig(config: KaryaClientConfig): Builder
 

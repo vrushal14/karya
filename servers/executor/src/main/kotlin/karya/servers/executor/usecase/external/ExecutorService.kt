@@ -2,6 +2,7 @@ package karya.servers.executor.usecase.external
 
 import karya.core.queues.QueueClient
 import karya.core.repos.RepoConnector
+import karya.servers.executor.configs.ExecutorConfig
 import karya.servers.executor.usecase.internal.ExecuteAction
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
@@ -12,7 +13,8 @@ class ExecutorService
 constructor(
   private val repoConnector: RepoConnector,
   private val queueClient: QueueClient,
-  private val executeAction: ExecuteAction
+  private val executeAction: ExecuteAction,
+  private val config: ExecutorConfig
 ) {
 
   companion object : Logging
@@ -27,6 +29,12 @@ constructor(
     logger.info("Shutting down executor service...")
     queueClient.shutdown()
     repoConnector.shutdown()
+    config.connectors.forEach { action, connector ->
+      runBlocking {
+        connector.shutdown()
+        logger.info("Connector for action [$action] shutdown complete.")
+      }
+    }
     logger.info("Executor service shutdown complete.")
   }
 }

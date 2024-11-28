@@ -1,7 +1,8 @@
 package karya.core.entities.requests
 
+import karya.core.entities.JobType
 import karya.core.entities.action.Action
-import karya.core.entities.enums.JobType
+import karya.core.exceptions.JobException.InvalidChainedRequestException
 import karya.core.utils.UUIDSerializer
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -15,4 +16,9 @@ data class SubmitJobRequest(
   val jobType: JobType,
   val action: Action,
   val maxFailureRetry: Int = 3,
-)
+) {
+  init {
+    if ((action is Action.ChainedRequest) && (jobType is JobType.Recurring))
+      throw InvalidChainedRequestException()
+  }
+}
