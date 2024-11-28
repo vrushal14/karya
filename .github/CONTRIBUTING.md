@@ -12,9 +12,15 @@ provider, Redis for locks provider and RabbitMq as queue provider.
   ```shell
   docker-compose -f ./docs/local-setup/providers.docker-compose.yml up -d
   ```
-- Create a `providers.yml` file. A sample file can be found [here](../configs/providers.yml). For more information on how to configure the providers, refer to the [Connectors](#connectors) section.
-- Create a `executor.yml` file. A sample file can be found [here](../configs/executor.yml).
-- Create a `scheduler.yml` file. A sample file can be found [here](../configs/scheduler.yml).
+- Create a `providers.yml` file.
+  - A sample file can be found [here](../configs/providers.yml).
+  - For more information on how to configure the providers, refer to the [Connectors](../README.md/#connectors) section.
+- Create a `executor.yml` file.
+  - A sample file can be found [here](../configs/executor.yml).
+  - For more information on how to configure the executor, refer to the [Executor](../README.md/#executor) section.
+- Create a `scheduler.yml` file.
+  - A sample file can be found [here](../configs/scheduler.yml).
+  - For more information on how to configure the scheduler, refer to the [Scheduler](../README.md/#scheduler) section.
 
 ### Running the application
 
