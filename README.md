@@ -46,10 +46,10 @@ This is a web server via which the client interacts. It has the following functi
 
 This is a configurable component as Karya will look for an environment variable `KARYA_SCERVER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
-   | server.yml key      | description      |
-|-------------|-------------|
-| application.strictMode | This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
-| application.chainedDepth | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
+   | server.yml key | sample value      | description      |
+|-------------|-------------|------------|
+| application.strictMode | true| This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
+| application.chainedDepth | 2 | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
 
 [Sample server.yml file](.configs/server.yml)
 
