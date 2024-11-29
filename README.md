@@ -6,6 +6,21 @@ Distributed, scalable Job Scheduler built for high throughput.
 
 ---
 
+## Usecases
+
+1. Schedule jobs to run at periodic frequency.
+2. Schedule async, non-recurring jobs to run at a particular time in the future.
+3. Chain recurring and non-recurring jobs together to achive custom flow.
+
+ ## Why Karya?
+
+ There are several job schedulers out there. Why to chose Karya? Here are the reasons:
+
+ 1. Karya is **built for high throughput**. It follows the philosphy: *solve scaling by throwing money at it*, which means one just needs to add one more node and scale horizontally infinitly!
+ 2. Software like Postgres and Redis have already solved the problem of achieving fault tolerancy. Karya nodes are stateless in nature and utilizes the properties of such components to **achieve fault tolerancy**, thus making it **less complex and easy to understand**!
+ 3. Karya is **highly pluggable** in nature. Be it in terms of [connectors](#connectors) or [connector-plugins](#connector-plugins). Just specify the properties in a .yml file and you're good to go!
+ 4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe while being blazingly fast and performant**!
+
 ## Overview
 
 ![overview.png](./docs/media/overiew.png)
@@ -28,6 +43,15 @@ This is a web server via which the client interacts. It has the following functi
 
 1. Manage users. Only a registered user can schedule a job.
 2. Pushes the job to the repo connector from which the scheduler will poll from
+
+This is a configurable component as Karya will look for an environment variable `KARYA_SCERVER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
+
+   | server.yml key      | description      |
+|-------------|-------------|
+| application.strictMode | This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
+| application.chainedDepth | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
+
+[Sample server.yml file](.configs/server.yml)
 
 #### Scheduler
 
@@ -157,10 +181,5 @@ Some plugins need not be specified in the `executor.yml` file as they are native
 Sometimes, one would have a usecase where they would want to schedule a periodic job, *starting* from a definite point in the future. This could be achieved by scheduling a one time job to trigger at the that point in time in the future. And that trigger would be to schedule the periodic job that you want to run. We call this **chained jobs**.
 
 Karya supports chained jobs, albeit with some configuration which needs to be specified in the `server.yml`.
-
-| server.yml key      | description      |
-|-------------|-------------|
-| application.strictMode | This key if set *false* will allow chained jobs to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
-| application.chainedDepth | Chained Jobs are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
 
 [Sample MakeChainedKaryaCall.kt.kt example](./docs/samples/src/main/kotlin/karya/docs/samples/MakeChainedKaryaCall.kt.kt).
