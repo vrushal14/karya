@@ -32,4 +32,6 @@ suspend fun main() {
   )
 
   client.submitJob(request).also(::println)
+
+  client.close()
 }

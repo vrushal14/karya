@@ -66,4 +66,5 @@ suspend fun main() {
   ).also(::println)
 
 //  client.cancelJob(UUID.fromString("b92a1108-a16d-4b6c-b33a-e7ebf284b613")).also(::println)
+  client.close()
 }
