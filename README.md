@@ -12,6 +12,8 @@ Distributed, scalable Job Scheduler built for high throughput.
 2. Schedule async, non-recurring jobs to run at a particular time in the future.
 3. Chain recurring and non-recurring jobs together to achive custom flow.
 
+---
+
  ## Why Karya?
 
  There are several job schedulers out there. Why to chose Karya? Here are the reasons:
@@ -20,6 +22,8 @@ Distributed, scalable Job Scheduler built for high throughput.
  2. Software like Postgres and Redis have already solved the problem of achieving fault tolerancy. Karya nodes are stateless in nature and utilizes the properties of such components to **achieve fault tolerancy**, thus making it **less complex and easy to understand**!
  3. Karya is **highly pluggable** in nature. Be it in terms of [data-interfaces](#data-interfaces) or [connectors](#connectors). Just specify the properties in a .yml file and you're good to go!
  4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe while being blazingly fast and performant**!
+
+---
 
 ## Overview
 
@@ -47,11 +51,11 @@ This is a web server via which the client interacts. It has the following functi
 This is a configurable component as Karya will look for an environment variable `KARYA_SCERVER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
    | Server.yml Key | Sample Value      | Description      |
-|-------------|-------------|------------|
-| *application.strictMode* | true| This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
-| *application.chainedDepth* | 2 | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
+   |-------------|-------------|------------|
+   | *application.strictMode* | true| This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
+   | *application.chainedDepth* | 2 | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
 
-[Sample server.yml file](.configs/server.yml)
+  [Sample server.yml file](.configs/server.yml)
 
 #### Scheduler
 
@@ -60,16 +64,16 @@ This is a configurable component as Karya will look for an environment variable 
 
 This is a configurable component as Karya will look for an environment variable `KARYA_SCHEDULER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
-| Scheduler.yml Key        | Sample Value       | Sescription       |
-|-------------|-------------|-------------|
-| *application.threadCount* | 2      | How many threads you want one instance of scheduler to use     |
-| *application.workers* | 3      | How many workers within the instance do you want to spin up. Useful when the throughput is high     |
-| *application.fetcher.channelCapacity* | 10      | Executor *polls* for messages from the repo and pushes it to a local queue from which the workers consume from. This property defines the size of this queue explicitly to prevent a *OutOfMemory* scenario.     |
-| *application.fetcher.pollFrequency* | 250      | Polling frequency from the repo, lesser the value, better the precision of when the task should be executed |
-| *application.fetcher.executionBuffer* | 1000      | This specifies how far back from the time of polling should scheduler look for an unexecuted task. This should always be higher than pollFrequency |
-| *application.fetcher.repoPartitions* | List<Int>      | From which partitions of the repo should the scheduler instance should poll from. |
+ | Scheduler.yml Key        | Sample Value       | Sescription       |
+ |-------------|-------------|-------------|
+ | *application.threadCount* | 2      | How many threads you want one instance of scheduler to use     |
+ | *application.workers* | 3      | How many workers within the instance do you want to spin up. Useful when the throughput is high     |
+ | *application.fetcher.channelCapacity* | 10      | Executor *polls* for messages from the repo and pushes it to a local queue from which the workers consume from. This property defines the size of this queue explicitly to prevent a *OutOfMemory* scenario.     |
+ | *application.fetcher.pollFrequency* | 250      | Polling frequency from the repo, lesser the value, better the precision of when the task should be executed |
+ | *application.fetcher.executionBuffer* | 1000      | This specifies how far back from the time of polling should scheduler look for an unexecuted task. This should always be higher than pollFrequency |
+ | *application.fetcher.repoPartitions* | List<Int>      | From which partitions of the repo should the scheduler instance should poll from. |
 
-[Sample scheduler.yml file](.configs/scheduler.yml)
+ [Sample scheduler.yml file](.configs/scheduler.yml)
 
 #### Executor
 
