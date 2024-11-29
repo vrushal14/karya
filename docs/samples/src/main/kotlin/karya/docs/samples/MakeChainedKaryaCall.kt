@@ -9,7 +9,8 @@ import karya.core.entities.requests.SubmitJobRequest
 import java.time.Instant
 
 suspend fun main() {
-  val client = KaryaClientFactory.create(KaryaClientConfig.Dev)
+  val config = KaryaClientConfig.Dev
+  val client = KaryaClientFactory.create(config)
   val user = client.createUser(CreateUserRequest("Bob"))
 
   val request = SubmitJobRequest(
@@ -31,4 +32,6 @@ suspend fun main() {
   )
 
   client.submitJob(request).also(::println)
+
+  client.close()
 }

@@ -7,7 +7,7 @@ import io.ktor.server.response.*
 import karya.core.entities.requests.UpdateJobRequest
 import karya.core.exceptions.KaryaException
 import karya.servers.server.api.mapper.toHttpResponse
-import karya.servers.server.domain.usecases.UpdateJob
+import karya.servers.server.domain.usecases.external.UpdateJob
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 

@@ -19,7 +19,7 @@ sealed class JobException : KaryaException() {
     override val message: String = "Unknown Job Status ID --- $jobStatusId",
   ) : JobException()
 
-  data class RecurisveDepthExceededException(
+  data class RecursiveDepthExceededException(
     private val passed: Int,
     private val allowed: Int,
     override val message: String = "Depth exceeded for chained request --- passed: $passed | allowed: $allowed",

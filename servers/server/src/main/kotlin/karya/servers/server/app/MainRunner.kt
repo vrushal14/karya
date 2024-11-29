@@ -1,18 +1,18 @@
 package karya.servers.server.app
 
 import karya.core.configs.KaryaEnvironmentConfig
-import karya.data.fused.LocksSelector
-import karya.data.fused.RepoSelector
+import karya.servers.server.configs.ServerConfig
 import karya.servers.server.di.ServerApplicationFactory
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.CountDownLatch
 
 fun main() {
   val providers = KaryaEnvironmentConfig.PROVIDERS
-  val repoConfig = RepoSelector.get(providers)
-  val locksConfig = LocksSelector.get(providers)
+  val server = KaryaEnvironmentConfig.SERVER
 
-  val serverApplication = ServerApplicationFactory.create(repoConfig, locksConfig)
+  val config = ServerConfig.load(providers, server)
+
+  val serverApplication = ServerApplicationFactory.create(config)
   val latch = CountDownLatch(1)
 
   Runtime.getRuntime().addShutdownHook(

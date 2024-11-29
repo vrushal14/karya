@@ -54,4 +54,8 @@ class KaryaClientImpl(
       .post {
         url { path(VERSION, "job", jobId.toString()) }
       }.deserialize<Job>(json)
+
+  override suspend fun close() {
+    httpClient.close()
+  }
 }

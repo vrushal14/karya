@@ -12,6 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import karya.client.configs.KaryaClientConfig
 import karya.client.ktor.KaryaClientImpl
 import karya.core.actors.Client
+import karya.core.entities.action.http.Protocol
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
@@ -19,29 +20,23 @@ import javax.inject.Singleton
 
 @Module
 class KaryaClientModule {
-  companion object {
-    private const val KEEP_ALIVE_TIME = 5000L
-    private const val CONNECTION_TIMEOUT = 5000L
-    private const val CONNECTION_ATTEMPT = 5
-  }
 
   @Provides
   @Singleton
-  fun provideKaryaClient(httpClient: HttpClient): Client = KaryaClientImpl(httpClient, configureJson())
+  fun provideKaryaClient(config: KaryaClientConfig): Client =
+    KaryaClientImpl(provideHttpClient(config), configureJson())
 
-  @Provides
-  @Singleton
-  fun provideHttpClient(config: KaryaClientConfig): HttpClient =
+  private fun provideHttpClient(config: KaryaClientConfig): HttpClient =
     HttpClient(CIO) {
       engine {
         endpoint {
-          keepAliveTime = KEEP_ALIVE_TIME
-          connectTimeout = CONNECTION_TIMEOUT
-          connectAttempts = CONNECTION_ATTEMPT
+          keepAliveTime = config.keepAliveTime
+          connectTimeout = config.connectionTimeout
+          connectAttempts = config.connectionAttempts
         }
       }
       defaultRequest {
-        url.protocol = config.protocol
+        url.protocol = mapProtocol(config.protocol)
         url.host = config.host
         url.port = config.port
         contentType(ContentType.Application.Json)
@@ -53,13 +48,17 @@ class KaryaClientModule {
     }
 
   @OptIn(ExperimentalSerializationApi::class)
-  private fun configureJson(): Json =
-    Json {
-      isLenient = true
-      ignoreUnknownKeys = true
-      encodeDefaults = true
-      useAlternativeNames = true
-      allowStructuredMapKeys = true
-      namingStrategy = JsonNamingStrategy.SnakeCase
-    }
+  private fun configureJson(): Json = Json {
+    isLenient = true
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+    useAlternativeNames = true
+    allowStructuredMapKeys = true
+    namingStrategy = JsonNamingStrategy.SnakeCase
+  }
+
+  private fun mapProtocol(protocol: Protocol) = when (protocol) {
+    Protocol.HTTP -> URLProtocol.HTTP
+    Protocol.HTTPS -> URLProtocol.HTTPS
+  }
 }

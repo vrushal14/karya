@@ -29,11 +29,12 @@ Start the application in the following order:
 1. Start the server
    ```shell 
     export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
+   EXPORT KARYA_SERVER_CONFIG_PATH=path/to/server.yml
    
     ./gradlew servers-server:run
    ```
    
-2. Start the executor
+2. Start the executor (can start multiple instances)
     ```shell 
     export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
     export KARYA_EXECUTOR_CONFIG_PATH=path/to/executor.yml
@@ -41,7 +42,7 @@ Start the application in the following order:
     ./gradlew servers-executor:run
    ```
 
-3. Start the scheduler
+3. Start the scheduler (can start multiple instances)
     ```shell 
     export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
     export KARYA_SCHEDULER_CONFIG_PATH=path/to/scheduler.yml

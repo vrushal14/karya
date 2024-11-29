@@ -6,7 +6,7 @@ import io.ktor.server.response.*
 import io.ktor.server.util.*
 import karya.core.exceptions.KaryaException
 import karya.servers.server.api.mapper.toHttpResponse
-import karya.servers.server.domain.usecases.CancelJob
+import karya.servers.server.domain.usecases.external.CancelJob
 import org.apache.logging.log4j.kotlin.Logging
 import java.util.*
 import javax.inject.Inject
