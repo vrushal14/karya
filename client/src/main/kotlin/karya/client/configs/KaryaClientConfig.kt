@@ -10,9 +10,6 @@ data class KaryaClientConfig(
   val keepAliveTime: Long,
   val connectionTimeout: Long,
   val connectionAttempts: Int,
-
-  val strictMode: Boolean,
-  val maxChainedDepth: Int
 ) {
   companion object {
     val Dev = KaryaClientConfig(
@@ -21,9 +18,7 @@ data class KaryaClientConfig(
       port = 8080,
       keepAliveTime = 5000L,
       connectionTimeout = 5000L,
-      connectionAttempts = 5,
-      strictMode = true,
-      maxChainedDepth = 2
+      connectionAttempts = 5
     )
   }
 }

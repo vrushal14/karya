@@ -1,17 +1,17 @@
-package karya.client.ktor.usecase
+package karya.servers.server.domain.usecases.internal
 
-import karya.client.configs.KaryaClientConfig
 import karya.core.entities.JobType
 import karya.core.entities.action.Action
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.exceptions.JobException.InvalidChainedRequestException
 import karya.core.exceptions.JobException.RecursiveDepthExceededException
+import karya.servers.server.configs.ServerConfig
 import javax.inject.Inject
 
 class ValidateRequest
 @Inject
 constructor(
-  private val config: KaryaClientConfig
+  private val config: ServerConfig
 ) {
 
   fun invoke(request: SubmitJobRequest) {

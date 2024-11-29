@@ -5,7 +5,7 @@ import karya.core.actors.Result
 import karya.core.entities.action.Action
 import karya.core.exceptions.KaryaException
 import karya.core.repos.RepoConnector
-import karya.servers.server.domain.usecases.SubmitJob
+import karya.servers.server.domain.usecases.external.SubmitJob
 import java.time.Instant
 import javax.inject.Inject
 

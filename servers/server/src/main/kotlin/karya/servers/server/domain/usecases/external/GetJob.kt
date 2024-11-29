@@ -1,4 +1,4 @@
-package karya.servers.server.domain.usecases
+package karya.servers.server.domain.usecases.external
 
 import karya.core.entities.responses.GetJobResponse
 import karya.core.exceptions.JobException.JobNotFoundException

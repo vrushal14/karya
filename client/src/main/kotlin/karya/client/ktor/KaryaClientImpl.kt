@@ -3,7 +3,6 @@ package karya.client.ktor
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import karya.client.ktor.usecase.ValidateRequest
 import karya.client.ktor.utils.deserialize
 import karya.core.actors.Client
 import karya.core.entities.Job
@@ -14,15 +13,10 @@ import karya.core.entities.requests.UpdateJobRequest
 import karya.core.entities.responses.GetJobResponse
 import kotlinx.serialization.json.Json
 import java.util.*
-import javax.inject.Inject
 
-class KaryaClientImpl
-@Inject
-constructor(
+class KaryaClientImpl(
   private val httpClient: HttpClient,
   private val json: Json,
-
-  private val validateRequest: ValidateRequest
 ) : Client {
   companion object {
     private const val VERSION = "v1"
@@ -35,14 +29,12 @@ constructor(
         setBody(request)
       }.deserialize<User>(json)
 
-  override suspend fun submitJob(request: SubmitJobRequest): Job {
-    validateRequest.invoke(request)
-    return httpClient
+  override suspend fun submitJob(request: SubmitJobRequest): Job =
+    httpClient
       .post {
         url { path(VERSION, "job") }
         setBody(request)
       }.deserialize<Job>(json)
-  }
 
   override suspend fun fetchJob(jobId: UUID): GetJobResponse =
     httpClient

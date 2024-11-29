@@ -7,7 +7,7 @@ import io.ktor.server.response.*
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.exceptions.KaryaException
 import karya.servers.server.api.mapper.toHttpResponse
-import karya.servers.server.domain.usecases.CreateUser
+import karya.servers.server.domain.usecases.external.CreateUser
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 

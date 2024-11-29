@@ -10,7 +10,6 @@ import karya.core.entities.action.http.Protocol
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.entities.requests.UpdateJobRequest
-import java.time.Instant
 
 suspend fun main() {
   val client = KaryaClientFactory.create(KaryaClientConfig.Dev)
