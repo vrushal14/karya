@@ -18,7 +18,7 @@ Distributed, scalable Job Scheduler built for high throughput.
 
  1. Karya is **built for high throughput**. It follows the philosphy: *solve scaling by throwing money at it*, which means one just needs to add one more node and scale horizontally infinitly!
  2. Software like Postgres and Redis have already solved the problem of achieving fault tolerancy. Karya nodes are stateless in nature and utilizes the properties of such components to **achieve fault tolerancy**, thus making it **less complex and easy to understand**!
- 3. Karya is **highly pluggable** in nature. Be it in terms of [connectors](#connectors) or [connector-plugins](#connector-plugins). Just specify the properties in a .yml file and you're good to go!
+ 3. Karya is **highly pluggable** in nature. Be it in terms of [data-interfaces](#data-interfaces) or [connectors](#connectors). Just specify the properties in a .yml file and you're good to go!
  4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe while being blazingly fast and performant**!
 
 ## Overview
@@ -46,10 +46,10 @@ This is a web server via which the client interacts. It has the following functi
 
 This is a configurable component as Karya will look for an environment variable `KARYA_SCERVER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
-   | server.yml key | sample value      | description      |
+   | Server.yml Key | Sample Value      | Description      |
 |-------------|-------------|------------|
-| application.strictMode | true| This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
-| application.chainedDepth | 2 | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
+| *application.strictMode* | true| This key if set *false* will allow [chained jobs](#chained-jobs) to be recurring in nature. Note that this can lead to number of jobs being scheduled exponentially, so **proceed with caution**. |
+| *application.chainedDepth* | 2 | [Chained jobs](#chained-jobs) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable |
 
 [Sample server.yml file](.configs/server.yml)
 
@@ -60,14 +60,14 @@ This is a configurable component as Karya will look for an environment variable 
 
 This is a configurable component as Karya will look for an environment variable `KARYA_SCHEDULER_CONFIG_PATH` to find the .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
-| scheduler.yml key        | sample value       | description       |
+| Scheduler.yml Key        | Sample Value       | Sescription       |
 |-------------|-------------|-------------|
-| application.threadCount | 2      | How many threads you want one instance of scheduler to use     |
-| application.workers | 3      | How many workers within the instance do you want to spin up. Useful when the throughput is high     |
-| application.fetcher.channelCapacity | 10      | Executor *polls* for messages from the repo and pushes it to a local queue from which the workers consume from. This property defines the size of this queue explicitly to prevent a OOM scenario.     |
-| application.fetcher.pollFrequency | 250      | Polling frequency from the repo, lesser the value, better the precision of when the task should be executed |
-| application.fetcher.executionBuffer | 1000      | PThis specifies how far back from the time of polling should scheduler look for an unexecuted task. This should always be higher than pollFrequency |
-| application.fetcher.repoPartitions | List<Int>      | From which partitions of the repo should the scheduler instance should poll from. |
+| *application.threadCount* | 2      | How many threads you want one instance of scheduler to use     |
+| *application.workers* | 3      | How many workers within the instance do you want to spin up. Useful when the throughput is high     |
+| *application.fetcher.channelCapacity* | 10      | Executor *polls* for messages from the repo and pushes it to a local queue from which the workers consume from. This property defines the size of this queue explicitly to prevent a *OutOfMemory* scenario.     |
+| *application.fetcher.pollFrequency* | 250      | Polling frequency from the repo, lesser the value, better the precision of when the task should be executed |
+| *application.fetcher.executionBuffer* | 1000      | This specifies how far back from the time of polling should scheduler look for an unexecuted task. This should always be higher than pollFrequency |
+| *application.fetcher.repoPartitions* | List<Int>      | From which partitions of the repo should the scheduler instance should poll from. |
 
 [Sample scheduler.yml file](.configs/scheduler.yml)
 
@@ -91,29 +91,29 @@ This is a configurable component as Karya will look for an environment variable 
 
 ---
 
-## Connectors
+## Data Interfaces
 
 Karya's "distributed" nature comes not olny from it's ability to scale by spinning up more scheduler/executor nodes. But it leverages the distributed nature of other softwares. To run, it needs at least these 3 components:
 
-1. **Repo** : Karya uses a SQL based database for persistent storage of jobs/tasks/users
-2. **Locks** : Karya uses a distributed mutex lock to prevent tasks to prevent race conditions
-3. **Queue** : Karya buffers the execution of tasks in queues.
+1. **Repo Interface** : Karya uses a SQL based database for persistent storage of jobs/tasks/users
+2. **Locks Interface** : Karya uses a distributed mutex lock to prevent tasks to prevent race conditions
+3. **Queue Interface** : Karya buffers the execution of tasks in queues.
 
 **NOTE** : Karya is built for high throughput and the tradeoff for it is precision as to when a task should be executed. But the hit in precision can be minimized by the configurability that Karya provides albeit at the cost of more resources.
 
-### Supported Connectors
+### Supported Interfaces
 
-Karya provides ability to just plug and play. Users can easily connect their existing repo/locks/queues with Karya, spin up Karya's nodes and start scheduliing jobs! The following connectors are currently configured to work with Karya with rest more on the way:
+Karya provides ability to just plug and play provided the implementation for the said interface is supported by it. Users can easily connect their existing repo/locks/queues with Karya, spin up Karya's nodes and start scheduliing jobs! The following interfaces are currently implmented within Karya with rest more on the way:
 
-| repo        | locks       | queue       |
+| Repo Interface        | Locks Interface       | Queue Interface       |
 |-------------|-------------|-------------|
 | [Postgres](https://www.postgresql.org/) | [Redis](https://redis.io/)      | [RabbitMQ](https://www.rabbitmq.com/)     |
 
-### How to configure connectors?
+### How to configure interfaces?
 
-Karya looks for an environment variable `KARYA_PROVIDERS_CONFIG_PATH` where it will look for a yml file from which to pick up the configuration. The format of the `providers.yml` file is as follows:
+You have your said components running. We must now provide a way for Karya to connect with it. We do this by specifying all the configurations in a .yml file and set the environment variable `KARYA_PROVIDERS_CONFIG_PATH` to point to this file. 
 
- [Sample providers.yml file](./configs/providers.yml)
+Karya will read the contents of the yml file and connect to your repos/locks/queues! The format of the `providers.yml` file is as follows:
 
 ```yml
 
@@ -149,11 +149,13 @@ queue:
     port: 5672
 ```
 
-The above .yml file describes a way where we are using *Postgres as repo*, *Redis as Locks* and *RabbitMQ as queue*. But you can connect any connector of your choice and provided Karya has the ability to support it, it should be okay. 
+ [Sample providers.yml file](./configs/providers.yml)
 
-To swap in a different connector, change the `provider` key in any of repo/lock/queue section and pass in the properties accordingly. The mapping of connector to provider key is as follows:
+The above .yml file describes a way where we are using *Postgres as repo*, *Redis as Locks* and *RabbitMQ as queue*. But you can connect any interface of your choice and provided Karya has the ability to support it, it should work seamlessly. 
 
-| connector type       | connector      | provider key       |
+To swap in a different interfaces, change the `provider` key in any of repo/lock/queue section and pass in the properties accordingly. The mapping of interface to provider key is as follows:
+
+| Implementation       | Interface      | Provider key       |
 |-------------|-------------|-------------|
 | Postgres | repo      | *psql*     |
 | Redis | locks      | *redis*     |
@@ -161,12 +163,12 @@ To swap in a different connector, change the `provider` key in any of repo/lock/
 
 ---
 
-## Connector-Plugins
+## Connectors
 
 This here is the section which defines what all actions does Karya supports when a task has to be executed by the executor.
 This has to be set in the executor.yml file before starting the executor. Currently, the following connector plugins are available:
 
-| executor.yml key      | description      |
+| Executor.yml key      | Description      |
 |-------------|-------------|
 | *restapi* | This plugin helps support the executor make a REST Api call |
 
