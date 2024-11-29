@@ -18,4 +18,6 @@ interface Client {
   suspend fun updateJob(request: UpdateJobRequest): Job
 
   suspend fun cancelJob(jobId: UUID): Job
+
+  suspend fun close()
 }

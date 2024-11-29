@@ -10,6 +10,7 @@ import javax.inject.Singleton
 @Component(
   modules = [
     KaryaClientModule::class,
+    KaryaClientUtilsModule::class,
   ],
 )
 interface KaryaClientComponent {
