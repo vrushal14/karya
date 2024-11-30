@@ -3,7 +3,7 @@ package karya.docs.samples
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
 import karya.core.entities.JobType
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
 import java.time.Instant

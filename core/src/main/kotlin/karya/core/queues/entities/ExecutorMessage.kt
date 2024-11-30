@@ -1,6 +1,6 @@
 package karya.core.queues.entities
 
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.core.utils.UUIDSerializer
 import kotlinx.serialization.Serializable
 import java.util.*

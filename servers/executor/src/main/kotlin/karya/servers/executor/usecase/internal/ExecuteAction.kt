@@ -2,7 +2,7 @@ package karya.servers.executor.usecase.internal
 
 import karya.core.actors.Connector
 import karya.core.actors.Result
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.core.entities.enums.TaskStatus.FAILURE
 import karya.core.entities.enums.TaskStatus.SUCCESS
 import karya.core.exceptions.KaryaException

@@ -3,10 +3,10 @@ package karya.docs.samples
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
 import karya.core.entities.JobType
-import karya.core.entities.action.Action
-import karya.core.entities.action.http.Body
-import karya.core.entities.action.http.Method
-import karya.core.entities.action.http.Protocol
+import karya.core.entities.Action
+import karya.core.entities.http.Body
+import karya.core.entities.http.Method
+import karya.core.entities.http.Protocol
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.entities.requests.UpdateJobRequest

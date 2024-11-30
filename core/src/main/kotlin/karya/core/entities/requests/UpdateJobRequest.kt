@@ -1,5 +1,6 @@
 package karya.core.entities.requests
 
+import karya.core.entities.NotificationSettings
 import karya.core.utils.UUIDSerializer
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -10,4 +11,5 @@ data class UpdateJobRequest(
   val jobId: UUID,
   val periodTime: String? = null,
   val maxFailureRetry: Int? = null,
+  val notificationSettings: NotificationSettings? = null
 )

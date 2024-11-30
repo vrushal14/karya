@@ -2,7 +2,7 @@ package karya.connector.chainedjob
 
 import karya.core.actors.Connector
 import karya.core.actors.Result
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.core.exceptions.KaryaException
 import karya.core.repos.RepoConnector
 import karya.servers.server.domain.usecases.external.SubmitJob

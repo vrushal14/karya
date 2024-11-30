@@ -27,6 +27,7 @@ constructor(
       it[status] = jobStatusMapper.toRecord(job.status)
       it[maxFailureRetry] = job.maxFailureRetry
       it[action] = job.action
+      it[notificationSettings] = job.notificationSettings
       it[parentJobId] = job.parentJobId
       it[createdAt] = Instant.ofEpochMilli(job.createdAt)
       it[updatedAt] = Instant.ofEpochMilli(job.updatedAt)
@@ -85,6 +86,7 @@ constructor(
     status = jobStatusMapper.fromRecord(resultRow[JobsTable.status]),
     maxFailureRetry = resultRow[JobsTable.maxFailureRetry],
     action = resultRow[JobsTable.action],
+    notificationSettings = resultRow[JobsTable.notificationSettings],
     parentJobId = resultRow[JobsTable.parentJobId],
     createdAt = resultRow[JobsTable.createdAt].toEpochMilli(),
     updatedAt = resultRow[JobsTable.updatedAt].toEpochMilli(),

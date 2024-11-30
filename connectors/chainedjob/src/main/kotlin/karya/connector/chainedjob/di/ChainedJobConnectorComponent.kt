@@ -2,7 +2,7 @@ package karya.connector.chainedjob.di
 
 import dagger.Component
 import karya.core.actors.Connector
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.data.fused.di.components.FusedDataRepoComponent
 
 @ChainedJobConnectorScope

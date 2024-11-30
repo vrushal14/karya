@@ -1,6 +1,6 @@
 package karya.core.actors
 
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import java.time.Instant
 import java.util.*
 

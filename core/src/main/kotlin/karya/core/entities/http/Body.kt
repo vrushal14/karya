@@ -1,4 +1,4 @@
-package karya.core.entities.action.http
+package karya.core.entities.http
 
 import karya.core.utils.MapJsonStringSerde
 import kotlinx.serialization.Serializable

@@ -7,9 +7,9 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import karya.core.actors.Connector
 import karya.core.actors.Result
-import karya.core.entities.action.Action.RestApiRequest
-import karya.core.entities.action.http.Body
-import karya.core.entities.action.http.Method
+import karya.core.entities.Action.RestApiRequest
+import karya.core.entities.http.Body
+import karya.core.entities.http.Method
 import java.time.Instant
 import java.util.*
 import javax.inject.Inject

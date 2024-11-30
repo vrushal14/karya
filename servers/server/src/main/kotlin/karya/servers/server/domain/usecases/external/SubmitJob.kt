@@ -1,6 +1,7 @@
 package karya.servers.server.domain.usecases.external
 
 import karya.core.entities.Job
+import karya.core.entities.NotificationSettings
 import karya.core.entities.Task
 import karya.core.entities.User
 import karya.core.entities.enums.JobStatus
@@ -46,6 +47,7 @@ constructor(
     maxFailureRetry = request.maxFailureRetry,
     action = request.action,
     parentJobId = parentJob,
+    notificationSettings = request.notificationSettings ?: NotificationSettings.None,
     createdAt = Instant.now().toEpochMilli(),
     updatedAt = Instant.now().toEpochMilli(),
   ).also { jobsRepo.add(it) }

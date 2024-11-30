@@ -1,6 +1,5 @@
 package karya.core.entities
 
-import karya.core.entities.action.Action
 import karya.core.entities.enums.JobStatus
 import karya.core.entities.requests.UpdateJobRequest
 import karya.core.utils.UUIDSerializer
@@ -20,6 +19,7 @@ data class Job(
   val status: JobStatus,
   val maxFailureRetry: Int,
   val action: Action,
+  val notificationSettings: NotificationSettings,
   @Serializable(with = UUIDSerializer::class)
   val parentJobId: UUID?,
   val createdAt: Long,
@@ -35,6 +35,7 @@ data class Job(
       status = status,
       maxFailureRetry = request.maxFailureRetry ?: maxFailureRetry,
       action = action,
+      notificationSettings = request.notificationSettings ?: notificationSettings,
       parentJobId = parentJobId,
       createdAt = createdAt,
       updatedAt = Instant.now().toEpochMilli(),

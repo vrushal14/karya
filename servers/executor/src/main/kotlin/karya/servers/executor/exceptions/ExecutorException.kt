@@ -1,6 +1,6 @@
 package karya.servers.executor.exceptions
 
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.core.exceptions.KaryaException
 
 sealed class ExecutorException : KaryaException() {

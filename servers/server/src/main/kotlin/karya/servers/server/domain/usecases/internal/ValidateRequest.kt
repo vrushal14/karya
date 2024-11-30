@@ -1,7 +1,7 @@
 package karya.servers.server.domain.usecases.internal
 
 import karya.core.entities.JobType
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.exceptions.JobException.InvalidChainedRequestException
 import karya.core.exceptions.JobException.RecursiveDepthExceededException

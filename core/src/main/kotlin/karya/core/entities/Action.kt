@@ -1,8 +1,8 @@
-package karya.core.entities.action
+package karya.core.entities
 
-import karya.core.entities.action.http.Body
-import karya.core.entities.action.http.Method
-import karya.core.entities.action.http.Protocol
+import karya.core.entities.http.Body
+import karya.core.entities.http.Method
+import karya.core.entities.http.Protocol
 import karya.core.entities.requests.SubmitJobRequest
 import kotlinx.serialization.Serializable
 

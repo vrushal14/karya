@@ -1,6 +1,6 @@
 package karya.client.configs
 
-import karya.core.entities.action.http.Protocol
+import karya.core.entities.http.Protocol
 
 data class KaryaClientConfig(
   val protocol: Protocol,

@@ -4,9 +4,9 @@ import karya.connector.chainedjob.di.ChainedJobConnectorFactory
 import karya.connectors.restapi.configs.RestApiConnectorConfig
 import karya.connectors.restapi.di.RestApiConnectorFactory
 import karya.core.actors.Connector
-import karya.core.entities.action.Action
-import karya.core.entities.action.Action.ChainedRequest
-import karya.core.entities.action.Action.RestApiRequest
+import karya.core.entities.Action
+import karya.core.entities.Action.ChainedRequest
+import karya.core.entities.Action.RestApiRequest
 import karya.core.utils.getSection
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector

@@ -12,7 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import karya.client.configs.KaryaClientConfig
 import karya.client.ktor.KaryaClientImpl
 import karya.core.actors.Client
-import karya.core.entities.action.http.Protocol
+import karya.core.entities.http.Protocol
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
