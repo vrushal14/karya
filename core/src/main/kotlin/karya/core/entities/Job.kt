@@ -20,6 +20,8 @@ data class Job(
   val status: JobStatus,
   val maxFailureRetry: Int,
   val action: Action,
+  @Serializable(with = UUIDSerializer::class)
+  val parentJobId: UUID?,
   val createdAt: Long,
   val updatedAt: Long,
 ) {
@@ -33,6 +35,7 @@ data class Job(
       status = status,
       maxFailureRetry = request.maxFailureRetry ?: maxFailureRetry,
       action = action,
+      parentJobId = parentJobId,
       createdAt = createdAt,
       updatedAt = Instant.now().toEpochMilli(),
     )

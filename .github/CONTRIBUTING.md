@@ -13,14 +13,15 @@ provider, Redis for locks provider and RabbitMq as queue provider.
   docker-compose -f ./docs/local-setup/providers.docker-compose.yml up -d
   ```
 - Create a `providers.yml` file.
-  - A sample file can be found [here](../configs/providers.yml).
-  - For more information on how to configure the providers, refer to the [Connectors](../README.md/#connectors) section.
+    - A sample file can be found [here](../configs/providers.yml).
+    - For more information on how to configure the providers, refer to the [Connectors](../README.md/#connectors)
+      section.
 - Create a `executor.yml` file.
-  - A sample file can be found [here](../configs/executor.yml).
-  - For more information on how to configure the executor, refer to the [Executor](../README.md/#executor) section.
+    - A sample file can be found [here](../configs/executor.yml).
+    - For more information on how to configure the executor, refer to the [Executor](../README.md/#executor) section.
 - Create a `scheduler.yml` file.
-  - A sample file can be found [here](../configs/scheduler.yml).
-  - For more information on how to configure the scheduler, refer to the [Scheduler](../README.md/#scheduler) section.
+    - A sample file can be found [here](../configs/scheduler.yml).
+    - For more information on how to configure the scheduler, refer to the [Scheduler](../README.md/#scheduler) section.
 
 ### Running the application
 
@@ -33,7 +34,7 @@ Start the application in the following order:
    
     ./gradlew servers-server:run
    ```
-   
+
 2. Start the executor (can start multiple instances)
     ```shell 
     export KARYA_PROVIDERS_CONFIG_PATH=path/to/providers.yml
@@ -49,8 +50,9 @@ Start the application in the following order:
    
     ./gradlew servers-scheduler:run
     ```
-   
-A sample [MakePeriodicApiCall.kt.kt](../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicApiCall.kt) file is provided to schedule a dummy job and check if the setup is working fine.
+
+A sample [MakePeriodicApiCall.kt.kt](../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicApiCall.kt) file is
+provided to schedule a dummy job and check if the setup is working fine.
 
 ## Linting and Formatting
 

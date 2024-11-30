@@ -4,6 +4,7 @@ import karya.core.entities.Job
 import karya.core.entities.enums.JobStatus
 import karya.data.psql.tables.jobs.mappers.JobStatusMapper
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.statements.StatementType
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
 import java.util.*
@@ -26,6 +27,7 @@ constructor(
       it[status] = jobStatusMapper.toRecord(job.status)
       it[maxFailureRetry] = job.maxFailureRetry
       it[action] = job.action
+      it[parentJobId] = job.parentJobId
       it[createdAt] = Instant.ofEpochMilli(job.createdAt)
       it[updatedAt] = Instant.ofEpochMilli(job.updatedAt)
     }
@@ -55,6 +57,25 @@ constructor(
     }
   }
 
+  fun getAllDescendantJobIds(jobId: UUID): List<UUID> = transaction(db) {
+    val query = """
+            WITH RECURSIVE ChildJobIds AS (
+                SELECT id FROM jobs WHERE parent_job_id = '$jobId'
+                UNION ALL
+                SELECT j.id FROM jobs j INNER JOIN ChildJobIds cj ON j.parent_job_id = cj.id
+            )
+            SELECT id FROM ChildJobIds;
+        """.trimIndent()
+
+    exec(query, explicitStatementType = StatementType.SELECT) { resultSet ->
+      val ids = mutableListOf<UUID>()
+      while (resultSet.next()) {
+        ids.add(UUID.fromString(resultSet.getString("id")))
+      }
+      ids
+    } ?: emptyList()
+  }
+
   private fun fromRecord(resultRow: ResultRow) = Job(
     id = resultRow[JobsTable.id],
     userId = resultRow[JobsTable.userId],
@@ -64,6 +85,7 @@ constructor(
     status = jobStatusMapper.fromRecord(resultRow[JobsTable.status]),
     maxFailureRetry = resultRow[JobsTable.maxFailureRetry],
     action = resultRow[JobsTable.action],
+    parentJobId = resultRow[JobsTable.parentJobId],
     createdAt = resultRow[JobsTable.createdAt].toEpochMilli(),
     updatedAt = resultRow[JobsTable.updatedAt].toEpochMilli(),
   )

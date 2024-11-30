@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     status INT NOT NULL,
     max_failure_retry INT NOT NULL,
     action JSON NOT NULL,
+    parent_job_id UUID,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
 );

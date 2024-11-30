@@ -22,7 +22,10 @@ constructor(
     jobsQueries.update(job)
   }
 
-  override suspend fun updateStatus(id: UUID, status: JobStatus, ) {
+  override suspend fun updateStatus(id: UUID, status: JobStatus) {
     jobsQueries.updateStatus(id, status)
   }
+
+  override suspend fun getChildJobIds(id: UUID): List<UUID> =
+    jobsQueries.getAllDescendantJobIds(id)
 }

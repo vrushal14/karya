@@ -24,7 +24,7 @@ constructor(
     try {
       val request = call.receive<SubmitJobRequest>()
       validateRequest.invoke(request)
-      val response = submitJob.invoke(request)
+      val response = submitJob.invoke(request, parentJobId = null)
       call.respond(HttpStatusCode.OK, response)
     } catch (e: KaryaException) {
       logger.error(e)

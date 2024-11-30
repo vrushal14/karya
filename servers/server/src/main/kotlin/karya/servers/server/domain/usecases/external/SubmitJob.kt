@@ -30,13 +30,13 @@ constructor(
 
   companion object : Logging
 
-  suspend fun invoke(request: SubmitJobRequest): Job = usersRepo
+  suspend fun invoke(request: SubmitJobRequest, parentJobId: UUID?): Job = usersRepo
     .get(request.userId)
-    ?.let { createJob(request, it) }
+    ?.let { createJob(request, it, parentJobId) }
     ?.also { createTask(it) }
     ?: throw UserException.UserNotFoundException(request.userId)
 
-  private suspend fun createJob(request: SubmitJobRequest, user: User) = Job(
+  private suspend fun createJob(request: SubmitJobRequest, user: User, parentJob: UUID?) = Job(
     id = UUID.randomUUID(),
     userId = user.id,
     description = request.description,
@@ -45,6 +45,7 @@ constructor(
     status = JobStatus.CREATED,
     maxFailureRetry = request.maxFailureRetry,
     action = request.action,
+    parentJobId = parentJob,
     createdAt = Instant.now().toEpochMilli(),
     updatedAt = Instant.now().toEpochMilli(),
   ).also { jobsRepo.add(it) }

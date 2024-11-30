@@ -17,6 +17,7 @@ object JobsTable : Table("jobs") {
   val status = integer("status")
   val maxFailureRetry = integer("max_failure_retry")
   val action = json<Action>("action", Json)
+  val parentJobId = uuid("parent_job_id").nullable()
 
   val createdAt = timestamp("created_at")
   val updatedAt = timestamp("updated_at")

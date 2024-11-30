@@ -2,6 +2,7 @@ package karya.core.actors
 
 import karya.core.entities.action.Action
 import java.time.Instant
+import java.util.*
 
 sealed class Result {
   data class Success(
@@ -17,6 +18,6 @@ sealed class Result {
 }
 
 interface Connector<T : Action> {
-  suspend fun invoke(action: T): Result
+  suspend fun invoke(jobId: UUID, action: T): Result
   suspend fun shutdown()
 }
