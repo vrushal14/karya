@@ -25,8 +25,8 @@ There are several job schedulers out there. Why to chose Karya? Here are the rea
    *less complex and easy to understand**!
 3. Karya is **highly pluggable** in nature. Be it in terms of [data-interfaces](#data-interfaces)
    or [connectors](#connectors). Just specify the properties in a .yml file and you're good to go!
-4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe while
-   being blazingly fast and performant**!
+4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe** while
+   being blazingly **fast and performant**!
 
 ---
 
