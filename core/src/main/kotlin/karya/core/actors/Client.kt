@@ -6,6 +6,7 @@ import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitJobRequest
 import karya.core.entities.requests.UpdateJobRequest
 import karya.core.entities.responses.GetJobResponse
+import karya.core.entities.responses.GetSummaryResponse
 import java.util.*
 
 interface Client {
@@ -18,6 +19,8 @@ interface Client {
   suspend fun updateJob(request: UpdateJobRequest): Job
 
   suspend fun cancelJob(jobId: UUID): Job
+
+  suspend fun getSummary(jobId: UUID): GetSummaryResponse
 
   suspend fun close()
 }

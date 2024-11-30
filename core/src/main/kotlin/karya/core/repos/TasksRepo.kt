@@ -13,6 +13,8 @@ interface TasksRepo {
 
   suspend fun get(request: GetTasksRequest): Task?
 
+  suspend fun get(jobId: UUID): List<Task>
+
   suspend fun update(task: Task)
 
   suspend fun updateStatus(id: UUID, status: TaskStatus)

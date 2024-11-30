@@ -24,6 +24,9 @@ constructor(
   override suspend fun get(request: GetTasksRequest): Task? =
     tasksQueries.getInRange(request)
 
+  override suspend fun get(jobId: UUID): List<Task> =
+    tasksQueries.getByJobId(jobId)
+
   override suspend fun update(task: Task) {
     tasksQueries.update(task)
   }
