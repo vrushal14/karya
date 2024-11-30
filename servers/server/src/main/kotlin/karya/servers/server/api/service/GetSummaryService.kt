@@ -6,22 +6,22 @@ import io.ktor.server.response.*
 import io.ktor.server.util.*
 import karya.core.exceptions.KaryaException
 import karya.servers.server.api.mapper.toHttpResponse
-import karya.servers.server.domain.usecases.external.GetJob
+import karya.servers.server.domain.usecases.external.GetSummary
 import org.apache.logging.log4j.kotlin.Logging
 import java.util.*
 import javax.inject.Inject
 
-class GetJobService
+class GetSummaryService
 @Inject
 constructor(
-  private val getJob: GetJob,
+  private val getSummary: GetSummary
 ) {
   companion object : Logging
 
   suspend fun invoke(call: ApplicationCall) = try {
     val params = call.parameters
     val jobId = UUID.fromString(params.getOrFail("job_id"))
-    val response = getJob.invoke(jobId)
+    val response = getSummary.invoke(jobId)
     call.respond(HttpStatusCode.OK, response)
 
   } catch (e: KaryaException) {

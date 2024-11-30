@@ -57,6 +57,13 @@ constructor(
       ?.let(::fromRecord)
   }
 
+  fun getByJobId(jobId: UUID) = transaction(db) {
+    TasksTable
+      .selectAll()
+      .where { TasksTable.jobId eq jobId }
+      .map(::fromRecord)
+  }
+
   fun update(task: Task) = transaction(db) {
     TasksTable.update({ TasksTable.id eq task.id }) {
       it[status] = taskStatusMapper.toRecord(task.status)
