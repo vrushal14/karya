@@ -5,6 +5,7 @@ import karya.core.actors.Result
 import karya.core.entities.action.Action
 import karya.core.entities.enums.TaskStatus.FAILURE
 import karya.core.entities.enums.TaskStatus.SUCCESS
+import karya.core.exceptions.KaryaException
 import karya.core.queues.QueueClient
 import karya.core.queues.entities.ExecutorMessage
 import karya.core.queues.entities.QueueType
@@ -25,13 +26,17 @@ constructor(
 
   companion object : Logging
 
-  suspend fun invoke(message: ExecutorMessage) {
+  suspend fun invoke(message: ExecutorMessage) = try {
     val connector = getConnector(message.action)
-    when (val result = connector.invoke(message.action)) {
+    when (val result = connector.invoke(message.jobId, message.action)) {
       is Result.Success -> handleSuccess(result, message)
       is Result.Failure -> handleFailure(result, message)
     }
     maybeUpdateJob.invoke(message.jobId)
+
+  } catch (e: KaryaException) {
+    logger.error(e) { "[PUSHING MESSAGE TO DLQ] Exception while executing action --- ${e.message}" }
+    queueClient.push(message, QueueType.DEAD_LETTER)
   }
 
   private fun getConnector(action: Action) =

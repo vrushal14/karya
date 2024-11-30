@@ -2,6 +2,7 @@ package karya.servers.scheduler.usecases.internal
 
 import karya.core.entities.Job
 import karya.core.entities.Task
+import karya.core.entities.enums.JobStatus
 import karya.core.entities.enums.TaskStatus
 import karya.core.queues.QueueClient
 import karya.core.queues.entities.ExecutorMessage
@@ -27,6 +28,7 @@ constructor(
   companion object : Logging
 
   suspend fun invoke(job: Job, task: Task) {
+    if(isJobTerminated(job)) return
     pushCurrentTaskToQueue(job, task)
     if (shouldCreateNextTask.invoke(job)) createNextTask(job)
   }
@@ -48,4 +50,7 @@ constructor(
     nextExecutionAt = getNextExecutionAt(Instant.now(), job.periodTime),
   ).also { tasksRepo.add(it) }
     .also { logger.info("[${getInstanceName()}] : [NEXT TASK CREATED] --- $it") }
+
+  private fun isJobTerminated(job: Job) =
+    (job.status == JobStatus.COMPLETED).or(job.status == JobStatus.CANCELLED)
 }

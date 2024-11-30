@@ -11,6 +11,7 @@ import karya.core.entities.action.Action.RestApiRequest
 import karya.core.entities.action.http.Body
 import karya.core.entities.action.http.Method
 import java.time.Instant
+import java.util.*
 import javax.inject.Inject
 
 class RestApiConnector
@@ -19,14 +20,13 @@ constructor(
   private val httpClient: HttpClient,
 ) : Connector<RestApiRequest> {
 
-  override suspend fun invoke(action: RestApiRequest): Result = try {
-    val response =
-      httpClient.request(buildUrl(action)) {
-        method = mapMethod(action.method)
-        headers { action.headers.forEach { key, value -> append(key, value) } }
-        timeout { requestTimeoutMillis = action.timeout }
-        setRequestBody(action.body)
-      }
+  override suspend fun invoke(jobId: UUID, action: RestApiRequest): Result = try {
+    val response = httpClient.request(buildUrl(action)) {
+      method = mapMethod(action.method)
+      headers { action.headers.forEach { key, value -> append(key, value) } }
+      timeout { requestTimeoutMillis = action.timeout }
+      setRequestBody(action.body)
+    }
     handleResponse(response, action, Instant.now())
 
   } catch (e: Exception) {

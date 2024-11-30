@@ -33,11 +33,19 @@ constructor(
 
   private suspend fun updateJobStatus(jobId: UUID): Job {
     val job = jobsRepo.get(jobId) ?: throw JobNotFoundException(jobId)
-    return job
-      .copy(
-        status = JobStatus.CANCELLED,
-        updatedAt = Instant.now().toEpochMilli(),
-      ).also { jobsRepo.update(it) }
+    return job.copy(
+      status = JobStatus.CANCELLED,
+      updatedAt = Instant.now().toEpochMilli(),
+    ).also { jobsRepo.update(it) }
       .also { logger.info("Cancelled job --- $jobId") }
+      .also { cancelChildJobsIfAny(jobId) }
+  }
+
+  private suspend fun cancelChildJobsIfAny(jobId: UUID) {
+    val childJobs = jobsRepo.getChildJobIds(jobId)
+    childJobs.forEach {
+      logger.info("[CANCELLING CHILD JOB] --- jobId : $jobId")
+      invoke(it)
+    }
   }
 }
