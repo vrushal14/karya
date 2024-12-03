@@ -2,8 +2,8 @@ package karya.docs.samples
 
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
-import karya.core.entities.PlanType
 import karya.core.entities.Action
+import karya.core.entities.PlanType
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitPlanRequest
 import java.time.Instant
@@ -32,7 +32,6 @@ suspend fun main() {
   )
 
   client.submitPlan(planRequest).also(::println)
-
 //  client.cancelTask(UUID.fromString("c573d5c7-0a99-4b39-bf43-500cbc549a15"))
 
   client.close()

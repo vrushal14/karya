@@ -1,10 +1,6 @@
 package karya.data.fused.entities
 
-import karya.core.repos.ErrorLogsRepo
-import karya.core.repos.PlansRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
+import karya.core.repos.*
 
 data class ReposWrapper(
   val usersRepo: UsersRepo,

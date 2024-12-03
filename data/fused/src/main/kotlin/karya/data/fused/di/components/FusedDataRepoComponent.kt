@@ -3,11 +3,7 @@ package karya.data.fused.di.components
 import dagger.BindsInstance
 import dagger.Component
 import karya.core.configs.RepoConfig
-import karya.core.repos.ErrorLogsRepo
-import karya.core.repos.PlansRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
+import karya.core.repos.*
 import karya.data.fused.di.modules.FusedRepoModule
 import javax.inject.Singleton
 

@@ -2,8 +2,8 @@ package karya.docs.samples
 
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
-import karya.core.entities.PlanType
 import karya.core.entities.Action
+import karya.core.entities.PlanType
 import karya.core.entities.http.Body
 import karya.core.entities.http.Method
 import karya.core.entities.http.Protocol
@@ -14,7 +14,6 @@ import java.time.Instant
 
 suspend fun main() {
   val client = KaryaClientFactory.create(KaryaClientConfig.Dev)
-
   val user = client.createUser(CreateUserRequest("Alice"))
 
   val apiRequest = Action.RestApiRequest(

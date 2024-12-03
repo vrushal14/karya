@@ -28,7 +28,7 @@ constructor(
   companion object : Logging
 
   suspend fun invoke(plan: Plan, task: Task) {
-    if(isPlanTerminated(plan)) return
+    if (isPlanTerminated(plan)) return
     pushCurrentTaskToQueue(plan, task)
     if (shouldCreateNextTask.invoke(plan)) createNextTask(plan)
   }

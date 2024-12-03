@@ -3,11 +3,7 @@ package karya.data.fused.di.modules
 import dagger.Module
 import dagger.Provides
 import karya.core.configs.RepoConfig
-import karya.core.repos.ErrorLogsRepo
-import karya.core.repos.PlansRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
+import karya.core.repos.*
 import karya.data.fused.entities.ReposWrapper
 import karya.data.fused.exceptions.FusedDataException.UnknownProviderException
 import karya.data.psql.configs.PsqlRepoConfig

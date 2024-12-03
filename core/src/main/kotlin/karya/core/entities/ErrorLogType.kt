@@ -2,7 +2,7 @@ package karya.core.entities
 
 import karya.core.utils.UUIDSerializer
 import kotlinx.serialization.Serializable
-import java.util.UUID
+import java.util.*
 
 @Serializable
 sealed class ErrorLogType {

@@ -25,7 +25,8 @@ There are several task schedulers out there. Why to choose Karya? Here are the r
    *less complex and easy to understand**!
 3. Karya is **highly pluggable** in nature. Be it in terms of [data-interfaces](#data-interfaces)
    or [connectors](#connectors). Just specify the properties in a .yml file, and you're good to go!
-4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe** while
+4. Being written in Kotlin, it smartly uses coroutines to achieve *structured concurrency* making it **thread safe**
+   while
    being blazingly **fast and performant**!
 
 ---
@@ -144,7 +145,7 @@ repo:
   provider: "psql"
   partitions: 5  // how many partitions you would want in your database. Usefull when the throughput is high
   properties:
-   // Properties of the repo provider
+    // Properties of the repo provider
 
 lock:
   provider: "redis"

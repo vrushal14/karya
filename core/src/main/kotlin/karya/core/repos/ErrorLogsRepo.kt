@@ -1,7 +1,7 @@
 package karya.core.repos
 
 import karya.core.entities.ErrorLog
-import java.util.UUID
+import java.util.*
 
 interface ErrorLogsRepo {
   suspend fun push(log: ErrorLog)
