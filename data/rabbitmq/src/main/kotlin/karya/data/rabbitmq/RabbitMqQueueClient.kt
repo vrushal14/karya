@@ -11,6 +11,7 @@ import karya.data.rabbitmq.configs.ExchangeConfig.DL_ROUTING_KEY
 import karya.data.rabbitmq.configs.ExchangeConfig.EXCHANGE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_QUEUE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_ROUTING_KEY
+import karya.data.rabbitmq.configs.ExchangeConfig.HOOKS_QUEUE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.HOOKS_ROUTING_KEY
 import karya.data.rabbitmq.usecases.external.InitializeConfiguration
 import karya.data.rabbitmq.usecases.external.RabbitMqConsumer
@@ -32,6 +33,8 @@ constructor(
     private const val CONTENT_TYPE = "application/json"
     private const val DELIVERY_MODE = 2 // persistent
     private const val PRIORITY = 1
+
+    private val FUNCTIONAL_QUEUES = listOf(EXECUTOR_QUEUE_NAME, HOOKS_QUEUE_NAME)
   }
 
   override suspend fun initialize() {
@@ -55,8 +58,10 @@ constructor(
   // will maintain a persistent connection so no need for polling
   override suspend fun consume(onMessage: suspend (QueueMessage) -> Unit) {
     consumer.onMessage = onMessage
-    channel.basicConsume(EXECUTOR_QUEUE_NAME, false, consumer)
-    logger.info("Started consuming messages from queue: $EXECUTOR_QUEUE_NAME")
+    FUNCTIONAL_QUEUES.forEach { queue ->
+      channel.basicConsume(queue, false, consumer)
+      logger.info("Started consuming messages from queue: $queue")
+    }
   }
 
   override suspend fun shutdown(): Boolean = try {

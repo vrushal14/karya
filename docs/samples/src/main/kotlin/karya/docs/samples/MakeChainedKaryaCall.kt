@@ -13,7 +13,7 @@ suspend fun main() {
   val client = KaryaClientFactory.create(config)
   val user = client.createUser(CreateUserRequest("Bob"))
 
-  val request = SubmitPlanRequest(
+  val planRequest = SubmitPlanRequest(
     userId = user.id,
     description = "Sample chained run",
     periodTime = "PT15S",
@@ -31,7 +31,7 @@ suspend fun main() {
     ),
   )
 
-  client.submitPlan(request).also(::println)
+  client.submitPlan(planRequest).also(::println)
 
 //  client.cancelTask(UUID.fromString("c573d5c7-0a99-4b39-bf43-500cbc549a15"))
 

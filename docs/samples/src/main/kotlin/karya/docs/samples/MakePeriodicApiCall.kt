@@ -10,6 +10,7 @@ import karya.core.entities.http.Protocol
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitPlanRequest
 import karya.core.entities.requests.UpdatePlanRequest
+import java.time.Instant
 
 suspend fun main() {
   val client = KaryaClientFactory.create(KaryaClientConfig.Dev)
@@ -51,7 +52,7 @@ suspend fun main() {
     userId = user.id,
     description = "Sample run",
     periodTime = "PT7S",
-    planType = PlanType.Recurring(null),
+    planType = PlanType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
     action = apiRequest
   )
 

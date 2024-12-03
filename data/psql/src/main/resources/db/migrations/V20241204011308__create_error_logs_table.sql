@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS error_logs (
     timestamp TIMESTAMP NOT NULL
 );
 
-CREATE INDEX idx_plan_id ON error_logs(plan_id);
+CREATE INDEX idx_error_logs_plan_id ON error_logs(plan_id);
