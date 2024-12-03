@@ -56,7 +56,7 @@ suspend fun main() {
   )
 
   val job = client.submitJob(jobRequest)
-  client.fetchJob(job.id).also(::println)
+  client.getJob(job.id).also(::println)
 
   client.updateJob(
     UpdateJobRequest(

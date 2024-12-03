@@ -14,7 +14,7 @@ interface Client {
 
   suspend fun submitJob(request: SubmitJobRequest): Job
 
-  suspend fun fetchJob(jobId: UUID): GetJobResponse
+  suspend fun getJob(jobId: UUID): GetJobResponse
 
   suspend fun updateJob(request: UpdateJobRequest): Job
 

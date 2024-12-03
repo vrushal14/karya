@@ -13,7 +13,6 @@ import karya.core.entities.requests.UpdateJobRequest
 import karya.core.entities.responses.GetJobResponse
 import karya.core.entities.responses.GetSummaryResponse
 import kotlinx.serialization.json.Json
-import org.apache.logging.log4j.kotlin.Logging
 import java.util.*
 
 class KaryaClientImpl(
@@ -21,7 +20,7 @@ class KaryaClientImpl(
   private val json: Json,
 ) : Client {
 
-  companion object : Logging {
+  companion object {
     private const val VERSION = "v1"
     private const val JOB = "job"
     private const val USER = "user"
@@ -39,7 +38,7 @@ class KaryaClientImpl(
       setBody(request)
     }.deserialize<Job>(json)
 
-  override suspend fun fetchJob(jobId: UUID): GetJobResponse = httpClient
+  override suspend fun getJob(jobId: UUID): GetJobResponse = httpClient
     .get {
       url { path(VERSION, JOB, jobId.toString()) }
     }.deserialize<GetJobResponse>(json)
@@ -62,6 +61,5 @@ class KaryaClientImpl(
 
   override suspend fun close() {
     httpClient.close()
-    logger.info("Closed Karya client.")
   }
 }

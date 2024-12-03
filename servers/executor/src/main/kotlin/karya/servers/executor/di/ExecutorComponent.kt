@@ -5,7 +5,7 @@ import dagger.Component
 import karya.data.fused.di.components.FusedDataQueueComponent
 import karya.data.fused.di.components.FusedDataRepoComponent
 import karya.servers.executor.configs.ExecutorConfig
-import karya.servers.executor.usecase.external.ExecutorService
+import karya.servers.executor.usecase.ExecutorService
 
 @ExecutorScope
 @Component(

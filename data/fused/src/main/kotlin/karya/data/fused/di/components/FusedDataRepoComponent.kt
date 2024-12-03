@@ -3,6 +3,7 @@ package karya.data.fused.di.components
 import dagger.BindsInstance
 import dagger.Component
 import karya.core.configs.RepoConfig
+import karya.core.repos.ErrorLogsRepo
 import karya.core.repos.JobsRepo
 import karya.core.repos.RepoConnector
 import karya.core.repos.TasksRepo
@@ -21,6 +22,7 @@ interface FusedDataRepoComponent {
   val usersRepo: UsersRepo
   val jobsRepo: JobsRepo
   val tasksRepo: TasksRepo
+  val errorLogsRepo: ErrorLogsRepo
   val repoConnector: RepoConnector
 
   @Component.Builder

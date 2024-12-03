@@ -2,7 +2,7 @@ package karya.data.psql.tables.jobs
 
 import karya.core.entities.JobType
 import karya.core.entities.Action
-import karya.core.entities.NotificationSettings
+import karya.core.entities.Hook
 import karya.data.psql.tables.users.UsersTable
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Table
@@ -18,7 +18,7 @@ object JobsTable : Table("jobs") {
   val status = integer("status")
   val maxFailureRetry = integer("max_failure_retry")
   val action = json<Action>("action", Json)
-  val notificationSettings = json<NotificationSettings>("notification_settings", Json)
+  val hook = json<List<Hook>>("hook", Json)
   val parentJobId = uuid("parent_job_id").nullable()
 
   val createdAt = timestamp("created_at")

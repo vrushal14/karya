@@ -4,13 +4,14 @@ import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import karya.core.queues.QueueClient
-import karya.core.queues.entities.ExecutorMessage
+import karya.core.queues.entities.QueueMessage
 import karya.core.queues.entities.QueueType
 import karya.data.rabbitmq.configs.ExchangeConfig.DL_EXCHANGE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.DL_ROUTING_KEY
 import karya.data.rabbitmq.configs.ExchangeConfig.EXCHANGE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_QUEUE_NAME
 import karya.data.rabbitmq.configs.ExchangeConfig.EXECUTOR_ROUTING_KEY
+import karya.data.rabbitmq.configs.ExchangeConfig.HOOKS_ROUTING_KEY
 import karya.data.rabbitmq.usecases.external.InitializeConfiguration
 import karya.data.rabbitmq.usecases.external.RabbitMqConsumer
 import karya.data.rabbitmq.usecases.internal.MessageEncoder
@@ -37,13 +38,13 @@ constructor(
     initializeConfiguration.invoke()
   }
 
-  override suspend fun push(message: ExecutorMessage, queueType: QueueType) {
+  override suspend fun push(message: QueueMessage, queueType: QueueType) {
     try {
       val messageBytes = messageEncoder.encode(message)
       val properties = buildProperties()
       val (exchangeToUse, routingKeyToUse) = provideExchangeAndRoutingKey(queueType)
       channel.basicPublish(exchangeToUse, routingKeyToUse, properties, messageBytes)
-      logger.info("[TASK PUSHED] --- message pushed to $exchangeToUse : $message")
+      logger.info("[MESSAGE PUSHED : $message] --- pushed to $exchangeToUse : $message")
 
     } catch (e: Exception) {
       logger.error("Error pushing message to RabbitMQ: ${e.message}", e)
@@ -52,7 +53,7 @@ constructor(
   }
 
   // will maintain a persistent connection so no need for polling
-  override suspend fun consume(onMessage: suspend (ExecutorMessage) -> Unit) {
+  override suspend fun consume(onMessage: suspend (QueueMessage) -> Unit) {
     consumer.onMessage = onMessage
     channel.basicConsume(EXECUTOR_QUEUE_NAME, false, consumer)
     logger.info("Started consuming messages from queue: $EXECUTOR_QUEUE_NAME")
@@ -69,8 +70,9 @@ constructor(
   }
 
   private fun provideExchangeAndRoutingKey(queueType: QueueType): Pair<String, String> = when (queueType) {
-    QueueType.REGULAR -> Pair(EXCHANGE_NAME, EXECUTOR_ROUTING_KEY)
+    QueueType.EXECUTOR -> Pair(EXCHANGE_NAME, EXECUTOR_ROUTING_KEY)
     QueueType.DEAD_LETTER -> Pair(DL_EXCHANGE_NAME, DL_ROUTING_KEY)
+    QueueType.HOOK -> Pair(EXCHANGE_NAME, HOOKS_ROUTING_KEY)
   }
 
   private fun buildProperties(): BasicProperties = BasicProperties

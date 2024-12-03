@@ -1,9 +1,9 @@
-package karya.servers.executor.usecase.external
+package karya.servers.executor.usecase
 
 import karya.core.queues.QueueClient
 import karya.core.repos.RepoConnector
 import karya.servers.executor.configs.ExecutorConfig
-import karya.servers.executor.usecase.internal.ExecuteAction
+import karya.servers.executor.usecase.external.ProcessMessage
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
@@ -13,8 +13,8 @@ class ExecutorService
 constructor(
   private val repoConnector: RepoConnector,
   private val queueClient: QueueClient,
-  private val executeAction: ExecuteAction,
-  private val config: ExecutorConfig
+  private val config: ExecutorConfig,
+  private val processMessage: ProcessMessage
 ) {
 
   companion object : Logging
@@ -22,7 +22,7 @@ constructor(
   suspend fun start() {
     logger.info("Starting executor service...")
     queueClient.initialize()
-    queueClient.consume { message -> executeAction.invoke(message) }
+    queueClient.consume { message -> processMessage.invoke(message) }
   }
 
   fun stop() = runBlocking {

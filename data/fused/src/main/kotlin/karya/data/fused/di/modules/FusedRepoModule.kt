@@ -3,6 +3,7 @@ package karya.data.fused.di.modules
 import dagger.Module
 import dagger.Provides
 import karya.core.configs.RepoConfig
+import karya.core.repos.ErrorLogsRepo
 import karya.core.repos.JobsRepo
 import karya.core.repos.RepoConnector
 import karya.core.repos.TasksRepo
@@ -34,6 +35,10 @@ class FusedRepoModule {
 
   @Provides
   @Singleton
+  fun provideErrorLogsRepo(wrapper: ReposWrapper): ErrorLogsRepo = wrapper.errorLogsRepo
+
+  @Provides
+  @Singleton
   fun provideReposWrapper(repoConfig: RepoConfig): ReposWrapper =
     when (repoConfig) {
       is PsqlRepoConfig -> providePsqlRepoWrapper(repoConfig)
@@ -47,6 +52,7 @@ class FusedRepoModule {
       jobsRepo = component.jobsRepo,
       usersRepo = component.usersRepo,
       tasksRepo = component.tasksRepo,
+      errorLogsRepo = component.errorLogsRepo,
       repoConnector = component.repoConnector,
     )
   }

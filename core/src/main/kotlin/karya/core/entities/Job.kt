@@ -19,7 +19,7 @@ data class Job(
   val status: JobStatus,
   val maxFailureRetry: Int,
   val action: Action,
-  val notificationSettings: NotificationSettings,
+  val hook: List<Hook>,
   @Serializable(with = UUIDSerializer::class)
   val parentJobId: UUID?,
   val createdAt: Long,
@@ -35,7 +35,7 @@ data class Job(
       status = status,
       maxFailureRetry = request.maxFailureRetry ?: maxFailureRetry,
       action = action,
-      notificationSettings = request.notificationSettings ?: notificationSettings,
+      hook = request.hooks ?: hook,
       parentJobId = parentJobId,
       createdAt = createdAt,
       updatedAt = Instant.now().toEpochMilli(),

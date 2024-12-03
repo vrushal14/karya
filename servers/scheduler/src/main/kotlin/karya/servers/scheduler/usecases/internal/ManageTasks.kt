@@ -5,7 +5,7 @@ import karya.core.entities.Task
 import karya.core.entities.enums.JobStatus
 import karya.core.entities.enums.TaskStatus
 import karya.core.queues.QueueClient
-import karya.core.queues.entities.ExecutorMessage
+import karya.core.queues.entities.QueueMessage.ExecutorMessage
 import karya.core.repos.RepoConnector
 import karya.core.repos.TasksRepo
 import karya.core.usecases.createPartitionKey

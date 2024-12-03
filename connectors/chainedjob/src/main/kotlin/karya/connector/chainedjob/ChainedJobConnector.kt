@@ -1,8 +1,8 @@
 package karya.connector.chainedjob
 
 import karya.core.actors.Connector
-import karya.core.actors.Result
 import karya.core.entities.Action
+import karya.core.entities.ExecutorResult
 import karya.core.exceptions.KaryaException
 import karya.core.repos.RepoConnector
 import karya.servers.server.domain.usecases.external.SubmitJob
@@ -17,16 +17,15 @@ constructor(
   private val repoConnector: RepoConnector
 ) : Connector<Action.ChainedRequest> {
 
-  override suspend fun invoke(jobId: UUID, action: Action.ChainedRequest): Result = try {
+  override suspend fun invoke(jobId: UUID, action: Action.ChainedRequest): ExecutorResult = try {
     submitJob.invoke(action.request, parentJobId = jobId)
-    Result.Success(Instant.now())
+    ExecutorResult.Success(Instant.now().toEpochMilli())
 
   } catch (e: KaryaException) {
-    Result.Failure(
+    ExecutorResult.Failure(
       reason = "Chained job failed --- error : ${e.message}",
       action = action,
-      exception = e,
-      timestamp = Instant.now()
+      timestamp = Instant.now().toEpochMilli()
     )
   }
 

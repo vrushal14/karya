@@ -2,14 +2,8 @@ package karya.data.psql.di
 
 import dagger.Binds
 import dagger.Module
-import karya.core.repos.JobsRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
-import karya.data.psql.repos.PsqlJobsRepo
-import karya.data.psql.repos.PsqlRepoConnector
-import karya.data.psql.repos.PsqlTasksRepo
-import karya.data.psql.repos.PsqlUsersRepo
+import karya.core.repos.*
+import karya.data.psql.repos.*
 import javax.inject.Singleton
 
 @Module
@@ -25,6 +19,10 @@ abstract class PsqlModule {
   @Binds
   @Singleton
   abstract fun provideJobsRepo(psqlJobsRepo: PsqlJobsRepo): JobsRepo
+
+  @Binds
+  @Singleton
+  abstract fun provideErrorLogsRepo(psqlErrorLogsRepo: PsqlErrorLogsRepo): ErrorLogsRepo
 
   @Binds
   @Singleton
