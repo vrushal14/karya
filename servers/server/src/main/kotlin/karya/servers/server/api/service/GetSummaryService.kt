@@ -20,8 +20,8 @@ constructor(
 
   suspend fun invoke(call: ApplicationCall) = try {
     val params = call.parameters
-    val jobId = UUID.fromString(params.getOrFail("job_id"))
-    val response = getSummary.invoke(jobId)
+    val planId = UUID.fromString(params.getOrFail("plan_id"))
+    val response = getSummary.invoke(planId)
     call.respond(HttpStatusCode.OK, response)
 
   } catch (e: KaryaException) {

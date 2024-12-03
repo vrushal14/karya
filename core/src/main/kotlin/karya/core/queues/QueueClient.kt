@@ -1,14 +1,14 @@
 package karya.core.queues
 
-import karya.core.queues.entities.ExecutorMessage
+import karya.core.queues.entities.QueueMessage
 import karya.core.queues.entities.QueueType
 
 interface QueueClient {
   suspend fun initialize()
 
-  suspend fun push(message: ExecutorMessage, queueType: QueueType = QueueType.REGULAR)
+  suspend fun push(message: QueueMessage, queueType: QueueType = QueueType.EXECUTOR)
 
-  suspend fun consume(onMessage: suspend (ExecutorMessage) -> Unit)
+  suspend fun consume(onMessage: suspend (QueueMessage) -> Unit)
 
   suspend fun shutdown(): Boolean
 }

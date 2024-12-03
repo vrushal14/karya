@@ -5,7 +5,7 @@ interface RepoConnector {
 
   suspend fun runMigration(): Boolean
 
-  suspend fun createDynamicPartitions(): Boolean
+  suspend fun createPartitions(): Boolean
 
   suspend fun shutdown(): Boolean
 }

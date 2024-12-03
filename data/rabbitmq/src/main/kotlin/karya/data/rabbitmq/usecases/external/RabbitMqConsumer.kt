@@ -4,7 +4,7 @@ import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
-import karya.core.queues.entities.ExecutorMessage
+import karya.core.queues.entities.QueueMessage
 import karya.data.rabbitmq.usecases.internal.MessageEncoder
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
@@ -18,7 +18,7 @@ constructor(
 ) : DefaultConsumer(channel) {
   companion object : Logging
 
-  var onMessage: (suspend (ExecutorMessage) -> Unit)? = null
+  var onMessage: (suspend (QueueMessage) -> Unit)? = null
 
   override fun handleDelivery(
     consumerTag: String?,

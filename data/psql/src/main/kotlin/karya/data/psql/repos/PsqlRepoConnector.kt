@@ -32,7 +32,7 @@ constructor(
     }
   }
 
-  override suspend fun createDynamicPartitions(): Boolean {
+  override suspend fun createPartitions(): Boolean {
     try {
       transaction(db) {
         val partitions = config.partitions

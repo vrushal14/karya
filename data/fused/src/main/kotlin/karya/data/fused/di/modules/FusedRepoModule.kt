@@ -3,10 +3,7 @@ package karya.data.fused.di.modules
 import dagger.Module
 import dagger.Provides
 import karya.core.configs.RepoConfig
-import karya.core.repos.JobsRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
+import karya.core.repos.*
 import karya.data.fused.entities.ReposWrapper
 import karya.data.fused.exceptions.FusedDataException.UnknownProviderException
 import karya.data.psql.configs.PsqlRepoConfig
@@ -26,11 +23,15 @@ class FusedRepoModule {
 
   @Provides
   @Singleton
-  fun provideJobsRepo(wrapper: ReposWrapper): JobsRepo = wrapper.jobsRepo
+  fun providePlansRepo(wrapper: ReposWrapper): PlansRepo = wrapper.plansRepo
 
   @Provides
   @Singleton
   fun provideTasksRepo(wrapper: ReposWrapper): TasksRepo = wrapper.tasksRepo
+
+  @Provides
+  @Singleton
+  fun provideErrorLogsRepo(wrapper: ReposWrapper): ErrorLogsRepo = wrapper.errorLogsRepo
 
   @Provides
   @Singleton
@@ -44,9 +45,10 @@ class FusedRepoModule {
   private fun providePsqlRepoWrapper(psqlConfig: PsqlRepoConfig): ReposWrapper {
     val component = PsqlComponentFactory.build(psqlConfig)
     return ReposWrapper(
-      jobsRepo = component.jobsRepo,
+      plansRepo = component.plansRepo,
       usersRepo = component.usersRepo,
       tasksRepo = component.tasksRepo,
+      errorLogsRepo = component.errorLogsRepo,
       repoConnector = component.repoConnector,
     )
   }

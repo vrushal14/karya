@@ -24,7 +24,7 @@ constructor(
   fun add(task: Task) = transaction(db) {
     TasksTable.insert {
       it[id] = task.id
-      it[jobId] = task.jobId
+      it[planId] = task.planId
       it[partitionKey] = task.partitionKey
       it[status] = taskStatusMapper.toRecord(task.status)
       it[createdAt] = Instant.ofEpochMilli(task.createdAt)
@@ -33,10 +33,10 @@ constructor(
     }
   }
 
-  fun getLatest(jobId: UUID) = transaction(db) {
+  fun getLatest(planId: UUID) = transaction(db) {
     TasksTable
       .selectAll()
-      .where { TasksTable.jobId eq jobId }
+      .where { TasksTable.planId eq planId }
       .orderBy(TasksTable.createdAt, SortOrder.DESC)
       .firstOrNull()
   }?.let(::fromRecord)
@@ -57,10 +57,10 @@ constructor(
       ?.let(::fromRecord)
   }
 
-  fun getByJobId(jobId: UUID) = transaction(db) {
+  fun getByPlanId(planId: UUID) = transaction(db) {
     TasksTable
       .selectAll()
-      .where { TasksTable.jobId eq jobId }
+      .where { TasksTable.planId eq planId }
       .map(::fromRecord)
   }
 
@@ -86,7 +86,7 @@ constructor(
 
   private fun fromRecord(resultRow: ResultRow) = Task(
     id = resultRow[TasksTable.id],
-    jobId = resultRow[TasksTable.jobId],
+    planId = resultRow[TasksTable.planId],
     partitionKey = resultRow[TasksTable.partitionKey],
     status = taskStatusMapper.fromRecord(resultRow[TasksTable.status]),
     createdAt = resultRow[TasksTable.createdAt].toEpochMilli(),

@@ -12,7 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import karya.connectors.restapi.RestApiConnector
 import karya.connectors.restapi.configs.RestApiConnectorConfig
 import karya.core.actors.Connector
-import karya.core.entities.action.Action
+import karya.core.entities.Action
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy

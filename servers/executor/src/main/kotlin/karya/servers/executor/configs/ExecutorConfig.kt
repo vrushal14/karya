@@ -1,12 +1,12 @@
 package karya.servers.executor.configs
 
-import karya.connector.chainedjob.di.ChainedJobConnectorFactory
+import karya.connector.chainedplan.di.ChainedPlanConnectorFactory
 import karya.connectors.restapi.configs.RestApiConnectorConfig
 import karya.connectors.restapi.di.RestApiConnectorFactory
 import karya.core.actors.Connector
-import karya.core.entities.action.Action
-import karya.core.entities.action.Action.ChainedRequest
-import karya.core.entities.action.Action.RestApiRequest
+import karya.core.entities.Action
+import karya.core.entities.Action.ChainedRequest
+import karya.core.entities.Action.RestApiRequest
 import karya.core.utils.getSection
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
@@ -41,7 +41,7 @@ data class ExecutorConfig(
 
     private fun ExecutorConfig.addDefaultConnectors(): ExecutorConfig {
       this.connectors = mutableMapOf()
-      this.connectors[ChainedRequest::class] = ChainedJobConnectorFactory.build(this.fusedDataRepoComponent)
+      this.connectors[ChainedRequest::class] = ChainedPlanConnectorFactory.build(this.fusedDataRepoComponent)
       return this
     }
 

@@ -9,11 +9,11 @@ import java.util.*
 interface TasksRepo {
   suspend fun add(task: Task)
 
-  suspend fun getLatest(jobId: UUID): Task?
+  suspend fun getLatest(planId: UUID): Task?
 
   suspend fun get(request: GetTasksRequest): Task?
 
-  suspend fun get(jobId: UUID): List<Task>
+  suspend fun get(planId: UUID): List<Task>
 
   suspend fun update(task: Task)
 

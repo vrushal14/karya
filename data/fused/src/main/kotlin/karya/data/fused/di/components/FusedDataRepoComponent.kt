@@ -3,10 +3,7 @@ package karya.data.fused.di.components
 import dagger.BindsInstance
 import dagger.Component
 import karya.core.configs.RepoConfig
-import karya.core.repos.JobsRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
+import karya.core.repos.*
 import karya.data.fused.di.modules.FusedRepoModule
 import javax.inject.Singleton
 
@@ -19,8 +16,9 @@ import javax.inject.Singleton
 interface FusedDataRepoComponent {
 
   val usersRepo: UsersRepo
-  val jobsRepo: JobsRepo
+  val plansRepo: PlansRepo
   val tasksRepo: TasksRepo
+  val errorLogsRepo: ErrorLogsRepo
   val repoConnector: RepoConnector
 
   @Component.Builder

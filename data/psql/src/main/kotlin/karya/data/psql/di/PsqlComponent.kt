@@ -2,10 +2,7 @@ package karya.data.psql.di
 
 import dagger.BindsInstance
 import dagger.Component
-import karya.core.repos.JobsRepo
-import karya.core.repos.RepoConnector
-import karya.core.repos.TasksRepo
-import karya.core.repos.UsersRepo
+import karya.core.repos.*
 import karya.data.psql.configs.PsqlRepoConfig
 import javax.inject.Singleton
 
@@ -17,9 +14,10 @@ import javax.inject.Singleton
   ],
 )
 interface PsqlComponent {
-  val jobsRepo: JobsRepo
+  val plansRepo: PlansRepo
   val usersRepo: UsersRepo
   val tasksRepo: TasksRepo
+  val errorLogsRepo: ErrorLogsRepo
 
   val repoConnector: RepoConnector
 

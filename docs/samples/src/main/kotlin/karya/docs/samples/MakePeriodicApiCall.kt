@@ -2,18 +2,18 @@ package karya.docs.samples
 
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
-import karya.core.entities.JobType
-import karya.core.entities.action.Action
-import karya.core.entities.action.http.Body
-import karya.core.entities.action.http.Method
-import karya.core.entities.action.http.Protocol
+import karya.core.entities.Action
+import karya.core.entities.PlanType
+import karya.core.entities.http.Body
+import karya.core.entities.http.Method
+import karya.core.entities.http.Protocol
 import karya.core.entities.requests.CreateUserRequest
-import karya.core.entities.requests.SubmitJobRequest
-import karya.core.entities.requests.UpdateJobRequest
+import karya.core.entities.requests.SubmitPlanRequest
+import karya.core.entities.requests.UpdatePlanRequest
+import java.time.Instant
 
 suspend fun main() {
   val client = KaryaClientFactory.create(KaryaClientConfig.Dev)
-
   val user = client.createUser(CreateUserRequest("Alice"))
 
   val apiRequest = Action.RestApiRequest(
@@ -47,24 +47,24 @@ suspend fun main() {
       ),
     timeout = 1000L,
   )
-  val jobRequest = SubmitJobRequest(
+  val planRequest = SubmitPlanRequest(
     userId = user.id,
     description = "Sample run",
     periodTime = "PT7S",
-    jobType = JobType.Recurring(null),
+    planType = PlanType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
     action = apiRequest
   )
 
-  val job = client.submitJob(jobRequest)
-  client.fetchJob(job.id).also(::println)
+  val plan = client.submitPlan(planRequest)
+  client.getPlan(plan.id).also(::println)
 
-  client.updateJob(
-    UpdateJobRequest(
-      jobId = job.id,
+  client.updatePlan(
+    UpdatePlanRequest(
+      planId = plan.id,
       maxFailureRetry = 4,
     ),
   ).also(::println)
 
-//  client.cancelJob(UUID.fromString("b92a1108-a16d-4b6c-b33a-e7ebf284b613")).also(::println)
+//  client.cancelPlan(UUID.fromString("b92a1108-a16d-4b6c-b33a-e7ebf284b613")).also(::println)
   client.close()
 }

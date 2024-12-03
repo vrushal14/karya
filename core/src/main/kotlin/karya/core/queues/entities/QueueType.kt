@@ -1,6 +1,7 @@
 package karya.core.queues.entities
 
 enum class QueueType {
-  REGULAR,
-  DEAD_LETTER
+  EXECUTOR,
+  DEAD_LETTER,
+  HOOK
 }

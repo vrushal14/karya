@@ -1,8 +1,8 @@
 package karya.servers.scheduler.usecases.internal
 
-import karya.core.entities.Job
-import karya.core.entities.JobType
-import karya.core.entities.enums.JobStatus
+import karya.core.entities.Plan
+import karya.core.entities.PlanType
+import karya.core.entities.enums.PlanStatus
 import karya.servers.scheduler.usecases.utils.getInstanceName
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
@@ -13,15 +13,15 @@ constructor() {
 
   companion object : Logging
 
-  suspend fun invoke(job: Job): Boolean =
-    isJobNonTerminal(job) && isJobRecurring(job.type)
+  suspend fun invoke(plan: Plan): Boolean =
+    isPlanNonTerminal(plan) && isPlanRecurring(plan.type)
       .also { logger.info("[${getInstanceName()}] : shouldCreateNextTask : $it") }
 
-  private fun isJobNonTerminal(job: Job) =
-    (job.status == JobStatus.CREATED).or(job.status == JobStatus.RUNNING)
+  private fun isPlanNonTerminal(plan: Plan) =
+    (plan.status == PlanStatus.CREATED).or(plan.status == PlanStatus.RUNNING)
 
-  private fun isJobRecurring(jobType: JobType): Boolean = when (val type = jobType) {
-    is JobType.Recurring -> type.isEnded().not()
-    is JobType.OneTime -> false
+  private fun isPlanRecurring(planType: PlanType): Boolean = when (val type = planType) {
+    is PlanType.Recurring -> type.isEnded().not()
+    is PlanType.OneTime -> false
   }
 }

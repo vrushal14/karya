@@ -3,10 +3,8 @@ package karya.core.utils
 import kotlinx.serialization.json.*
 
 object MapJsonStringSerde {
-  fun serialize(
-    json: Json,
-    data: Map<String, Any?>,
-  ): String {
+
+  fun serialize(json: Json, data: Map<String, Any?>): String {
     val jsonElement =
       buildJsonObject {
         data.forEach { (key, value) ->

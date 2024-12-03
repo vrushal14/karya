@@ -5,8 +5,8 @@ import java.util.*
 sealed class TaskException : KaryaException() {
 
   data class TaskNotCreatedException(
-    private val jobId: UUID,
-    override val message: String = "Task not created for Job --- $jobId",
+    private val planId: UUID,
+    override val message: String = "Task not created for Plan --- $planId",
   ) : TaskException()
 
   data class UnknownTaskStatusException(

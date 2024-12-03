@@ -19,13 +19,13 @@ constructor(
     tasksQueries.add(task)
   }
 
-  override suspend fun getLatest(jobId: UUID): Task? = tasksQueries.getLatest(jobId)
+  override suspend fun getLatest(planId: UUID): Task? = tasksQueries.getLatest(planId)
 
   override suspend fun get(request: GetTasksRequest): Task? =
     tasksQueries.getInRange(request)
 
-  override suspend fun get(jobId: UUID): List<Task> =
-    tasksQueries.getByJobId(jobId)
+  override suspend fun get(planId: UUID): List<Task> =
+    tasksQueries.getByPlanId(planId)
 
   override suspend fun update(task: Task) {
     tasksQueries.update(task)

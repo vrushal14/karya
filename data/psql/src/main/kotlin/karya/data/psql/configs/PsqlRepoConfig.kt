@@ -11,13 +11,10 @@ data class PsqlRepoConfig(
   companion object {
     const val PSQL_IDENTIFIER = "psql"
 
-    fun extractProperties(
-      repo: Map<*, *>,
-      key: String,
-    ): Properties {
-      val propertiesMap =
-        (repo[key] as? Map<*, *>)
-          ?: throw IllegalArgumentException("Missing or invalid properties for '$key'")
+    fun extractProperties(repo: Map<*, *>, key: String): Properties {
+      val propertiesMap = (repo[key] as? Map<*, *>)
+        ?: throw IllegalArgumentException("Missing or invalid properties for '$key'")
+
       return Properties().apply {
         propertiesMap.forEach { (k, v) -> setProperty(k.toString(), v.toString()) }
       }

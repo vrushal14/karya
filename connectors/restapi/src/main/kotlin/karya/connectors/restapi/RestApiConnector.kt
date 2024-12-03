@@ -6,10 +6,10 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import karya.core.actors.Connector
-import karya.core.actors.Result
-import karya.core.entities.action.Action.RestApiRequest
-import karya.core.entities.action.http.Body
-import karya.core.entities.action.http.Method
+import karya.core.entities.Action.RestApiRequest
+import karya.core.entities.ExecutorResult
+import karya.core.entities.http.Body
+import karya.core.entities.http.Method
 import java.time.Instant
 import java.util.*
 import javax.inject.Inject
@@ -20,18 +20,18 @@ constructor(
   private val httpClient: HttpClient,
 ) : Connector<RestApiRequest> {
 
-  override suspend fun invoke(jobId: UUID, action: RestApiRequest): Result = try {
+  override suspend fun invoke(planId: UUID, action: RestApiRequest): ExecutorResult = try {
     val response = httpClient.request(buildUrl(action)) {
       method = mapMethod(action.method)
       headers { action.headers.forEach { key, value -> append(key, value) } }
       timeout { requestTimeoutMillis = action.timeout }
       setRequestBody(action.body)
     }
-    handleResponse(response, action, Instant.now())
+    handleResponse(response, action, Instant.now().toEpochMilli())
 
   } catch (e: Exception) {
     val message = "REST INVOCATION FAILED --- error : ${e.message}"
-    Result.Failure(message, action, e, Instant.now())
+    ExecutorResult.Failure(message, action, Instant.now().toEpochMilli())
   }
 
   override suspend fun shutdown() {
@@ -56,12 +56,12 @@ constructor(
     }
   }
 
-  private suspend fun handleResponse(response: HttpResponse, action: RestApiRequest, timestamp: Instant): Result =
+  private suspend fun handleResponse(response: HttpResponse, action: RestApiRequest, timestamp: Long): ExecutorResult =
     if (response.status.isSuccess()) {
-      Result.Success(timestamp)
+      ExecutorResult.Success(timestamp)
     } else {
       val message =
         "REST call failed --- [${response.status.value} | ${response.request.url}] | ${response.bodyAsText()}"
-      Result.Failure(message, action, null, timestamp)
+      ExecutorResult.Failure(message, action, timestamp)
     }
 }

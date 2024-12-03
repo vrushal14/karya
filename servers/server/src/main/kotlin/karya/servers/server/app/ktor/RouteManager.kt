@@ -4,7 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import karya.servers.server.api.router.JobRouter
+import karya.servers.server.api.router.PlanRouter
 import karya.servers.server.api.router.UserRouter
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class RouteManager
 @Inject
 constructor(
   private val userRouter: UserRouter,
-  private val jobRouter: JobRouter,
+  private val planRouter: PlanRouter,
 ) {
   fun Application.wireRoutes() {
     routing {
@@ -20,7 +20,7 @@ constructor(
 
       route("v1") {
         route("user") { userRouter.apply { wireRoutes() } }
-        route("job") { jobRouter.apply { wireRoutes() } }
+        route("plan") { planRouter.apply { wireRoutes() } }
       }
     }
   }
