@@ -1,14 +1,14 @@
 package karya.servers.executor.usecase.external
 
-import karya.core.entities.Job
-import karya.core.entities.JobType
-import karya.core.entities.enums.JobStatus
-import karya.core.exceptions.JobException
+import karya.core.entities.Plan
+import karya.core.entities.PlanType
+import karya.core.entities.enums.PlanStatus
+import karya.core.exceptions.PlanException
 import karya.core.exceptions.KaryaException
 import karya.core.queues.QueueClient
 import karya.core.queues.entities.QueueMessage
 import karya.core.queues.entities.QueueType
-import karya.core.repos.JobsRepo
+import karya.core.repos.PlansRepo
 import karya.servers.executor.usecase.internal.GetConnector
 import karya.servers.executor.usecase.internal.ProcessTask
 import karya.servers.executor.usecase.internal.TriggerHook
@@ -20,7 +20,7 @@ class ProcessExecutorMessage
 @Inject
 constructor(
   private val queueClient: QueueClient,
-  private val jobsRepo: JobsRepo,
+  private val plansRepo: PlansRepo,
 
   private val processTask: ProcessTask,
   private val triggerHook: TriggerHook,
@@ -31,26 +31,26 @@ constructor(
 
   suspend fun invoke(message: QueueMessage.ExecutorMessage) = try {
     val connector = getConnector.invoke(message.action)
-    val result = connector.invoke(message.jobId, message.action)
-    val job = jobsRepo.get(message.jobId) ?: throw JobException.JobNotFoundException(message.jobId)
+    val result = connector.invoke(message.planId, message.action)
+    val plan = plansRepo.get(message.planId) ?: throw PlanException.PlanNotFoundException(message.planId)
 
     processTask.invoke(result, message)
-    processJob(job)
-    job.hook.forEach { triggerHook.invoke(job, it, result) }
+    processPlan(plan)
+    plan.hook.forEach { triggerHook.invoke(plan, it, result) }
 
   } catch (e: KaryaException) {
     logger.error(e) { "[PUSHING MESSAGE TO DLQ] Exception while executing action --- ${e.message}" }
     queueClient.push(message, QueueType.DEAD_LETTER)
   }
 
-  private suspend fun processJob(job: Job) {
-    when (val type = job.type) {
-      is JobType.Recurring -> if (type.isEnded()) markJobCompleted(job.id) else return
-      is JobType.OneTime -> markJobCompleted(job.id)
+  private suspend fun processPlan(plan: Plan) {
+    when (val type = plan.type) {
+      is PlanType.Recurring -> if (type.isEnded()) markPlanCompleted(plan.id) else return
+      is PlanType.OneTime -> markPlanCompleted(plan.id)
     }
-    logger.info("[JOB COMPLETED] --- jobId : $job.id")
+    logger.info("[PLAN COMPLETED] --- planId : $plan.id")
   }
 
-  private suspend fun markJobCompleted(jobId: UUID) =
-    jobsRepo.updateStatus(jobId, JobStatus.COMPLETED)
+  private suspend fun markPlanCompleted(planId: UUID) =
+    plansRepo.updateStatus(planId, PlanStatus.COMPLETED)
 }

@@ -24,7 +24,7 @@ constructor(
 
   suspend fun invoke(message: QueueMessage.HookMessage) {
     val connector = getConnector.invoke(message.hook.action)
-    val result = connector.invoke(message.jobId, message.hook.action)
+    val result = connector.invoke(message.planId, message.hook.action)
     when (result) {
       is ExecutorResult.Success -> logger.info("[HOOK ASYNC] --- hook processed successfully")
       is ExecutorResult.Failure -> if (shouldRetryFailedHook(message, result)) retryHook(message)
@@ -43,7 +43,7 @@ constructor(
   }
 
   private suspend fun pushErrorLogs(message: QueueMessage.HookMessage, result: ExecutorResult.Failure) = ErrorLog(
-    jobId = message.jobId,
+    planId = message.planId,
     error = result.reason,
     type = ErrorLogType.HookErrorLog,
     timestamp = result.timestamp

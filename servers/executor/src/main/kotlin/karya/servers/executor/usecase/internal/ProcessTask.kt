@@ -47,7 +47,7 @@ constructor(
   }
 
   private suspend fun pushErrorLog(message: QueueMessage.ExecutorMessage, result: ExecutorResult.Failure) = ErrorLog(
-    jobId = message.jobId,
+    planId = message.planId,
     error = result.reason,
     type = ErrorLogType.ExecutorErrorLog(taskId = message.taskId),
     timestamp = result.timestamp

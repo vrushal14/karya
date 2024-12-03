@@ -3,7 +3,7 @@ package karya.core.entities
 import karya.core.entities.http.Body
 import karya.core.entities.http.Method
 import karya.core.entities.http.Protocol
-import karya.core.entities.requests.SubmitJobRequest
+import karya.core.entities.requests.SubmitPlanRequest
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,6 +21,6 @@ sealed class Action {
 
   @Serializable
   data class ChainedRequest(
-    val request: SubmitJobRequest
+    val request: SubmitPlanRequest
   ) : Action()
 }

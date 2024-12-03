@@ -14,7 +14,7 @@ import javax.inject.Singleton
   ],
 )
 interface PsqlComponent {
-  val jobsRepo: JobsRepo
+  val plansRepo: PlansRepo
   val usersRepo: UsersRepo
   val tasksRepo: TasksRepo
   val errorLogsRepo: ErrorLogsRepo

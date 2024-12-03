@@ -10,7 +10,7 @@ data class Task(
   @Serializable(with = UUIDSerializer::class)
   val id: UUID,
   @Serializable(with = UUIDSerializer::class)
-  val jobId: UUID,
+  val planId: UUID,
   val partitionKey: Int,
   val status: TaskStatus,
   val createdAt: Long,

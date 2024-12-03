@@ -52,7 +52,7 @@ Start the application in the following order:
     ```
 
 A sample [MakePeriodicApiCall.kt.kt](../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicApiCall.kt) file is
-provided to schedule a dummy job and check if the setup is working fine.
+provided to schedule a dummy plan and check if the setup is working fine.
 
 ## Linting and Formatting
 

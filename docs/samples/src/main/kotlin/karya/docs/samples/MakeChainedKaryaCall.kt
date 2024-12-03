@@ -2,10 +2,10 @@ package karya.docs.samples
 
 import karya.client.configs.KaryaClientConfig
 import karya.client.di.KaryaClientFactory
-import karya.core.entities.JobType
+import karya.core.entities.PlanType
 import karya.core.entities.Action
 import karya.core.entities.requests.CreateUserRequest
-import karya.core.entities.requests.SubmitJobRequest
+import karya.core.entities.requests.SubmitPlanRequest
 import java.time.Instant
 
 suspend fun main() {
@@ -13,17 +13,17 @@ suspend fun main() {
   val client = KaryaClientFactory.create(config)
   val user = client.createUser(CreateUserRequest("Bob"))
 
-  val request = SubmitJobRequest(
+  val request = SubmitPlanRequest(
     userId = user.id,
     description = "Sample chained run",
     periodTime = "PT15S",
-    jobType = JobType.OneTime,
+    planType = PlanType.OneTime,
     action = Action.ChainedRequest(
-      request = SubmitJobRequest(
+      request = SubmitPlanRequest(
         userId = user.id,
         description = "Chained delay run",
         periodTime = "PT5S",
-        jobType = JobType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
+        planType = PlanType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
         action = Action.RestApiRequest(
           baseUrl = "eox7wbcodh9parh.m.pipedream.net",
         ),
@@ -31,9 +31,9 @@ suspend fun main() {
     ),
   )
 
-  client.submitJob(request).also(::println)
+  client.submitPlan(request).also(::println)
 
-//  client.cancelJob(UUID.fromString("c573d5c7-0a99-4b39-bf43-500cbc549a15"))
+//  client.cancelTask(UUID.fromString("c573d5c7-0a99-4b39-bf43-500cbc549a15"))
 
   client.close()
 }

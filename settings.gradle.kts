@@ -37,5 +37,5 @@ project(":docs-samples").projectDir = File("docs/samples")
 include(":connectors-restapi")
 project(":connectors-restapi").projectDir = File("connectors/restapi")
 
-include("connectors-chainedjob")
-project(":connectors-chainedjob").projectDir = File("connectors/chainedjob")
+include("connectors-chainedplan")
+project(":connectors-chainedplan").projectDir = File("connectors/chainedplan")

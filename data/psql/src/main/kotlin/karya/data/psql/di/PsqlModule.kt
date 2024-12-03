@@ -18,7 +18,7 @@ abstract class PsqlModule {
 
   @Binds
   @Singleton
-  abstract fun provideJobsRepo(psqlJobsRepo: PsqlJobsRepo): JobsRepo
+  abstract fun providePlansRepo(psqlPlansRepo: PsqlPlansRepo): PlansRepo
 
   @Binds
   @Singleton

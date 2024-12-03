@@ -1,13 +1,13 @@
 package karya.servers.scheduler.usecases.internal
 
-import karya.core.entities.Job
+import karya.core.entities.Plan
 import karya.core.entities.Task
-import karya.core.entities.enums.JobStatus
+import karya.core.entities.enums.PlanStatus
 import karya.core.entities.enums.TaskStatus
-import karya.core.exceptions.JobException.JobNotFoundException
+import karya.core.exceptions.PlanException.PlanNotFoundException
 import karya.core.locks.LocksClient
 import karya.core.locks.entities.LockResult
-import karya.core.repos.JobsRepo
+import karya.core.repos.PlansRepo
 import karya.core.repos.TasksRepo
 import karya.servers.scheduler.usecases.utils.getInstanceName
 import org.apache.logging.log4j.kotlin.Logging
@@ -17,7 +17,7 @@ class ProcessTask
 @Inject
 constructor(
   private val tasksRepo: TasksRepo,
-  private val jobsRepo: JobsRepo,
+  private val plansRepo: PlansRepo,
   private val locksClient: LocksClient,
   private val manageTasks: ManageTasks,
 ) {
@@ -33,17 +33,17 @@ constructor(
 
   private suspend fun processTaskInternal(task: Task) {
     logger.info("[${getInstanceName()}] : [PROCESSING TASK] --- TaskId : ${task.id}")
-    val job = jobsRepo.get(task.jobId) ?: throw JobNotFoundException(task.jobId)
-    updateTaskStatus(job, task)
+    val plan = plansRepo.get(task.planId) ?: throw PlanNotFoundException(task.planId)
+    updateTaskStatus(plan, task)
 
-    val updatedJob = transitionJobStatus(job)
-    manageTasks.invoke(updatedJob, task)
+    val updatedPlan = transitionPlanStatus(plan)
+    manageTasks.invoke(updatedPlan, task)
   }
 
-  private suspend fun updateTaskStatus(job: Job, task: Task) = when (job.status) {
-    JobStatus.CREATED, JobStatus.RUNNING -> TaskStatus.PROCESSING
-    JobStatus.COMPLETED -> TaskStatus.SUCCESS
-    JobStatus.CANCELLED -> TaskStatus.CANCELLED
+  private suspend fun updateTaskStatus(plan: Plan, task: Task) = when (plan.status) {
+    PlanStatus.CREATED, PlanStatus.RUNNING -> TaskStatus.PROCESSING
+    PlanStatus.COMPLETED -> TaskStatus.SUCCESS
+    PlanStatus.CANCELLED -> TaskStatus.CANCELLED
   }.also {
     if (task.status != it) {
       tasksRepo.updateStatus(task.id, it)
@@ -51,12 +51,12 @@ constructor(
     }
   }
 
-  private suspend fun transitionJobStatus(job: Job) = when (job.status) {
-    JobStatus.CREATED -> job
-      .copy(status = JobStatus.RUNNING)
-      .also { jobsRepo.updateStatus(job.id, JobStatus.RUNNING) }
-      .also { logger.info("[${getInstanceName()}] : Job Status updated : ${job.status} -> ${it.status}") }
+  private suspend fun transitionPlanStatus(plan: Plan) = when (plan.status) {
+    PlanStatus.CREATED -> plan
+      .copy(status = PlanStatus.RUNNING)
+      .also { plansRepo.updateStatus(plan.id, PlanStatus.RUNNING) }
+      .also { logger.info("[${getInstanceName()}] : Plan Status updated : ${plan.status} -> ${it.status}") }
 
-    else -> job
+    else -> plan
   }
 }

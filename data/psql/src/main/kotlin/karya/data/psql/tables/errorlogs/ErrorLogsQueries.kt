@@ -19,7 +19,7 @@ constructor(
 
   fun add(errorLog: ErrorLog) = transaction(db) {
     ErrorLogsTable.insert {
-      it[jobId] = errorLog.jobId
+      it[planId] = errorLog.planId
       it[error] = errorLog.error
       it[type] = mapper.toErrorType(errorLog.type)
       it[taskId] = mapper.toTaskId(errorLog.type)
@@ -27,9 +27,9 @@ constructor(
     }
   }
 
-  fun getByJobId(jobId: UUID) = transaction(db) {
+  fun getByPlanId(planId: UUID) = transaction(db) {
     ErrorLogsTable.selectAll()
-      .where { ErrorLogsTable.jobId eq jobId }
+      .where { ErrorLogsTable.planId eq planId }
       .map { mapper.fromRecord(it) }
   }
 }

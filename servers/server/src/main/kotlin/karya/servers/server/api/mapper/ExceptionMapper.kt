@@ -9,11 +9,11 @@ suspend fun KaryaException.toHttpResponse(call: ApplicationCall) =
   when (this) {
     is UserException.UserNotFoundException -> call.respond(HttpStatusCode.NotFound, this.message)
 
-    is JobException.UnknownJobTypeException -> call.respond(HttpStatusCode.InternalServerError, this.message)
-    is JobException.UnknownJobStatusException -> call.respond(HttpStatusCode.InternalServerError, this.message)
-    is JobException.JobNotFoundException -> call.respond(HttpStatusCode.NotFound, this.message)
-    is JobException.InvalidChainedRequestException -> call.respond(HttpStatusCode.BadRequest, this.message)
-    is JobException.RecursiveDepthExceededException -> call.respond(HttpStatusCode.BadRequest, this.message)
+    is PlanException.UnknownPlanTypeException -> call.respond(HttpStatusCode.InternalServerError, this.message)
+    is PlanException.UnknownPlanStatusException -> call.respond(HttpStatusCode.InternalServerError, this.message)
+    is PlanException.PlanNotFoundException -> call.respond(HttpStatusCode.NotFound, this.message)
+    is PlanException.InvalidChainedRequestException -> call.respond(HttpStatusCode.BadRequest, this.message)
+    is PlanException.RecursiveDepthExceededException -> call.respond(HttpStatusCode.BadRequest, this.message)
 
     is TaskException.UnknownTaskStatusException -> call.respond(HttpStatusCode.InternalServerError, this.message)
     is TaskException.TaskNotCreatedException -> call.respond(HttpStatusCode.InternalServerError, this.message)

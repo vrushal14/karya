@@ -5,6 +5,6 @@ import karya.core.entities.ExecutorResult
 import java.util.*
 
 interface Connector<T : Action> {
-  suspend fun invoke(jobId: UUID, action: T): ExecutorResult
+  suspend fun invoke(planId: UUID, action: T): ExecutorResult
   suspend fun shutdown()
 }

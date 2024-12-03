@@ -30,7 +30,7 @@ constructor() {
   }
 
   fun fromRecord(resultRow: ResultRow) = ErrorLog(
-    jobId = resultRow[table.jobId],
+    planId = resultRow[table.planId],
     error = resultRow[table.error],
     type = mapErrorLogType(resultRow),
     timestamp = resultRow[table.timestamp].toEpochMilli()

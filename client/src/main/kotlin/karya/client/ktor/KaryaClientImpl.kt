@@ -5,12 +5,12 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import karya.client.ktor.utils.deserialize
 import karya.core.actors.Client
-import karya.core.entities.Job
+import karya.core.entities.Plan
 import karya.core.entities.User
 import karya.core.entities.requests.CreateUserRequest
-import karya.core.entities.requests.SubmitJobRequest
-import karya.core.entities.requests.UpdateJobRequest
-import karya.core.entities.responses.GetJobResponse
+import karya.core.entities.requests.SubmitPlanRequest
+import karya.core.entities.requests.UpdatePlanRequest
+import karya.core.entities.responses.GetPlanResponse
 import karya.core.entities.responses.GetSummaryResponse
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -22,7 +22,7 @@ class KaryaClientImpl(
 
   companion object {
     private const val VERSION = "v1"
-    private const val JOB = "job"
+    private const val PLAN = "plan"
     private const val USER = "user"
   }
 
@@ -32,31 +32,31 @@ class KaryaClientImpl(
       setBody(request)
     }.deserialize<User>(json)
 
-  override suspend fun submitJob(request: SubmitJobRequest): Job = httpClient
+  override suspend fun submitPlan(request: SubmitPlanRequest): Plan = httpClient
     .post {
-      url { path(VERSION, JOB) }
+      url { path(VERSION, PLAN) }
       setBody(request)
-    }.deserialize<Job>(json)
+    }.deserialize<Plan>(json)
 
-  override suspend fun getJob(jobId: UUID): GetJobResponse = httpClient
+  override suspend fun getPlan(planId: UUID): GetPlanResponse = httpClient
     .get {
-      url { path(VERSION, JOB, jobId.toString()) }
-    }.deserialize<GetJobResponse>(json)
+      url { path(VERSION, PLAN, planId.toString()) }
+    }.deserialize<GetPlanResponse>(json)
 
-  override suspend fun updateJob(request: UpdateJobRequest): Job = httpClient
+  override suspend fun updatePlan(request: UpdatePlanRequest): Plan = httpClient
     .patch {
-      url { path(VERSION, JOB) }
+      url { path(VERSION, PLAN) }
       setBody(request)
-    }.deserialize<Job>(json)
+    }.deserialize<Plan>(json)
 
-  override suspend fun cancelJob(jobId: UUID): Job = httpClient
+  override suspend fun cancelPlan(planId: UUID): Plan = httpClient
     .post {
-      url { path(VERSION, JOB, jobId.toString()) }
-    }.deserialize<Job>(json)
+      url { path(VERSION, PLAN, planId.toString()) }
+    }.deserialize<Plan>(json)
 
-  override suspend fun getSummary(jobId: UUID): GetSummaryResponse = httpClient
+  override suspend fun getSummary(planId: UUID): GetSummaryResponse = httpClient
     .get {
-      url { path(VERSION, JOB, jobId.toString(), "summary") }
+      url { path(VERSION, PLAN, planId.toString(), "summary") }
     }.deserialize<GetSummaryResponse>(json)
 
   override suspend fun close() {

@@ -16,6 +16,6 @@ constructor(
     errorLogsQueries.add(log)
   }
 
-  override suspend fun get(jobId: UUID): List<ErrorLog> =
-    errorLogsQueries.getByJobId(jobId)
+  override suspend fun get(planId: UUID): List<ErrorLog> =
+    errorLogsQueries.getByPlanId(planId)
 }

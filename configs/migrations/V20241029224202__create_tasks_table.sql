@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS tasks (
     id UUID,
-    job_id UUID REFERENCES jobs(id),
+    plan_id UUID REFERENCES plans(id),
     partition_key INT NOT NULL,
     status INT,
     created_at TIMESTAMP,

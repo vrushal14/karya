@@ -12,7 +12,7 @@ sealed class QueueMessage {
   @Serializable
   data class ExecutorMessage(
     @Serializable(with = UUIDSerializer::class)
-    val jobId: UUID,
+    val planId: UUID,
     @Serializable(with = UUIDSerializer::class)
     val taskId: UUID,
     val action: Action,
@@ -22,7 +22,7 @@ sealed class QueueMessage {
   @Serializable
   data class HookMessage(
     @Serializable(with = UUIDSerializer::class)
-    val jobId: UUID,
+    val planId: UUID,
     val hook: Hook
   ) : QueueMessage()
 

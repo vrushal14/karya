@@ -1,10 +1,10 @@
 package karya.servers.server.domain.usecases.internal
 
-import karya.core.entities.JobType
+import karya.core.entities.PlanType
 import karya.core.entities.Action
-import karya.core.entities.requests.SubmitJobRequest
-import karya.core.exceptions.JobException.InvalidChainedRequestException
-import karya.core.exceptions.JobException.RecursiveDepthExceededException
+import karya.core.entities.requests.SubmitPlanRequest
+import karya.core.exceptions.PlanException.InvalidChainedRequestException
+import karya.core.exceptions.PlanException.RecursiveDepthExceededException
 import karya.servers.server.configs.ServerConfig
 import javax.inject.Inject
 
@@ -14,20 +14,20 @@ constructor(
   private val config: ServerConfig
 ) {
 
-  fun invoke(request: SubmitJobRequest) {
+  fun invoke(request: SubmitPlanRequest) {
     if (config.strictMode) {
       checkIfChainedRequestIsRecurring(request)
     }
     checkIfRecursiveDepthIsNotExceeded(request)
   }
 
-  private fun checkIfChainedRequestIsRecurring(request: SubmitJobRequest) {
-    if ((request.action is Action.ChainedRequest).and(request.jobType is JobType.Recurring)) {
+  private fun checkIfChainedRequestIsRecurring(request: SubmitPlanRequest) {
+    if ((request.action is Action.ChainedRequest).and(request.planType is PlanType.Recurring)) {
       throw InvalidChainedRequestException()
     }
   }
 
-  private fun checkIfRecursiveDepthIsNotExceeded(request: SubmitJobRequest) {
+  private fun checkIfRecursiveDepthIsNotExceeded(request: SubmitPlanRequest) {
     if (request.action is Action.ChainedRequest) {
       var depth = 1
       var currentAction: Action = request.action

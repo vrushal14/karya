@@ -1,8 +1,8 @@
 package karya.servers.scheduler.usecases.internal
 
-import karya.core.entities.Job
+import karya.core.entities.Plan
 import karya.core.entities.Task
-import karya.core.entities.enums.JobStatus
+import karya.core.entities.enums.PlanStatus
 import karya.core.entities.enums.TaskStatus
 import karya.core.queues.QueueClient
 import karya.core.queues.entities.QueueMessage.ExecutorMessage
@@ -27,30 +27,30 @@ constructor(
 ) {
   companion object : Logging
 
-  suspend fun invoke(job: Job, task: Task) {
-    if(isJobTerminated(job)) return
-    pushCurrentTaskToQueue(job, task)
-    if (shouldCreateNextTask.invoke(job)) createNextTask(job)
+  suspend fun invoke(plan: Plan, task: Task) {
+    if(isPlanTerminated(plan)) return
+    pushCurrentTaskToQueue(plan, task)
+    if (shouldCreateNextTask.invoke(plan)) createNextTask(plan)
   }
 
-  private suspend fun pushCurrentTaskToQueue(job: Job, task: Task) = ExecutorMessage(
-    jobId = job.id,
+  private suspend fun pushCurrentTaskToQueue(plan: Plan, task: Task) = ExecutorMessage(
+    planId = plan.id,
     taskId = task.id,
-    action = job.action,
-    maxFailureRetry = job.maxFailureRetry,
+    action = plan.action,
+    maxFailureRetry = plan.maxFailureRetry,
   ).also { queueClient.push(it) }
 
-  private suspend fun createNextTask(job: Job) = Task(
+  private suspend fun createNextTask(plan: Plan) = Task(
     id = UUID.randomUUID(),
-    jobId = job.id,
+    planId = plan.id,
     partitionKey = createPartitionKey(repoConnector.getPartitions()),
     status = TaskStatus.CREATED,
     createdAt = Instant.now().toEpochMilli(),
     executedAt = null,
-    nextExecutionAt = getNextExecutionAt(Instant.now(), job.periodTime),
+    nextExecutionAt = getNextExecutionAt(Instant.now(), plan.periodTime),
   ).also { tasksRepo.add(it) }
     .also { logger.info("[${getInstanceName()}] : [NEXT TASK CREATED] --- $it") }
 
-  private fun isJobTerminated(job: Job) =
-    (job.status == JobStatus.COMPLETED).or(job.status == JobStatus.CANCELLED)
+  private fun isPlanTerminated(plan: Plan) =
+    (plan.status == PlanStatus.COMPLETED).or(plan.status == PlanStatus.CANCELLED)
 }

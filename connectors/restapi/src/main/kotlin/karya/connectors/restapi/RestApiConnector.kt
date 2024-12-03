@@ -20,7 +20,7 @@ constructor(
   private val httpClient: HttpClient,
 ) : Connector<RestApiRequest> {
 
-  override suspend fun invoke(jobId: UUID, action: RestApiRequest): ExecutorResult = try {
+  override suspend fun invoke(planId: UUID, action: RestApiRequest): ExecutorResult = try {
     val response = httpClient.request(buildUrl(action)) {
       method = mapMethod(action.method)
       headers { action.headers.forEach { key, value -> append(key, value) } }

@@ -1,6 +1,6 @@
 package karya.servers.executor.configs
 
-import karya.connector.chainedjob.di.ChainedJobConnectorFactory
+import karya.connector.chainedplan.di.ChainedPlanConnectorFactory
 import karya.connectors.restapi.configs.RestApiConnectorConfig
 import karya.connectors.restapi.di.RestApiConnectorFactory
 import karya.core.actors.Connector
@@ -41,7 +41,7 @@ data class ExecutorConfig(
 
     private fun ExecutorConfig.addDefaultConnectors(): ExecutorConfig {
       this.connectors = mutableMapOf()
-      this.connectors[ChainedRequest::class] = ChainedJobConnectorFactory.build(this.fusedDataRepoComponent)
+      this.connectors[ChainedRequest::class] = ChainedPlanConnectorFactory.build(this.fusedDataRepoComponent)
       return this
     }
 

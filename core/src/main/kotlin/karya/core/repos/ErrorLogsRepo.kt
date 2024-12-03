@@ -5,5 +5,5 @@ import java.util.UUID
 
 interface ErrorLogsRepo {
   suspend fun push(log: ErrorLog)
-  suspend fun get(jobId: UUID): List<ErrorLog>
+  suspend fun get(planId: UUID): List<ErrorLog>
 }

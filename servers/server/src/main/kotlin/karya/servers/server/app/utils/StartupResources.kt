@@ -11,6 +11,6 @@ constructor(
 ) {
   suspend fun invoke() {
     if (repoConnector.runMigration()) logger.info { "Migration ran successfully..." }
-    if (repoConnector.createDynamicPartitions()) logger.info { "Partitions created successfully..." }
+    if (repoConnector.createPartitions()) logger.info { "Partitions created successfully..." }
   }
 }

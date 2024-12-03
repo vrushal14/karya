@@ -34,12 +34,11 @@ constructor(
     }
   }
 
-  private suspend fun getOpenTask(): Task? =
-    GetTasksRequest(
-      partitionKeys = config.partitions,
-      executionTime = Instant.now(),
-      buffer = Duration.ofMillis(config.executionBufferInMilli),
-      status = TaskStatus.CREATED,
-    ).let { tasksRepo.get(it) }
-      ?.also { tasksRepo.updateStatus(it.id, TaskStatus.PROCESSING) }
+  private suspend fun getOpenTask(): Task? = GetTasksRequest(
+    partitionKeys = config.partitions,
+    executionTime = Instant.now(),
+    buffer = Duration.ofMillis(config.executionBufferInMilli),
+    status = TaskStatus.CREATED,
+  ).let { tasksRepo.get(it) }
+    ?.also { tasksRepo.updateStatus(it.id, TaskStatus.PROCESSING) }
 }
