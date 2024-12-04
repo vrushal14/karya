@@ -9,4 +9,9 @@ sealed class ExecutorException : KaryaException() {
     val action: Action,
     override val message: String = "Connector not registered for action --- $action"
   ) : ExecutorException()
+
+  data class UnrecognizedConnectorPassedException(
+    val type: String,
+    override val message: String = "Unrecognized connector passed --- $type"
+  ) : ExecutorException()
 }

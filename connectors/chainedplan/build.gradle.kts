@@ -7,6 +7,6 @@ dependencies {
   implementation(project(Modules.Servers.SERVER))
   implementation(project(Modules.Data.FUSED))
 
-  implementation(Libs.Dagger.DAGGER)
+  implementation(Libs.Dagger.LIBRARY)
   kapt(Libs.Dagger.COMPILER)
 }

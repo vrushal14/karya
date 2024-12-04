@@ -20,6 +20,12 @@ sealed class Action {
   ) : Action()
 
   @Serializable
+  data class SlackMessageRequest(
+    val message: String,
+    val channel: String
+  ) : Action()
+
+  @Serializable
   data class ChainedRequest(
     val request: SubmitPlanRequest
   ) : Action()

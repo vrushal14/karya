@@ -12,7 +12,7 @@ object RestApiConnectorFactory {
       connectionAttempts = configMap.readValue("connectionAttempts"),
     ).let(::build)
 
-  fun build(config: RestApiConnectorConfig) =
+  private fun build(config: RestApiConnectorConfig) =
     DaggerRestApiConnectorComponent.builder()
       .config(config)
       .build()

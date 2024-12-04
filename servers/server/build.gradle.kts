@@ -20,7 +20,7 @@ dependencies {
   implementation(Libs.Ktor.Server.CONTENT_NEGOTIATION)
 
   implementation(Libs.Kotlinx.COROUTINES)
-  implementation(Libs.Dagger.DAGGER)
+  implementation(Libs.Dagger.LIBRARY)
 
   kapt(Libs.Dagger.COMPILER)
 }

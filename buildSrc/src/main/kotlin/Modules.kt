@@ -24,5 +24,6 @@ object Modules {
 
     const val REST_API = "$CONNECTORS-restapi"
     const val CHAINED_PLAN = "$CONNECTORS-chainedplan"
+    const val SLACK_MESSAGE = "$CONNECTORS-slackmessage"
   }
 }
