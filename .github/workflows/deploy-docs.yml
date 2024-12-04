@@ -31,12 +31,9 @@ jobs:
       - name: Build documentation
         run: ./gradlew dokkaHtmlMultiModule
 
-      - name: Set up Pages for deployment
-        uses: actions/setup-pages@v1
-        with:
-          build_dir: ./build/dokka/htmlMultiModule  # Path to the generated docs
-
       - name: Deploy to GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: ./build/dokka/htmlMultiModule  # Path to the generated docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/dokka/htmlMultiModule
+          publish_branch: gh-pages
