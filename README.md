@@ -8,9 +8,9 @@ Distributed, scalable Task Scheduler built for high throughput.
 
 Overview:
 
+- [Components](./docs/documentation/COMPONENTS.md)
 - [Data Interfaces](./docs/documentation/DATA_INTERFACES.md)
 - [Connectors](./docs/documentation/CONNECTORS.md)
-- [Components](./docs/documentation/COMPONENTS.md)
 - [Hooks](./docs/documentation/HOOKS.md)
 
 ---

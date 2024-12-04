@@ -7,6 +7,7 @@ dependencies {
   implementation(project(Modules.CORE))
   implementation(project(Modules.Data.FUSED))
 
+  implementation(project(Modules.Connectors.EMAIL))
   implementation(project(Modules.Connectors.REST_API))
   implementation(project(Modules.Connectors.CHAINED_PLAN))
   implementation(project(Modules.Connectors.SLACK_MESSAGE))

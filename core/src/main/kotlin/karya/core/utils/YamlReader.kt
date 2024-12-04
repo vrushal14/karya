@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import karya.core.exceptions.ConfigException.*
 import java.io.File
+import java.util.*
 
 /**
  * Reads a specific section from a YAML file and converts it to the specified type.
@@ -14,7 +15,7 @@ import java.io.File
  * @return The section converted to the specified type.
  * @throws YamlSectionNotFoundException if the section is not found in the YAML file.
  */
-inline fun <reified T> getSection(filePath: String, section: String, ): T {
+inline fun <reified T> getSection(filePath: String, section: String): T {
   val mapper = ObjectMapper(YAMLFactory()).apply { findAndRegisterModules() }
   val yamlContent = File(filePath).readText()
   val yamlMap = mapper.readValue(yamlContent, Map::class.java) as Map<*, *>
@@ -39,5 +40,20 @@ inline fun <reified T> Map<*, *>.readValue(key: String): T {
     Double::class -> (value as? Number)?.toDouble() as T
     Float::class -> (value as? Number)?.toFloat() as T
     else -> value as? T ?: throw InvalidYamlMapKeyException(key, T::class.toString())
+  }
+}
+
+/**
+ * Extracts properties from a map and converts them to a Properties object.
+ *
+ * @param repo The map containing the properties.
+ * @param key The key whose value is a map of properties.
+ * @return The Properties object containing the extracted properties.
+ * @throws YamlMapKeyNotSetException if the key is not set in the map.
+ */
+fun extractProperties(repo: Map<*, *>, key: String): Properties {
+  val propertiesMap = (repo[key] as? Map<*, *>) ?: throw YamlMapKeyNotSetException(key)
+  return Properties().apply {
+    propertiesMap.forEach { (k, v) -> setProperty(k.toString(), v.toString()) }
   }
 }

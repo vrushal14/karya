@@ -70,4 +70,11 @@ object Libs {
     const val COROUTINES = "$GROUP:kotlinx-coroutines-core:$VERSION"
     const val JSON_SERIALIZATION = "$GROUP:kotlinx-serialization-json:$VERSION"
   }
+
+  object Javax {
+    private const val VERSION = "1.6.2"
+
+    const val API = "javax.mail:javax.mail-api:$VERSION"
+    const val IMPL = "com.sun.mail:javax.mail:$VERSION"
+  }
 }

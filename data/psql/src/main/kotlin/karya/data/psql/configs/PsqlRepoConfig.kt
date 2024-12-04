@@ -1,6 +1,7 @@
 package karya.data.psql.configs
 
 import karya.core.configs.RepoConfig
+import karya.core.utils.extractProperties
 import java.util.*
 
 data class PsqlRepoConfig(
@@ -8,17 +9,9 @@ data class PsqlRepoConfig(
   val flywayProperties: Properties,
   override val partitions: Int,
 ) : RepoConfig(PSQL_IDENTIFIER, partitions) {
+
   companion object {
     const val PSQL_IDENTIFIER = "psql"
-
-    fun extractProperties(repo: Map<*, *>, key: String): Properties {
-      val propertiesMap = (repo[key] as? Map<*, *>)
-        ?: throw IllegalArgumentException("Missing or invalid properties for '$key'")
-
-      return Properties().apply {
-        propertiesMap.forEach { (k, v) -> setProperty(k.toString(), v.toString()) }
-      }
-    }
   }
 
   constructor(props: Map<*, *>, partitions: Int) : this(

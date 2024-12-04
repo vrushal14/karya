@@ -45,6 +45,20 @@ sealed class Action {
   ) : Action()
 
   /**
+   * Data class representing an Email request action.
+   *
+   * @property recipient Email ID to whom the email is being sent to.
+   * @property subject Subject of the email being sent.
+   * @property message The message to be sent in the email content.
+   */
+  @Serializable
+  data class EmailRequest(
+    val recipient: String,
+    val subject: String,
+    val message: String
+  ) : Action()
+
+  /**
    * Data class representing a chained request action.
    *
    * @property request The request to be chained.

@@ -8,7 +8,6 @@ import karya.core.entities.PlanType
 import karya.core.entities.enums.Trigger
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitPlanRequest
-import java.time.Instant
 
 /**
  * Main function to demonstrate making a delay API call with a completion hook.
@@ -31,7 +30,7 @@ suspend fun main() {
     userId = user.id,
     description = "Delay API call with completion hook",
     periodTime = "PT15S",
-    planType = PlanType.Recurring(Instant.now().plusSeconds(40).toEpochMilli()),
+    planType = PlanType.OneTime,
     action = Action.RestApiRequest(
       baseUrl = "eox7wbcodh9parh.m.pipedream.net",
     ),

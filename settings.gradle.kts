@@ -42,3 +42,6 @@ project(":connectors-chainedplan").projectDir = File("connectors/chainedplan")
 
 include("connectors-slackmessage")
 project(":connectors-slackmessage").projectDir = File("connectors/slackmessage")
+
+include("connectors-email")
+project(":connectors-email").projectDir = File("connectors/email")
