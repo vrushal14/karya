@@ -1,6 +1,7 @@
 package karya.servers.executor.configs
 
 import karya.connector.chainedplan.di.ChainedPlanConnectorFactory
+import karya.connectors.email.di.EmailConnectorFactory
 import karya.connectors.restapi.di.RestApiConnectorFactory
 import karya.connectors.slackmessage.di.SlackMessageConnectorFactory
 import karya.core.actors.Connector
@@ -17,6 +18,8 @@ import karya.servers.executor.exceptions.ExecutorException
 import kotlin.reflect.KClass
 import karya.connectors.restapi.configs.RestApiConnectorConfig as RestApi
 import karya.connectors.slackmessage.configs.SlackMessageConnectorConfig as Slack
+import karya.connectors.email.configs.EmailConnectorConfig as Email
+
 
 /**
  * Configuration class for the executor.
@@ -80,6 +83,7 @@ data class ExecutorConfig(
         val configs = connectorMap["configs"] as? Map<*, *> ?: return@forEach
 
         when (type) {
+          Email.IDENTIFIER -> this.connectors[EmailRequest::class] = EmailConnectorFactory.build(configs)
           RestApi.IDENTIFIER -> this.connectors[RestApiRequest::class] = RestApiConnectorFactory.build(configs)
           Slack.IDENTIFIER -> this.connectors[SlackMessageRequest::class] = SlackMessageConnectorFactory.build(configs)
 

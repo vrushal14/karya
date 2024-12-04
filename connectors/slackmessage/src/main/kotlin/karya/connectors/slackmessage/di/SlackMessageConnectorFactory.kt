@@ -14,10 +14,9 @@ object SlackMessageConnectorFactory {
    * @param configMap The map containing configuration values.
    * @return An instance of SlackMessageConnector.
    */
-  fun build(configMap: Map<*, *>) =
-    SlackMessageConnectorConfig(
-      token = configMap.readValue("token"),
-    ).let(::build)
+  fun build(configMap: Map<*, *>) = SlackMessageConnectorConfig(
+    token = configMap.readValue("token"),
+  ).let(::build)
 
   /**
    * Builds a SlackMessageConnector using the provided SlackMessageConnectorConfig.
@@ -27,7 +26,7 @@ object SlackMessageConnectorFactory {
    */
   private fun build(config: SlackMessageConnectorConfig) =
     DaggerSlackMessageConnectorComponent.builder()
-      .config(config)
+      .slackMessageConnectorConfig(config)
       .build()
       .connector
 }

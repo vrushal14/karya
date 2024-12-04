@@ -21,7 +21,7 @@ interface SlackMessageConnectorComponent {
   interface Builder {
 
     @BindsInstance
-    fun config(config: SlackMessageConnectorConfig): Builder
+    fun slackMessageConnectorConfig(config: SlackMessageConnectorConfig): Builder
 
     fun build(): SlackMessageConnectorComponent
   }
