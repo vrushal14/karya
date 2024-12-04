@@ -9,7 +9,7 @@ dependencies {
   implementation(Libs.SLF4J)
   implementation(Libs.RABBIT_MQ)
 
-  implementation(Libs.Dagger.DAGGER)
+  implementation(Libs.Dagger.LIBRARY)
   implementation(Libs.Kotlinx.COROUTINES)
   implementation(Libs.Kotlinx.JSON_SERIALIZATION)
 

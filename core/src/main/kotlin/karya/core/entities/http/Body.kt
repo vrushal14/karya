@@ -11,11 +11,10 @@ sealed class Body {
     val jsonString: String,
   ) : Body() {
     companion object {
-      private val json =
-        Json {
-          ignoreUnknownKeys = true
-          isLenient = true
-        }
+      private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+      }
     }
 
     constructor(data: Map<String, Any>) : this(

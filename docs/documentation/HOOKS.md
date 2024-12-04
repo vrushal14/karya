@@ -24,9 +24,11 @@ Karya is built using the philosophy - *Eat what you kill*
 What this means is that the same interface that you used to configure actions while submitting the plan can be used to configure hooks as well!
 This has the advantage that:
 
-1. **Ease of use** - `Action` class that was used to describe what execution to perform while creating the plan can also be used here.
+1. **Ease of use** - [Action](../../core/src/main/kotlin/karya/core/entities/Action.kt) class that was used to describe what execution to perform while creating the plan can also be used here.
 2. **More configuration options** - One is limited only by the number of connectors configured to set up various actions on hook!
-3. **Extending Lifecycle** - Using the special `Action.ChainedPlan`, one can technically 'extend' the lifecycle of the plan they submitted.
+3. **Extending Lifecycle** - Using the special [Action.ChainedPlan](../../core/src/main/kotlin/karya/core/entities/Action.kt), one can technically 'extend' the lifecycle of the plan they submitted.
+
+> **NOTE:** Hooks will only work if the said connector has been configured in the `executor.yml` file.
 
 > **NOTE:** When chaining a plan to lifecycle, user will have to monitor the lifecycle of the chained tasks themselves. i.e. unlike in explicit ChainedPlan where on cancelling the parent plan will cancel all of its child plans, tasks triggered as a result of Hook action will not keep a track of such lineage.
 

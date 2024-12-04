@@ -39,3 +39,6 @@ project(":connectors-restapi").projectDir = File("connectors/restapi")
 
 include("connectors-chainedplan")
 project(":connectors-chainedplan").projectDir = File("connectors/chainedplan")
+
+include("connectors-slackmessage")
+project(":connectors-slackmessage").projectDir = File("connectors/slackmessage")

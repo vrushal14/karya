@@ -12,7 +12,7 @@ dependencies {
   implementation(Libs.Exposed.JSON)
   implementation(Libs.POSTGRES)
 
-  implementation(Libs.Dagger.DAGGER)
+  implementation(Libs.Dagger.LIBRARY)
   implementation(Libs.FLYWAY)
   implementation(Libs.HIKARI)
   implementation(Libs.SLF4J)

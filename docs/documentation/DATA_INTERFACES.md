@@ -59,12 +59,120 @@ queue*. But you can connect any interface of your choice and provided Karya has 
 work seamlessly.
 
 To swap in a different interfaces, change the `provider` key in any of repo/lock/queue section and pass in the
-properties accordingly. The mapping of interface to provider key is as follows:
-
-| Implementation | Interface | Provider key |
-|----------------|-----------|--------------|
-| Postgres       | repo      | *psql*       |
-| Redis          | locks     | *redis*      |
-| RabbitMQ       | queue     | *rabbitmq*   |
+properties accordingly.
 
 ---
+
+## Configuring Repo Interface
+
+This section describes the various repo interfaces that can be configured on Karya
+
+### Configuring Postgres
+
+> **providers.yml key:** *psql*
+
+These are the properties that can/should be set for the Postgres repo interface:
+
+| Key      | Description                                                                                                   |
+|----------|---------------------------------------------------------------------------------------------------------------|
+| *hikari* | One can set all the configurable options provided by hikari here just as you set them in a *.properties* file |
+| *flyway.url* | The URL to the flyway migration scripts. This is used to migrate the database schema.                         |
+| *flyway.user* | The user to connect to the flyway migration scripts.                                                          |
+| *flyway.password* | The password to connect to the flyway migration scripts.                                                    |
+
+<details>
+<summary><strong>Example</strong></summary>
+
+```yml
+repo:
+  provider: "psql"
+  partitions: 5
+  properties:
+    hikari:
+      dataSourceClassName: "org.postgresql.ds.PGSimpleDataSource"
+      dataSource.user: "karya"
+      dataSource.password: "karya"
+      dataSource.databaseName: "karya"
+      dataSource.portNumber: 5432
+      dataSource.serverName: "localhost"
+      maximumPoolSize: 1
+      connectionTimeout: 5000
+    flyway:
+      url: "jdbc:postgresql://localhost:5432/karya"
+      user: "karya"
+      password: "karya"
+```
+
+</details>
+
+---
+
+## Configuring Locks Interface
+
+This section describes the various locks interfaces that can be configured on Karya
+
+### Configuring Redis
+
+> **providers.yml key:** *redis*
+
+These are the properties that can/should be set for the Redis locks interface:
+
+| Key        | Description                                                              |
+|------------|--------------------------------------------------------------------------|
+| *hostName* | The host where the Redis server is running                               |
+| *port*     | The port on which the Redis server is running                            |
+| *waitTime* | Set the wait time for which redisson should wait before releasing a lock |
+| *leaseTime*| Set the lease time for which the lock should be held                     |
+
+<details>
+<summary><strong>Example</strong></summary>
+
+```yml
+lock:
+  provider: "redis"
+  properties:
+    hostname: "localhost"
+    port: 6379
+    waitTime: 1000
+    leaseTime: 5000
+```
+
+</details>
+
+---
+
+## Configuring Queue Interface
+
+This section describes the various queue interfaces that can be configured on Karya
+
+### Configuring RabbitMQ
+
+> **providers.yml key:** *rabbitmq*
+
+These are the properties that can/should be set for the RabbitMQ queue interface:
+
+| Key        | Description                                                                 |
+|------------|-----------------------------------------------------------------------------|
+| *hostName* | The host where the RabbitMQ server is running                               |
+| *port*     | The port on which the RabbitMQ server is running                            |
+| *username* | The username to connect to the RabbitMQ server                               |
+| *password* | The password to connect to the RabbitMQ server                               |
+| *virtualHost* | The virtual host to connect to the RabbitMQ server                          |
+
+<details>
+
+<summary><strong>Example</strong></summary>
+
+```yml
+queue:
+  provider: "rabbitmq"
+  properties:
+    username: "karya"
+    password: "karya"
+    virtualHost: "/"
+    hostname: "localhost"
+    port: 5672
+```
+
+</details>
+

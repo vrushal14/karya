@@ -14,7 +14,7 @@ dependencies {
   implementation(Libs.Log4j.KOTLIN_API)
 
   implementation(Libs.Kotlinx.COROUTINES)
-  implementation(Libs.Dagger.DAGGER)
+  implementation(Libs.Dagger.LIBRARY)
 
   kapt(Libs.Dagger.COMPILER)
 }

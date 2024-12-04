@@ -9,6 +9,7 @@ dependencies {
 
   implementation(project(Modules.Connectors.REST_API))
   implementation(project(Modules.Connectors.CHAINED_PLAN))
+  implementation(project(Modules.Connectors.SLACK_MESSAGE))
 
   implementation(Libs.SLF4J)
   implementation(Libs.KOTLIN_REFLECT)
@@ -18,7 +19,7 @@ dependencies {
   implementation(Libs.Log4j.KOTLIN_API)
 
   implementation(Libs.Kotlinx.COROUTINES)
-  implementation(Libs.Dagger.DAGGER)
+  implementation(Libs.Dagger.LIBRARY)
 
   kapt(Libs.Dagger.COMPILER)
 }
