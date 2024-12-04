@@ -26,9 +26,10 @@ This is a configurable component as Karya will look for an environment variable 
 .yml file that the scheduler instance will look for at runtime. The structure of the yml file is as follows:
 
 | Server.yml Key             | Sample Value | Description                                                                                                                                                                                                          |
-   |----------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| *application.strictMode*   | true         | This key if set *false* will allow [chained plans](./CONNECTORS.md/#chained-plans) to be recurring in nature. Note that this can lead to number of tasks being scheduled exponentially, so **proceed with caution**. |
-| *application.chainedDepth* | 2            | [Chained plans](./CONNECTORS.md/#chained-plans) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable                                             |
+   |----------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| *application.strictMode*   | true       | This key if set *false* will allow [chained plans](./CONNECTORS.md/#chained-plans) to be recurring in nature. Note that this can lead to number of tasks being scheduled exponentially, so **proceed with caution**. |
+| *application.chainedDepth* | 2          | [Chained plans](./CONNECTORS.md/#chained-plans) are nothing but recursive triggers. As such, one can specify till what depth can this chain be, by setting this variable                                             |
+| *application.port*         | 8080 | On which port you want the web-server to run                                                                                                                                                                         |
 
 [Sample server.yml file](../../configs/server.yml)
 

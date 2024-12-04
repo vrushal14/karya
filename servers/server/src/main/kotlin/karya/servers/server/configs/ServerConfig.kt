@@ -18,7 +18,8 @@ data class ServerConfig(
   val strictMode: Boolean,
   val maxChainedDepth: Int,
   val repoConfig: RepoConfig,
-  val locksConfig: LocksConfig
+  val locksConfig: LocksConfig,
+  val port: Int
 ) {
 
   companion object {
@@ -36,7 +37,8 @@ data class ServerConfig(
         strictMode = section["strictMode"] as Boolean,
         maxChainedDepth = section["maxChainedDepth"] as Int,
         repoConfig = RepoSelector.get(providersFilePath),
-        locksConfig = LocksSelector.get(providersFilePath)
+        locksConfig = LocksSelector.get(providersFilePath),
+        port = section["port"] as Int
       )
     }
   }
