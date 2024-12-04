@@ -3,11 +3,8 @@ name: Deploy Documentation to GitHub Pages
 on:
   push:
     branches:
-      - main  # Trigger the action on push to the main branch
+      - main
       - code_comments
-  pull_request:
-    branches:
-      - main  # Optionally trigger on PR to main branch
 
 jobs:
   deploy:
@@ -34,9 +31,12 @@ jobs:
       - name: Build documentation
         run: ./gradlew dokkaHtmlMultiModule
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Set up Pages for deployment
+        uses: actions/setup-pages@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/dokka/htmlMultiModule
-          publish_branch: gh-pages
+          build_dir: ./build/dokka/htmlMultiModule  # Path to the generated docs
+
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./build/dokka/htmlMultiModule  # Path to the generated docs
