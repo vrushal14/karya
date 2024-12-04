@@ -27,7 +27,7 @@ suspend fun main() {
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "Hello, this is an order notification"
+            "text": "Hello, this is periodic slack message from Karya!"
         }
     }
 ]"""
@@ -38,7 +38,7 @@ suspend fun main() {
     periodTime = "PT10S",
     planType = PlanType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
     action = Action.SlackMessageRequest(
-      channel = "dummy-channel",
+      channel = "C083L324V99",
       message = slackMessage,
     ),
     hooks = listOf(failureHook),
