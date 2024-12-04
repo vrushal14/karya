@@ -13,6 +13,15 @@ import karya.servers.scheduler.usecases.utils.getInstanceName
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
+/**
+ * Use case for processing tasks within a plan.
+ *
+ * @property tasksRepo The repository for task entities.
+ * @property plansRepo The repository for plan entities.
+ * @property locksClient The client for managing locks.
+ * @property manageTasks The use case for managing tasks.
+ * @constructor Creates an instance of [ProcessTask] with the specified dependencies.
+ */
 class ProcessTask
 @Inject
 constructor(
@@ -23,6 +32,12 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Invokes the task processing logic for the given task.
+   *
+   * @param task The task to be processed.
+   * @return `true` if the task was processed successfully, `false` otherwise.
+   */
   suspend fun invoke(task: Task): Boolean {
     val result = locksClient.withLock(task.id) { processTaskInternal(task) }
     return when (result) {
@@ -31,6 +46,12 @@ constructor(
     }
   }
 
+  /**
+   * Internal method to process the task.
+   *
+   * @param task The task to be processed.
+   * @throws PlanNotFoundException If the plan associated with the task is not found.
+   */
   private suspend fun processTaskInternal(task: Task) {
     logger.info("[${getInstanceName()}] : [PROCESSING TASK] --- TaskId : ${task.id}")
     val plan = plansRepo.get(task.planId) ?: throw PlanNotFoundException(task.planId)
@@ -40,6 +61,12 @@ constructor(
     manageTasks.invoke(updatedPlan, task)
   }
 
+  /**
+   * Updates the status of the task based on the plan status.
+   *
+   * @param plan The plan associated with the task.
+   * @param task The task to be updated.
+   */
   private suspend fun updateTaskStatus(plan: Plan, task: Task) = when (plan.status) {
     PlanStatus.CREATED, PlanStatus.RUNNING -> TaskStatus.PROCESSING
     PlanStatus.COMPLETED -> TaskStatus.SUCCESS
@@ -51,6 +78,12 @@ constructor(
     }
   }
 
+  /**
+   * Transitions the status of the plan if necessary.
+   *
+   * @param plan The plan to be transitioned.
+   * @return The updated plan.
+   */
   private suspend fun transitionPlanStatus(plan: Plan) = when (plan.status) {
     PlanStatus.CREATED -> plan
       .copy(status = PlanStatus.RUNNING)

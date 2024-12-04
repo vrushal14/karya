@@ -10,6 +10,12 @@ import karya.core.repos.PlansRepo
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
+/**
+ * Use case for updating a plan.
+ *
+ * @property locksClient The client for managing locks.
+ * @property plansRepo The repository for accessing plans.
+ */
 class UpdatePlan
 @Inject
 constructor(
@@ -18,6 +24,13 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Invokes the update plan use case.
+   *
+   * @param request The request to update a plan.
+   * @return The updated plan.
+   * @throws UnableToAcquireLockException If unable to acquire a lock for the plan.
+   */
   suspend fun invoke(request: UpdatePlanRequest): Plan {
     val result = locksClient.withLock(request.planId) { updatePlanInternal(request) }
     return when (result) {
@@ -29,6 +42,13 @@ constructor(
     }
   }
 
+  /**
+   * Updates the plan internally.
+   *
+   * @param request The request to update a plan.
+   * @return The updated plan.
+   * @throws PlanNotFoundException If the plan is not found.
+   */
   private suspend fun updatePlanInternal(request: UpdatePlanRequest): Plan {
     val plan = plansRepo.get(request.planId) ?: throw PlanNotFoundException(request.planId)
     return plan

@@ -6,9 +6,22 @@ import karya.core.entities.http.Protocol
 import karya.core.entities.requests.SubmitPlanRequest
 import kotlinx.serialization.Serializable
 
+/**
+ * Sealed class representing different types of actions.
+ */
 @Serializable
 sealed class Action {
 
+  /**
+   * Data class representing a REST API request action.
+   *
+   * @property protocol The protocol to be used for the request (default is HTTP).
+   * @property baseUrl The base URL for the request.
+   * @property method The HTTP method to be used for the request (default is GET).
+   * @property headers The headers to be included in the request (default is content-type: application/json).
+   * @property body The body of the request (default is an empty body).
+   * @property timeout The timeout for the request in milliseconds (default is 2000ms).
+   */
   @Serializable
   data class RestApiRequest(
     val protocol: Protocol = Protocol.HTTP,
@@ -19,12 +32,23 @@ sealed class Action {
     val timeout: Long = 2000L,
   ) : Action()
 
+  /**
+   * Data class representing a Slack message request action.
+   *
+   * @property channel The Slack channel where the message will be sent.
+   * @property message The message to be sent to the Slack channel. This has to be in the slack block kit format.
+   */
   @Serializable
   data class SlackMessageRequest(
     val channel: String,
     val message: String
   ) : Action()
 
+  /**
+   * Data class representing a chained request action.
+   *
+   * @property request The request to be chained.
+   */
   @Serializable
   data class ChainedRequest(
     val request: SubmitPlanRequest

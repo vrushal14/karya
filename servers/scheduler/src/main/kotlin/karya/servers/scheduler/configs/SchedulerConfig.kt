@@ -10,6 +10,19 @@ import karya.data.fused.LocksSelector
 import karya.data.fused.QueueSelector
 import karya.data.fused.RepoSelector
 
+/**
+ * Configuration class for the scheduler.
+ *
+ * @property threadCount The number of threads to be used by the scheduler.
+ * @property workers The number of worker instances.
+ * @property channelCapacity The capacity of the task channel.
+ * @property pollFrequency The frequency at which tasks are polled.
+ * @property partitions The list of partitions from which to poll from.
+ * @property executionBufferInMilli The buffer time in milliseconds while fetching a task to be executed.
+ * @property repoConfig The configuration for the repository.
+ * @property locksConfig The configuration for the locks.
+ * @property queueConfig The configuration for the queue.
+ */
 data class SchedulerConfig(
   val threadCount: Int,
   val workers: Int,
@@ -23,6 +36,14 @@ data class SchedulerConfig(
 ) {
 
   companion object {
+    /**
+     * Loads the scheduler configuration from the specified file paths.
+     *
+     * @param schedulerFilePath The path to the scheduler configuration file.
+     * @param providerFilePath The path to the provider configuration file.
+     * @return The loaded [SchedulerConfig] instance.
+     * @throws YamlMapKeyNotSetException If a required key is not set in the YAML file.
+     */
     fun load(
       schedulerFilePath: String,
       providerFilePath: String,
@@ -47,6 +68,13 @@ data class SchedulerConfig(
       )
     }
 
+    /**
+     * Retrieves the list of partitions from the fetcher properties.
+     *
+     * @param fetcherProperties The properties of the fetcher.
+     * @return The list of partitions.
+     * @throws IllegalArgumentException If the `repoPartitions` key is not set.
+     */
     private fun getPartitions(fetcherProperties: Map<*, *>) =
       fetcherProperties["repoPartitions"]?.let { it as List<*> }?.map { it as Int }
         ?: throw IllegalArgumentException("repoPartitions is required")

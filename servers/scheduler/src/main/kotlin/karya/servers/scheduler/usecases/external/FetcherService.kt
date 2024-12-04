@@ -13,6 +13,13 @@ import java.time.Duration
 import java.time.Instant
 import javax.inject.Inject
 
+/**
+ * Service class responsible for fetching tasks and sending them to a channel.
+ *
+ * @property tasksRepo The repository for task entities.
+ * @property config The configuration for the scheduler.
+ * @constructor Creates an instance of [FetcherService] with the specified dependencies.
+ */
 class FetcherService
 @Inject
 constructor(
@@ -21,6 +28,11 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Invokes the fetcher service to fetch tasks and send them to the given channel.
+   *
+   * @param taskChannel The channel to which fetched tasks are sent.
+   */
   suspend fun invoke(taskChannel: Channel<Task>) {
     while (true) {
       if (SchedulerManager.isStopped.get()) return
@@ -34,6 +46,11 @@ constructor(
     }
   }
 
+  /**
+   * Retrieves an open task from the repository.
+   *
+   * @return The open task if available, `null` otherwise.
+   */
   private suspend fun getOpenTask(): Task? = GetTasksRequest(
     partitionKeys = config.partitions,
     executionTime = Instant.now(),

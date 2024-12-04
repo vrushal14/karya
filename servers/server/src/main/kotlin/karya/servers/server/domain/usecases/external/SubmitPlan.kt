@@ -19,6 +19,14 @@ import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Use case for submitting a plan.
+ *
+ * @property usersRepo The repository for accessing users.
+ * @property plansRepo The repository for accessing plans.
+ * @property tasksRepo The repository for accessing tasks.
+ * @property repoConnector The connector for accessing repository partitions.
+ */
 class SubmitPlan
 @Inject
 constructor(
@@ -30,12 +38,28 @@ constructor(
 
   companion object : Logging
 
+  /**
+   * Submits a plan based on the given request and parent plan ID.
+   *
+   * @param request The request to submit a plan.
+   * @param parentPlanId The ID of the parent plan, if any.
+   * @return The submitted plan.
+   * @throws UserException.UserNotFoundException If the user is not found.
+   */
   suspend fun invoke(request: SubmitPlanRequest, parentPlanId: UUID?): Plan = usersRepo
     .get(request.userId)
     ?.let { createPlan(request, it, parentPlanId) }
     ?.also { createTask(it) }
     ?: throw UserException.UserNotFoundException(request.userId)
 
+  /**
+   * Creates a plan based on the given request, user, and parent plan ID.
+   *
+   * @param request The request to create a plan.
+   * @param user The user associated with the plan.
+   * @param parentPlanId The ID of the parent plan, if any.
+   * @return The created plan.
+   */
   private suspend fun createPlan(request: SubmitPlanRequest, user: User, parentPlanId: UUID?) = Plan(
     id = UUID.randomUUID(),
     userId = user.id,
@@ -52,6 +76,12 @@ constructor(
   ).also { plansRepo.add(it) }
     .also { logger.info("[PLAN CREATED] --- $it") }
 
+  /**
+   * Creates a task for the given plan.
+   *
+   * @param plan The plan for which to create a task.
+   * @return The created task.
+   */
   private suspend fun createTask(plan: Plan) = Task(
     id = UUID.randomUUID(),
     planId = plan.id,

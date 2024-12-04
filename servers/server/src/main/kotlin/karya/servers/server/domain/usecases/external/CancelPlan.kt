@@ -12,6 +12,12 @@ import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Use case for canceling a plan.
+ *
+ * @property plansRepo The repository for accessing plans.
+ * @property locksClient The client for managing locks.
+ */
 class CancelPlan
 @Inject
 constructor(
@@ -20,6 +26,13 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Invokes the cancel plan use case.
+   *
+   * @param planId The ID of the plan to cancel.
+   * @return The canceled plan.
+   * @throws UnableToAcquireLockException If unable to acquire a lock for the plan.
+   */
   suspend fun invoke(planId: UUID): Plan {
     val result = locksClient.withLock(planId) { updatePlanStatus(planId) }
     return when (result) {
@@ -31,6 +44,13 @@ constructor(
     }
   }
 
+  /**
+   * Updates the status of the plan to canceled.
+   *
+   * @param planId The ID of the plan to update.
+   * @return The updated plan with canceled status.
+   * @throws PlanNotFoundException If the plan is not found.
+   */
   private suspend fun updatePlanStatus(planId: UUID): Plan {
     val plan = plansRepo.get(planId) ?: throw PlanNotFoundException(planId)
     return plan.copy(
@@ -41,6 +61,11 @@ constructor(
       .also { cancelChildPlansIfAny(planId) }
   }
 
+  /**
+   * Cancels any child plans of the specified plan.
+   *
+   * @param planId The ID of the parent plan.
+   */
   private suspend fun cancelChildPlansIfAny(planId: UUID) {
     val childPlans = plansRepo.getChildPlanIds(planId)
     childPlans.forEach {

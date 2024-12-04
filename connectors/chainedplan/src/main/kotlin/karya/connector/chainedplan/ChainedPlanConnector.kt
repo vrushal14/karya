@@ -10,6 +10,12 @@ import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Connector implementation for handling chained plans.
+ *
+ * @property submitPlan Use case for submitting a plan.
+ * @property repoConnector Repository connector for managing repository operations.
+ */
 class ChainedPlanConnector
 @Inject
 constructor(
@@ -17,6 +23,13 @@ constructor(
   private val repoConnector: RepoConnector
 ) : Connector<Action.ChainedRequest> {
 
+  /**
+   * Invokes the chained plan with the given plan ID and action.
+   *
+   * @param planId The ID of the plan.
+   * @param action The action to be performed.
+   * @return The result of the execution.
+   */
   override suspend fun invoke(planId: UUID, action: Action.ChainedRequest): ExecutorResult = try {
     submitPlan.invoke(action.request, parentPlanId = planId)
     ExecutorResult.Success(Instant.now().toEpochMilli())
@@ -29,6 +42,9 @@ constructor(
     )
   }
 
+  /**
+   * Shuts down the connector and releases any resources.
+   */
   override suspend fun shutdown() {
     repoConnector.shutdown()
   }

@@ -12,6 +12,14 @@ import org.apache.logging.log4j.kotlin.Logging
 import org.apache.logging.log4j.kotlin.logger
 import javax.inject.Inject
 
+/**
+ * Use case class responsible for processing hook messages.
+ *
+ * @property getConnector The use case for retrieving connectors.
+ * @property queueClient The client for interacting with the queue.
+ * @property errorLogsRepo The repository for managing error logs.
+ * @constructor Creates an instance of [ProcessHookMessage] with the specified dependencies.
+ */
 class ProcessHookMessage
 @Inject
 constructor(
@@ -22,6 +30,11 @@ constructor(
 
   companion object : Logging
 
+  /**
+   * Processes the hook message.
+   *
+   * @param message The hook message to be processed.
+   */
   suspend fun invoke(message: QueueMessage.HookMessage) {
     val connector = getConnector.invoke(message.hook.action)
     val result = connector.invoke(message.planId, message.hook.action)
@@ -31,17 +44,35 @@ constructor(
     }
   }
 
+  /**
+   * Determines if the failed hook should be retried.
+   *
+   * @param message The hook message containing the hook details.
+   * @param result The failed executor result.
+   * @return True if the hook should be retried, false otherwise.
+   */
   private suspend fun shouldRetryFailedHook(message: QueueMessage.HookMessage, result: ExecutorResult.Failure) =
     (message.hook.maxRetry > 0)
       .also { pushErrorLogs(message, result) }
       .also { logger.info("[RETRY HOOK ASYNC | maxRetry : ${message.hook.maxRetry}] --- result : $result") }
 
+  /**
+   * Retries the failed hook by pushing it back to the queue.
+   *
+   * @param message The hook message to be retried.
+   */
   private suspend fun retryHook(message: QueueMessage.HookMessage) {
     val updatedHook = message.hook.copy(maxRetry = message.hook.maxRetry - 1)
     val updatedMessage = message.copy(hook = updatedHook)
     queueClient.push(updatedMessage, QueueType.HOOK)
   }
 
+  /**
+   * Pushes error logs to the repository.
+   *
+   * @param message The hook message containing the hook details.
+   * @param result The failed executor result.
+   */
   private suspend fun pushErrorLogs(message: QueueMessage.HookMessage, result: ExecutorResult.Failure) = ErrorLog(
     planId = message.planId,
     error = result.reason,

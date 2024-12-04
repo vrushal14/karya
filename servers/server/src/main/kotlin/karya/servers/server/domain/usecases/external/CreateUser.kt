@@ -7,6 +7,11 @@ import org.apache.logging.log4j.kotlin.Logging
 import org.apache.logging.log4j.kotlin.logger
 import javax.inject.Inject
 
+/**
+ * Use case for creating a new user.
+ *
+ * @property usersRepo The repository for accessing users.
+ */
 class CreateUser
 @Inject
 constructor(
@@ -14,6 +19,12 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Invokes the create user use case.
+   *
+   * @param request The request to create a new user.
+   * @return The created user.
+   */
   suspend fun invoke(request: CreateUserRequest): User =
     User(request)
       .also { usersRepo.add(it) }

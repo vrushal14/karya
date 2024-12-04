@@ -5,6 +5,14 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import karya.core.exceptions.*
 
+/**
+ * Extension function to map KaryaException to an appropriate HTTP response.
+ *
+ * This function takes a KaryaException and an ApplicationCall instance,
+ * and responds with the corresponding HTTP status code and message based on the type of exception.
+ *
+ * @param call The application call instance.
+ */
 suspend fun KaryaException.toHttpResponse(call: ApplicationCall) =
   when (this) {
     is UserException.UserNotFoundException -> call.respond(HttpStatusCode.NotFound, this.message)

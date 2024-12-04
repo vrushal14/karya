@@ -10,11 +10,17 @@ import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitPlanRequest
 import java.time.Instant
 
+/**
+ * Main function to demonstrate making a periodic Slack call with a failure hook.
+ */
 suspend fun main() {
+  // Create a Karya client instance using the development configuration
   val config = KaryaClientConfig.Dev
   val client = KaryaClientFactory.create(config)
+  // Create a new user with the name "Vi"
   val user = client.createUser(CreateUserRequest("Vi"))
 
+  // Define a failure hook that triggers on failure and makes a REST API request
   val failureHook = Hook(
     trigger = Trigger.ON_FAILURE,
     action = Action.RestApiRequest(
@@ -22,6 +28,7 @@ suspend fun main() {
     ),
   )
 
+  // Define the Slack message to be sent periodically
   val slackMessage = """[
     {
         "type": "section",
@@ -32,6 +39,7 @@ suspend fun main() {
     }
 ]"""
 
+  // Create a plan request with the defined Slack message action and failure hook
   val planRequest = SubmitPlanRequest(
     userId = user.id,
     description = "Sample periodic slack run",
@@ -44,5 +52,6 @@ suspend fun main() {
     hooks = listOf(failureHook),
   )
 
+  // Submit the plan request and print the result
   client.submitPlan(planRequest).also(::println)
 }

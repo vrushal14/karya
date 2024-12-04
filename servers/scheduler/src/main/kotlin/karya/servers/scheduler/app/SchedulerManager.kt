@@ -10,6 +10,11 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
+/**
+ * Manages the scheduler by starting and stopping the fetcher and worker services.
+ *
+ * @property config The configuration for the scheduler.
+ */
 class SchedulerManager(
   private val config: SchedulerConfig,
 ) {
@@ -22,9 +27,15 @@ class SchedulerManager(
   private val workers = List(config.workers) { SchedulerWorkerFactory.build(config) }
 
   companion object : Logging {
+    /**
+     * Indicates whether the scheduler manager has been stopped.
+     */
     val isStopped = AtomicBoolean(false)
   }
 
+  /**
+   * Starts the fetcher and worker services.
+   */
   fun start() {
     runBlocking {
       scope.launch(fetcherErrorHandler) { fetcher.start() }
@@ -34,6 +45,9 @@ class SchedulerManager(
     }
   }
 
+  /**
+   * Stops the fetcher and worker services.
+   */
   fun stop() {
     if (isStopped.compareAndSet(false, true)) {
       runBlocking {
@@ -47,11 +61,21 @@ class SchedulerManager(
     }
   }
 
+  /**
+   * Handles exceptions thrown by the fetcher service.
+   */
   private val fetcherErrorHandler = CoroutineExceptionHandler { _, exception ->
     logger.error(exception) { "Fetcher failed. Stopping entire application." }
     scope.launch { stop() }
   }
 
+  /**
+   * Creates an exception handler for a worker service.
+   *
+   * @param index The index of the worker.
+   * @param worker The worker instance.
+   * @return The exception handler for the worker.
+   */
   private fun workerErrorHandlerFor(index: Int, worker: SchedulerWorker) =
     CoroutineExceptionHandler { _, exception ->
       logger.error(exception) { "Worker $index failed. Attempting recovery." }

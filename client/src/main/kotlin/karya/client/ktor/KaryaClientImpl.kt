@@ -15,6 +15,12 @@ import karya.core.entities.responses.GetSummaryResponse
 import kotlinx.serialization.json.Json
 import java.util.*
 
+/**
+ * Implementation of the Client interface using Ktor HTTP client.
+ *
+ * @property httpClient The Ktor HTTP client instance.
+ * @property json The JSON serializer instance.
+ */
 class KaryaClientImpl(
   private val httpClient: HttpClient,
   private val json: Json,
@@ -26,39 +32,78 @@ class KaryaClientImpl(
     private const val USER = "user"
   }
 
+  /**
+   * Creates a new user.
+   *
+   * @param request The request object containing user details.
+   * @return The created User object.
+   */
   override suspend fun createUser(request: CreateUserRequest): User = httpClient
     .post {
       url { path(VERSION, USER) }
       setBody(request)
     }.deserialize<User>(json)
 
+  /**
+   * Submits a new plan.
+   *
+   * @param request The request object containing plan details.
+   * @return The submitted Plan object.
+   */
   override suspend fun submitPlan(request: SubmitPlanRequest): Plan = httpClient
     .post {
       url { path(VERSION, PLAN) }
       setBody(request)
     }.deserialize<Plan>(json)
 
+  /**
+   * Retrieves a plan by its ID.
+   *
+   * @param planId The UUID of the plan.
+   * @return The response object containing plan details.
+   */
   override suspend fun getPlan(planId: UUID): GetPlanResponse = httpClient
     .get {
       url { path(VERSION, PLAN, planId.toString()) }
     }.deserialize<GetPlanResponse>(json)
 
+  /**
+   * Updates an existing plan.
+   *
+   * @param request The request object containing updated plan details.
+   * @return The updated Plan object.
+   */
   override suspend fun updatePlan(request: UpdatePlanRequest): Plan = httpClient
     .patch {
       url { path(VERSION, PLAN) }
       setBody(request)
     }.deserialize<Plan>(json)
 
+  /**
+   * Cancels a plan by its ID.
+   *
+   * @param planId The UUID of the plan.
+   * @return The canceled Plan object.
+   */
   override suspend fun cancelPlan(planId: UUID): Plan = httpClient
     .post {
       url { path(VERSION, PLAN, planId.toString()) }
     }.deserialize<Plan>(json)
 
+  /**
+   * Retrieves the summary of a plan by its ID.
+   *
+   * @param planId The UUID of the plan.
+   * @return The response object containing plan summary details.
+   */
   override suspend fun getSummary(planId: UUID): GetSummaryResponse = httpClient
     .get {
       url { path(VERSION, PLAN, planId.toString(), "summary") }
     }.deserialize<GetSummaryResponse>(json)
 
+  /**
+   * Closes the HTTP client.
+   */
   override suspend fun close() {
     httpClient.close()
   }
