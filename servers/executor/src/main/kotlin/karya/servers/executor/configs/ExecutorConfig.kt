@@ -18,6 +18,13 @@ import kotlin.reflect.KClass
 import karya.connectors.restapi.configs.RestApiConnectorConfig as RestApi
 import karya.connectors.slackmessage.configs.SlackMessageConnectorConfig as Slack
 
+/**
+ * Configuration class for the executor.
+ *
+ * @property fusedDataRepoComponent The component for fused data repository.
+ * @property fusedDataQueueComponent The component for fused data queue.
+ * @property connectors A map of action types to their corresponding connectors.
+ */
 data class ExecutorConfig(
   val fusedDataRepoComponent: FusedDataRepoComponent,
   val fusedDataQueueComponent: FusedDataQueueComponent
@@ -27,6 +34,13 @@ data class ExecutorConfig(
 
   companion object {
 
+    /**
+     * Loads the executor configuration from the specified file paths.
+     *
+     * @param executorFilePath The path to the executor configuration file.
+     * @param providerFilePath The path to the provider configuration file.
+     * @return An instance of [ExecutorConfig] with the loaded configuration.
+     */
     fun load(executorFilePath: String, providerFilePath: String): ExecutorConfig {
 
       val application: Map<String, *> = getSection(executorFilePath, "application")
@@ -41,12 +55,24 @@ data class ExecutorConfig(
         .addCustomConnectors(application["connectors"] as List<*>)
     }
 
+    /**
+     * Adds the default connectors to the executor configuration.
+     *
+     * @return The updated [ExecutorConfig] with the default connectors added.
+     */
     private fun ExecutorConfig.addDefaultConnectors(): ExecutorConfig {
       this.connectors = mutableMapOf()
       this.connectors[ChainedRequest::class] = ChainedPlanConnectorFactory.build(this.fusedDataRepoComponent)
       return this
     }
 
+    /**
+     * Adds custom connectors to the executor configuration based on the provided properties.
+     *
+     * @param properties The list of properties defining the custom connectors.
+     * @return The updated [ExecutorConfig] with the custom connectors added.
+     * @throws ExecutorException.UnrecognizedConnectorPassedException If an unrecognized connector type is passed.
+     */
     private fun ExecutorConfig.addCustomConnectors(properties: List<*>): ExecutorConfig {
       properties.forEach { connector ->
         val connectorMap = connector as? Map<*, *> ?: return@forEach

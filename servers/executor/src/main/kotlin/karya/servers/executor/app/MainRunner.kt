@@ -2,13 +2,22 @@ package karya.servers.executor.app
 
 import karya.core.configs.KaryaEnvironmentConfig
 import karya.servers.executor.configs.ExecutorConfig
-import karya.servers.executor.di.factories.ExecutorServiceFactory
+import karya.servers.executor.di.ExecutorServiceFactory
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.util.concurrent.CountDownLatch
 
+/**
+ * The logger instance for logging messages.
+ */
 val logger: Logger = LogManager.getLogger()
 
+/**
+ * The main function to start the executor service.
+ *
+ * This function loads the configuration, builds the executor service, and starts it.
+ * It also sets up a shutdown hook to stop the service gracefully.
+ */
 suspend fun main() {
   val providers = KaryaEnvironmentConfig.PROVIDERS
   val executor = KaryaEnvironmentConfig.EXECUTOR

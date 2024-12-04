@@ -12,6 +12,12 @@ import karya.servers.server.domain.usecases.internal.ValidateRequest
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
+/**
+ * Service class responsible for handling submit plan requests.
+ *
+ * @property submitPlan The use case for submitting a plan.
+ * @property validateRequest The use case for validating the request.
+ */
 class SubmitPlanService
 @Inject
 constructor(
@@ -20,6 +26,14 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Handles the submit plan request.
+   *
+   * Receives the submit plan request, validates it, invokes the submit plan use case, and responds with the result.
+   * If an exception occurs, it logs the error and responds with the appropriate HTTP error response.
+   *
+   * @param call The application call instance.
+   */
   suspend fun invoke(call: ApplicationCall) =
     try {
       val request = call.receive<SubmitPlanRequest>()

@@ -10,9 +10,20 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
 import javax.inject.Inject
 
+/**
+ * Class responsible for managing the features of the Ktor server.
+ */
 class FeatureManager
 @Inject
 constructor() {
+
+  /**
+   * Wires the features to the Ktor application.
+   *
+   * Installs the ContentNegotiation and CallLogging plugins.
+   *
+   * @receiver The Ktor application instance.
+   */
   @OptIn(ExperimentalSerializationApi::class)
   fun Application.wireFeatures() {
     install(ContentNegotiation) {

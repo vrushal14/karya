@@ -8,6 +8,15 @@ import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.kotlin.Logging
 import javax.inject.Inject
 
+/**
+ * Service class responsible for managing the executor service.
+ *
+ * @property repoConnector The connector for repository interactions.
+ * @property queueClient The client for interacting with the queue.
+ * @property config The configuration for the executor service.
+ * @property processMessage The use case for processing messages.
+ * @constructor Creates an instance of [ExecutorService] with the specified dependencies.
+ */
 class ExecutorService
 @Inject
 constructor(
@@ -19,12 +28,18 @@ constructor(
 
   companion object : Logging
 
+  /**
+   * Starts the executor service by initializing the queue client and consuming messages.
+   */
   suspend fun start() {
     logger.info("Starting executor service...")
     queueClient.initialize()
     queueClient.consume { message -> processMessage.invoke(message) }
   }
 
+  /**
+   * Stops the executor service by shutting down the queue client, repository connector, and connectors.
+   */
   fun stop() = runBlocking {
     logger.info("Shutting down executor service...")
     queueClient.shutdown()

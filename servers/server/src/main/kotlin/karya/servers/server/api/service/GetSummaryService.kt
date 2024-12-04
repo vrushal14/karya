@@ -11,6 +11,11 @@ import org.apache.logging.log4j.kotlin.Logging
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Service class responsible for handling get summary requests.
+ *
+ * @property getSummary The use case for getting a summary.
+ */
 class GetSummaryService
 @Inject
 constructor(
@@ -18,6 +23,14 @@ constructor(
 ) {
   companion object : Logging
 
+  /**
+   * Handles the get summary request.
+   *
+   * Receives the get summary request, invokes the get summary use case, and responds with the result.
+   * If an exception occurs, it logs the error and responds with the appropriate HTTP error response.
+   *
+   * @param call The application call instance.
+   */
   suspend fun invoke(call: ApplicationCall) = try {
     val params = call.parameters
     val planId = UUID.fromString(params.getOrFail("plan_id"))

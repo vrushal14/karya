@@ -14,12 +14,24 @@ import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Connector implementation for handling REST API requests.
+ *
+ * @property httpClient The HTTP client used for making requests.
+ */
 class RestApiConnector
 @Inject
 constructor(
   private val httpClient: HttpClient,
 ) : Connector<RestApiRequest> {
 
+  /**
+   * Invokes the REST API request with the given plan ID and action.
+   *
+   * @param planId The ID of the plan.
+   * @param action The action containing the REST API request details.
+   * @return The result of the execution.
+   */
   override suspend fun invoke(planId: UUID, action: RestApiRequest): ExecutorResult = try {
     val response = httpClient.request(buildUrl(action)) {
       method = mapMethod(action.method)
@@ -34,12 +46,27 @@ constructor(
     ExecutorResult.Failure(message, action, Instant.now().toEpochMilli())
   }
 
+  /**
+   * Shuts down the connector and releases any resources.
+   */
   override suspend fun shutdown() {
     httpClient.close()
   }
 
+  /**
+   * Builds the URL for the REST API request.
+   *
+   * @param action The action containing the REST API request details.
+   * @return The constructed URL.
+   */
   private fun buildUrl(action: RestApiRequest) = "${action.protocol.name.lowercase()}://${action.baseUrl}"
 
+  /**
+   * Maps the custom HTTP method to Ktor's HttpMethod.
+   *
+   * @param method The custom HTTP method.
+   * @return The corresponding Ktor HttpMethod.
+   */
   private fun mapMethod(method: Method) =
     when (method) {
       Method.GET -> HttpMethod.Get
@@ -49,6 +76,11 @@ constructor(
       Method.DELETE -> HttpMethod.Delete
     }
 
+  /**
+   * Sets the request body for the HTTP request.
+   *
+   * @param body The body of the request.
+   */
   private fun HttpRequestBuilder.setRequestBody(body: Body) {
     when (body) {
       is Body.JsonBody -> setBody(body.jsonString)
@@ -56,6 +88,14 @@ constructor(
     }
   }
 
+  /**
+   * Handles the HTTP response and returns the appropriate ExecutorResult.
+   *
+   * @param response The HTTP response.
+   * @param action The action containing the REST API request details.
+   * @param timestamp The timestamp of the execution.
+   * @return The result of the execution.
+   */
   private suspend fun handleResponse(response: HttpResponse, action: RestApiRequest, timestamp: Long): ExecutorResult =
     if (response.status.isSuccess()) {
       ExecutorResult.Success(timestamp)

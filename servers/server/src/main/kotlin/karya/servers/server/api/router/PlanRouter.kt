@@ -5,6 +5,15 @@ import karya.servers.server.api.service.*
 import javax.inject.Inject
 import javax.inject.Provider
 
+/**
+ * Router class responsible for wiring plan-related routes.
+ *
+ * @property submitPlanService Provider for the SubmitPlanService.
+ * @property getPlanService Provider for the GetPlanService.
+ * @property updatePlanService Provider for the UpdatePlanService.
+ * @property cancelPlanService Provider for the CancelPlanService.
+ * @property getSummaryService Provider for the GetSummaryService.
+ */
 class PlanRouter
 @Inject
 constructor(
@@ -14,6 +23,12 @@ constructor(
   private val cancelPlanService: Provider<CancelPlanService>,
   private val getSummaryService: Provider<GetSummaryService>
 ) {
+  /**
+   * Wires the routes for plan-related operations.
+   *
+   * Defines the PATCH route for updating a plan, the POST route for submitting a plan,
+   * and nested routes for getting a plan, getting a plan summary, and canceling a plan.
+   */
   fun Route.wireRoutes() {
     patch { updatePlanService.get().invoke(call) }
     post { submitPlanService.get().invoke(call) }
