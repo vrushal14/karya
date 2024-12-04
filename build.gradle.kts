@@ -1,10 +1,10 @@
 plugins {
   id(Plugins.Kotlin.JVM) version Plugins.Kotlin.VERSION apply false
   id(Plugins.Detekt.LIBRARY) version Plugins.Detekt.VERSION
+  id(Plugins.Dokka.LIBRARY) version Plugins.Dokka.VERSION
 }
 
 allprojects {
-
   apply(plugin = Plugins.Detekt.LIBRARY)
 
   repositories {
@@ -24,8 +24,10 @@ subprojects {
   version = "0.0.1"
 
   apply(plugin = Plugins.Kotlin.JVM)
+  apply(plugin = Plugins.Dokka.LIBRARY)
 
   dependencies {
     detektPlugins(Plugins.Detekt.FORMATTING)
   }
+
 }
