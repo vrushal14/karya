@@ -13,6 +13,12 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
+/**
+ * Connector implementation for sending emails using JavaMail.
+ *
+ * @property session The JavaMail session used for sending emails.
+ * @property config The configuration for the EmailConnector.
+ */
 class EmailConnector
 @Inject
 constructor(
@@ -20,6 +26,13 @@ constructor(
   private val config: EmailConnectorConfig
 ) : Connector<Action.EmailRequest> {
 
+  /**
+   * Invokes the email sending action.
+   *
+   * @param planId The unique identifier of the plan.
+   * @param action The email request action containing recipient, subject, and message.
+   * @return The result of the email sending action.
+   */
   override suspend fun invoke(planId: UUID, action: Action.EmailRequest): ExecutorResult = try {
     val message = createMimeMessage(action)
     Transport.send(message)
@@ -33,10 +46,19 @@ constructor(
     )
   }
 
+  /**
+   * Shuts down the connector. No explicit resource to close for JavaMail session.
+   */
   override suspend fun shutdown() {
     // No explicit resource to close for JavaMail session
   }
 
+  /**
+   * Creates a MimeMessage from the email request action.
+   *
+   * @param action The email request action containing recipient, subject, and message.
+   * @return The created MimeMessage.
+   */
   private fun createMimeMessage(action: Action.EmailRequest) = MimeMessage(session).apply {
     setFrom(InternetAddress(config.username))
     setRecipients(Message.RecipientType.TO, InternetAddress.parse(action.recipient))

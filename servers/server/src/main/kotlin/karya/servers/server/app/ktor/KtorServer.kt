@@ -12,6 +12,7 @@ import javax.inject.Inject
  *
  * @property featureManager The manager for server features.
  * @property routeManager The manager for server routes.
+ * @property config The configuration for the server.
  */
 class KtorServer
 @Inject

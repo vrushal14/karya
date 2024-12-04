@@ -13,6 +13,7 @@ import karya.data.fused.RepoSelector
  * @property maxChainedDepth The maximum depth of chained operations.
  * @property repoConfig The configuration for the repository.
  * @property locksConfig The configuration for the locks.
+ * @property port The port on which the server will run.
  */
 data class ServerConfig(
   val strictMode: Boolean,

@@ -43,6 +43,14 @@ inline fun <reified T> Map<*, *>.readValue(key: String): T {
   }
 }
 
+/**
+ * Extracts properties from a map and converts them to a Properties object.
+ *
+ * @param repo The map containing the properties.
+ * @param key The key whose value is a map of properties.
+ * @return The Properties object containing the extracted properties.
+ * @throws YamlMapKeyNotSetException if the key is not set in the map.
+ */
 fun extractProperties(repo: Map<*, *>, key: String): Properties {
   val propertiesMap = (repo[key] as? Map<*, *>) ?: throw YamlMapKeyNotSetException(key)
   return Properties().apply {

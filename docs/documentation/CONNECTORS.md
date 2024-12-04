@@ -9,7 +9,7 @@ available:
 |------------------|-------------------------------------------------------------|
 | *restapi*        | This plugin helps support the executor make a REST Api call |
 | *slackmessage*   | This plugin helps support the executor send a slack message |
-
+| *email*          | This plugin helps support the executor send an email        |
 
 
 ### Configuring Rest API
@@ -63,6 +63,39 @@ Refer to the [Action.RestApiRequest](../../core/src/main/kotlin/karya/core/entit
 Refer to the [Action.SlackMessage](../../core/src/main/kotlin/karya/core/entities/Action.kt) object for more details on the parameters that can be set while creating a plan.
 
 [Sample MakePeriodicSlackCallWithFailureHook.kt example](../../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicSlackCallWithFailureHook.kt).
+
+### Configuring Email
+
+> **executor.yml type key:** *email*
+
+| Key        | Description                                       |
+|------------|---------------------------------------------------|
+| *username* | The username to be used to send the email.        |
+| *password* | The password to be used to send the email.        |
+| *smtp*     | The smtp properties to be used to send the email. |
+
+<details>
+
+<summary><strong>Example</strong></summary>
+
+```yml
+    - type: "email"
+      configs:
+        username: "your-email@gmail.com"
+        password: "your-app-password"
+        smtp:
+          mail.smtp.auth: "true"
+          mail.smtp.starttls.enable: "true"
+          mail.smtp.host: "smtp.gmail.com"
+          mail.smtp.port: "587"
+```
+
+</details>
+
+
+Refer to the [Action.EmailRequest](../../core/src/main/kotlin/karya/core/entities/Action.kt) object for more details on the parameters that can be set while creating a plan.
+
+[Sample MakeDelayEmailRequest.kt example](../../docs/samples/src/main/kotlin/karya/docs/samples/MakeDelayEmailRequest.kt).
 
 ---
 
