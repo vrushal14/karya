@@ -21,8 +21,8 @@ sealed class Action {
 
   @Serializable
   data class SlackMessageRequest(
-    val message: String,
-    val channel: String
+    val channel: String,
+    val message: String
   ) : Action()
 
   @Serializable

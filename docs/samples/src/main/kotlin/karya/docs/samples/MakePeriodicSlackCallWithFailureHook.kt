@@ -22,14 +22,24 @@ suspend fun main() {
     ),
   )
 
+  val slackMessage = """[
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Hello, this is an order notification"
+        }
+    }
+]"""
+
   val planRequest = SubmitPlanRequest(
     userId = user.id,
-    description = "Sample periodic run",
-    periodTime = "PT15S",
+    description = "Sample periodic slack run",
+    periodTime = "PT10S",
     planType = PlanType.Recurring(Instant.now().plusSeconds(30).toEpochMilli()),
     action = Action.SlackMessageRequest(
       channel = "dummy-channel",
-      message = "Hello from Karya!",
+      message = slackMessage,
     ),
     hooks = listOf(failureHook),
   )

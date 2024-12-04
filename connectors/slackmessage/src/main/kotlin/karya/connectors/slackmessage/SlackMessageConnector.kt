@@ -6,10 +6,8 @@ import com.slack.api.methods.request.chat.ChatPostMessageRequest
 import karya.core.actors.Connector
 import karya.core.entities.Action
 import karya.core.entities.ExecutorResult
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.*
 import java.time.Instant
 import java.util.*
 import javax.inject.Inject
@@ -22,6 +20,7 @@ constructor(
 ) : Connector<Action.SlackMessageRequest> {
 
   companion object {
+    private val listSerializer = ListSerializer(JsonElement.serializer())
     private val endNote = buildJsonObject {
       put("type", JsonPrimitive("section"))
       put("text", buildJsonObject {
@@ -31,14 +30,16 @@ constructor(
     }
   }
 
-  override suspend fun invoke(planId: UUID, action: Action.SlackMessageRequest): ExecutorResult {
+  override suspend fun invoke(planId: UUID, action: Action.SlackMessageRequest): ExecutorResult = try {
     val request = createMessageRequest(action)
     val response = methodsClient.chatPostMessage(request)
     val timestamp = Instant.now().toEpochMilli()
-    return when (response.isOk) {
+    when (response.isOk) {
       true -> ExecutorResult.Success(timestamp)
       false -> ExecutorResult.Failure(response.error, action, timestamp)
     }
+  } catch (e: Exception) {
+    ExecutorResult.Failure(e.message ?: "Unknown error", action, Instant.now().toEpochMilli())
   }
 
   override suspend fun shutdown() {
@@ -50,9 +51,10 @@ constructor(
     val updatedBlocks = existingBlocks.toMutableList()
     updatedBlocks.add(endNote)
 
+    val blocksAsString = Json.encodeToString(listSerializer, updatedBlocks)
     return ChatPostMessageRequest.builder()
       .channel(action.channel)
-      .blocksAsString(updatedBlocks.toString())
+      .blocksAsString(blocksAsString)
       .build()
   }
 }
