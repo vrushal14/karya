@@ -120,6 +120,8 @@ Refer to the [Action.EmailRequest](../../core/src/main/kotlin/karya/core/entitie
 
 Refer to the [Action.KafkaProducerRequest](../../core/src/main/kotlin/karya/core/entities/Action.kt) object for more details on the parameters that can be set while creating a plan.
 
+[Sample MakePeriodicPublishingToKafka.kt example](../../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicPublishingToKafka.kt).
+
 ---
 
 ## Default Connector Plugins
