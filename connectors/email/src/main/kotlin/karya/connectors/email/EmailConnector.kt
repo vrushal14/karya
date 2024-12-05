@@ -63,6 +63,19 @@ constructor(
     setFrom(InternetAddress(config.username))
     setRecipients(Message.RecipientType.TO, InternetAddress.parse(action.recipient))
     subject = action.subject
-    setText(action.message)
+    setContent(createHtmlMessage(action.message), "text/html")
+  }
+
+  /**
+   * The HTML message to be appended at the end of the email.
+   *
+   * @param htmlMessage The HTML message.
+   * @return The HTML message.
+   */
+  private fun createHtmlMessage(message: String) = buildString {
+    append("<html><body>")
+    append("<p>$message</p>")
+    append("<small>Sent via <a href=\"https://github.com/Saumya-Bhatt/karya\">Karya</a></small>")
+    append("</body></html>")
   }
 }
