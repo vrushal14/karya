@@ -6,6 +6,7 @@ import karya.core.entities.Action
 import karya.core.entities.PlanType
 import karya.core.entities.requests.CreateUserRequest
 import karya.core.entities.requests.SubmitPlanRequest
+import java.time.Instant
 
 suspend fun main() {
   // Configuration for the Karya client
@@ -20,7 +21,7 @@ suspend fun main() {
     userId = user.id,
     description = "Sample run",
     periodTime = "PT15S",
-    planType = PlanType.Recurring(null),
+    planType = PlanType.Recurring(Instant.now().plusSeconds(40).toEpochMilli()),
     action = Action.KafkaProducerRequest(
       topic = "karya-test",
       message = "Published from executor",
