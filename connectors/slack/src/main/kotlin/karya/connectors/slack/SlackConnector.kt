@@ -31,7 +31,7 @@ constructor(
       put("type", JsonPrimitive("section"))
       put("text", buildJsonObject {
         put("type", JsonPrimitive("mrkdwn"))
-        put("text", JsonPrimitive("_sent via [Karya](https://github.com/Saumya-Bhatt/karya)_"))
+        put("text", JsonPrimitive("_sent via <https://github.com/Saumya-Bhatt/karya|Karya>_"))
       })
     }
   }
