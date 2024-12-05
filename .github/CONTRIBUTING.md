@@ -54,6 +54,14 @@ Start the application in the following order:
 A sample [MakePeriodicApiCall.kt.kt](../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicApiCall.kt) file is
 provided to schedule a dummy plan and check if the setup is working fine.
 
+### For testing Kafka Connector
+
+- Start the Kafka service
+- In the Kafka UI dashboard, create a cluster and provide the bootstrap server as `kafka:9090`
+  ```shell
+  docker-compose -f ./docs/local-setup/kafka.docker-compose.yml up -d
+  ```
+
 ## Linting and Formatting
 
 - [Detekt](https://detekt.dev/) Plugin is being used to enforce code style and formatting

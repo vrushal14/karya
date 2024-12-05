@@ -1,26 +1,26 @@
-package karya.connectors.slackmessage.di
+package karya.connectors.slack.di
 
 import com.slack.api.Slack
 import com.slack.api.methods.MethodsClient
 import dagger.Module
 import dagger.Provides
-import karya.connectors.slackmessage.SlackMessageConnector
-import karya.connectors.slackmessage.configs.SlackMessageConnectorConfig
+import karya.connectors.slack.SlackConnector
+import karya.connectors.slack.configs.SlackConnectorConfig
 import karya.core.actors.Connector
 import karya.core.entities.Action
 import javax.inject.Singleton
 
 @Module
-class SlackMessageConnectorModule {
+class SlackConnectorModule {
 
   @Provides
   @Singleton
   fun provideSlackMessageConnector(methodsClient: MethodsClient, slack: Slack): Connector<Action.SlackMessageRequest> =
-    SlackMessageConnector(methodsClient, slack)
+    SlackConnector(methodsClient, slack)
 
   @Provides
   @Singleton
-  fun provideMethodsClient(slack: Slack, config: SlackMessageConnectorConfig): MethodsClient =
+  fun provideMethodsClient(slack: Slack, config: SlackConnectorConfig): MethodsClient =
     slack.methods(config.token)
 
   @Provides

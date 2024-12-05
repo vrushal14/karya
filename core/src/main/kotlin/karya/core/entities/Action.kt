@@ -59,6 +59,20 @@ sealed class Action {
   ) : Action()
 
   /**
+   * Data class representing a Kafka request action.
+   *
+   * @property key The key to be used to specify the partition to which the message will be sent.
+   * @property topic The Kafka topic where the message will be sent.
+   * @property message The message to be sent to the Kafka topic.
+   */
+  @Serializable
+  data class KafkaProducerRequest(
+    val key: String? = null,
+    val topic: String,
+    val message: String
+  ) : Action()
+
+  /**
    * Data class representing a chained request action.
    *
    * @property request The request to be chained.
