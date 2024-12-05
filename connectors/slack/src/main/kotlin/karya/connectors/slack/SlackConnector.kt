@@ -1,4 +1,4 @@
-package karya.connectors.slackmessage
+package karya.connectors.slack
 
 import com.slack.api.Slack
 import com.slack.api.methods.MethodsClient
@@ -18,7 +18,7 @@ import javax.inject.Inject
  * @property methodsClient The Slack MethodsClient used for making API requests.
  * @property slack The Slack instance used for managing the connection.
  */
-class SlackMessageConnector
+class SlackConnector
 @Inject
 constructor(
   private val methodsClient: MethodsClient,

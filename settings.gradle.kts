@@ -40,8 +40,11 @@ project(":connectors-restapi").projectDir = File("connectors/restapi")
 include("connectors-chainedplan")
 project(":connectors-chainedplan").projectDir = File("connectors/chainedplan")
 
-include("connectors-slackmessage")
-project(":connectors-slackmessage").projectDir = File("connectors/slackmessage")
+include("connectors-slack")
+project(":connectors-slack").projectDir = File("connectors/slack")
 
 include("connectors-email")
 project(":connectors-email").projectDir = File("connectors/email")
+
+include("connectors-kafka")
+project(":connectors-kafka").projectDir = File("connectors/kafka")

@@ -6,10 +6,11 @@ This has to be set in the **executor.yml** file before starting the executor. Cu
 available:
 
 | Executor.yml key | Description                                                 |
-|------------------|-------------------------------------------------------------|
-| *restapi*        | This plugin helps support the executor make a REST Api call |
-| *slackmessage*   | This plugin helps support the executor send a slack message |
-| *email*          | This plugin helps support the executor send an email        |
+|-----------|-------------------------------------------------------------|
+| *restapi* | This plugin helps support the executor make a REST Api call |
+| *slack*   | This plugin helps support the executor send a slack message |
+| *email*   | This plugin helps support the executor send an email        |
+| *kafka*   | This plugin helps support the executor publish a message to a Kafka topic |
 
 
 ### Configuring Rest API
@@ -40,9 +41,9 @@ Refer to the [Action.RestApiRequest](../../core/src/main/kotlin/karya/core/entit
 
 [Sample MakePeriodicRestApiCall.kt example](../../docs/samples/src/main/kotlin/karya/docs/samples/MakePeriodicApiCall.kt).
 
-### Configuring Slack Message
+### Configuring Slack
 
-> **executor.yml type key:** *slackmessage*
+> **executor.yml type key:** *slack*
 
 | Key        | Description                                                                                                                      |
 |------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -53,7 +54,7 @@ Refer to the [Action.RestApiRequest](../../core/src/main/kotlin/karya/core/entit
 <summary><strong>Example</strong></summary>
 
 ```yml
-- type: "slackmessage"
+- type: "slack"
   configs:
     token: "xoxb"
 ```
@@ -96,6 +97,28 @@ Refer to the [Action.SlackMessage](../../core/src/main/kotlin/karya/core/entitie
 Refer to the [Action.EmailRequest](../../core/src/main/kotlin/karya/core/entities/Action.kt) object for more details on the parameters that can be set while creating a plan.
 
 [Sample MakeDelayEmailRequest.kt example](../../docs/samples/src/main/kotlin/karya/docs/samples/MakeDelayEmailRequest.kt).
+
+### Configuring Kafka
+
+> **executor.yml type key:** *kafka*
+
+| Key                 | Description                                                                                                                      |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| *bootstrap.servers* | The Kafka bootstrap servers to be used to publish the message.                                                                  |
+
+<details>
+
+<summary><strong>Example</strong></summary>
+
+```yml
+    - type: "kafka"
+      configs:
+        bootstrap.servers: "localhost:9092"
+```
+
+</details>
+
+Refer to the [Action.KafkaProducerRequest](../../core/src/main/kotlin/karya/core/entities/Action.kt) object for more details on the parameters that can be set while creating a plan.
 
 ---
 

@@ -8,9 +8,10 @@ dependencies {
   implementation(project(Modules.Data.FUSED))
 
   implementation(project(Modules.Connectors.EMAIL))
+  implementation(project(Modules.Connectors.KAFKA))
   implementation(project(Modules.Connectors.REST_API))
   implementation(project(Modules.Connectors.CHAINED_PLAN))
-  implementation(project(Modules.Connectors.SLACK_MESSAGE))
+  implementation(project(Modules.Connectors.SLACK))
 
   implementation(Libs.SLF4J)
   implementation(Libs.KOTLIN_REFLECT)
