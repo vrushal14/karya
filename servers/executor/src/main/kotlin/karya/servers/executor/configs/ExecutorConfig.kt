@@ -1,10 +1,10 @@
 package karya.servers.executor.configs
 
-import karya.connector.chainedplan.di.ChainedPlanConnectorFactory
-import karya.connectors.email.di.EmailConnectorFactory
-import karya.connectors.kafka.di.KafkaConnectorFactory
-import karya.connectors.restapi.di.RestApiConnectorFactory
-import karya.connectors.slack.di.SlackConnectorFactory
+import karya.connectors.chained.ChainedConnectorFactory
+import karya.connectors.email.EmailConnectorFactory
+import karya.connectors.kafka.KafkaConnectorFactory
+import karya.connectors.restapi.RestApiConnectorFactory
+import karya.connectors.slack.SlackConnectorFactory
 import karya.core.actors.Connector
 import karya.core.entities.Action
 import karya.core.entities.Action.*
@@ -17,10 +17,10 @@ import karya.data.fused.di.factories.FusedDataQueueComponentFactory
 import karya.data.fused.di.factories.FusedDataRepoComponentFactory
 import karya.servers.executor.exceptions.ExecutorException
 import kotlin.reflect.KClass
-import karya.connectors.email.configs.EmailConnectorConfig as Email
-import karya.connectors.kafka.configs.KafkaConnectorConfig as Kafka
-import karya.connectors.restapi.configs.RestApiConnectorConfig as RestApi
-import karya.connectors.slack.configs.SlackConnectorConfig as Slack
+import karya.connectors.email.EmailConnectorConfig as Email
+import karya.connectors.kafka.KafkaConnectorConfig as Kafka
+import karya.connectors.restapi.RestApiConnectorConfig as RestApi
+import karya.connectors.slack.SlackConnectorConfig as Slack
 
 
 /**
@@ -67,7 +67,7 @@ data class ExecutorConfig(
      */
     private fun ExecutorConfig.addDefaultConnectors(): ExecutorConfig {
       this.connectors = mutableMapOf()
-      this.connectors[ChainedRequest::class] = ChainedPlanConnectorFactory.build(this.fusedDataRepoComponent)
+      this.connectors[ChainedRequest::class] = ChainedConnectorFactory.build(this.fusedDataRepoComponent)
       return this
     }
 

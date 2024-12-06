@@ -34,17 +34,5 @@ project(":data-rabbitmq").projectDir = File("data/rabbitmq")
 include(":docs-samples")
 project(":docs-samples").projectDir = File("docs/samples")
 
-include(":connectors-restapi")
-project(":connectors-restapi").projectDir = File("connectors/restapi")
-
-include("connectors-chainedplan")
-project(":connectors-chainedplan").projectDir = File("connectors/chainedplan")
-
-include("connectors-slack")
-project(":connectors-slack").projectDir = File("connectors/slack")
-
-include("connectors-email")
-project(":connectors-email").projectDir = File("connectors/email")
-
-include("connectors-kafka")
-project(":connectors-kafka").projectDir = File("connectors/kafka")
+include(":connectors")
+project(":connectors").projectDir = File("connectors")

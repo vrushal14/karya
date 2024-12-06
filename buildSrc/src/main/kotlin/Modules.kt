@@ -1,6 +1,7 @@
 object Modules {
   const val CORE = ":core"
   const val CLIENT = ":client"
+  const val CONNECTORS = ":connectors"
 
   object Data {
     private const val DATA = ":data"
@@ -17,15 +18,5 @@ object Modules {
     const val SERVER = "$SERVERS-server"
     const val SCHEDULER = "$SERVERS-scheduler"
     const val EXECUTOR = "$SERVERS-executor"
-  }
-
-  object Connectors {
-    private const val CONNECTORS = ":connectors"
-
-    const val REST_API = "$CONNECTORS-restapi"
-    const val CHAINED_PLAN = "$CONNECTORS-chainedplan"
-    const val SLACK = "$CONNECTORS-slack"
-    const val EMAIL = "$CONNECTORS-email"
-    const val KAFKA = "$CONNECTORS-kafka"
   }
 }
