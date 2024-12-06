@@ -14,11 +14,11 @@ object PlansTable : Table("plans") {
   val userId = uuid("user_id") references UsersTable.id
   val description = varchar("description", 255)
   val periodTime = varchar("period_time", 255)
-  val type = json<PlanType>("type", Json.Default)
+  val type = json<PlanType>("type", Json)
   val status = integer("status")
   val maxFailureRetry = integer("max_failure_retry")
-  val action = json<Action>("action", Json.Default)
-  val hook = json<List<Hook>>("hook", Json.Default)
+  val action = json<Action>("action", Json)
+  val hook = json<List<Hook>>("hook", Json)
   val parentPlanId = uuid("parent_plan_id").nullable()
 
   val createdAt = timestamp("created_at")
